@@ -2,14 +2,12 @@ package com.example.mfm_2.fragment.addEditTransaction
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 
 import com.example.mfm_2.R
@@ -85,6 +83,18 @@ class ExpenseFragment : Fragment() {
             val budget: String = editTextBudget.text.toString()
             val account: String = editTextAccount.text.toString()
             listener?.onExpenseInputSent(amount, account, budget, -1)
+        }
+
+        val textview: TextView = view.findViewById(R.id.textView)
+        editTextAccount.setOnItemClickListener { adapterView, view, i, l ->
+            CoroutineScope(IO).launch {
+                val account = accountViewModel.getAccount(editTextAccount.text.toString())
+                withContext(Main){
+                    textview.visibility = TextView.GONE
+                    textview.text = account.accountName + ": " + getString(R.string.currency) + account.accountBalance
+                    textview.visibility = TextView.VISIBLE
+                }
+            }
         }
 
         return view
