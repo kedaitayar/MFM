@@ -1,14 +1,19 @@
 package com.example.mfm_2
 
 import android.graphics.Color
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ProgressBar
+import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
+import kotlin.random.Random
 
 /**
  * The purpose of this activity is for testing component or code before implementing it to the app
@@ -21,7 +26,7 @@ class TestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test)
 
         val chart: LineChart = findViewById(R.id.chart1)
-        Log.i("test", "hoho")
+//        Log.i("test", "hoho")
         var entries: MutableList<Entry> = mutableListOf()
         var data = listOf<Data>(Data(1f,1f), Data(2f,2f), Data(3f,3f), Data(4f,2f), Data(5f,1f))
         var data2 = arrayOf<Array<Int>>(arrayOf(1,2,3,4,5), arrayOf(1,2,3,4,5))
@@ -46,7 +51,7 @@ class TestActivity : AppCompatActivity() {
 //        for (data in data){
 //            entries.add(Entry(data.x,data.y))
 //        }
-        Log.i("test", entries.toString())
+//        Log.i("test", entries.toString())
         var dataSet: LineDataSet = LineDataSet(entries, "test")
         dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
         dataSet.lineWidth = 0f
@@ -54,8 +59,10 @@ class TestActivity : AppCompatActivity() {
         dataSet.setDrawCircles(false)
         dataSet.setDrawFilled(true)
         dataSet.setDrawHighlightIndicators(true)
-        dataSet.fillColor = dataSet.color
         dataSet.setDrawHighlightIndicators(false)
+        dataSet.color = Color.GREEN
+        dataSet.fillColor = dataSet.color
+
 
         var lineData: LineData = LineData(dataSet)
         lineData.setDrawValues(false)
@@ -65,7 +72,7 @@ class TestActivity : AppCompatActivity() {
         var rightAxis = chart.axisRight
 
         leftAxis.setDrawGridLines(false)
-        rightAxis.setDrawGridLines(true)
+        rightAxis.setDrawGridLines(false)
         rightAxis.setDrawGridLinesBehindData(false)
         rightAxis.gridLineWidth = 1f
 
@@ -78,8 +85,17 @@ class TestActivity : AppCompatActivity() {
         chart.description.isEnabled = false
         chart.extraBottomOffset = 2f
         chart.legend.isEnabled = false
-        Log.i("test", chart.extraBottomOffset.toString())
+//        chart.setBackgroundColor(ColorTemplate.MATERIAL_COLORS[Random.nextInt(ColorTemplate.MATERIAL_COLORS.size)])
+        chart.setDrawGridBackground(true)
+        var paint = chart.getPaint(PAINT_GRID_BACKGROUND)
+        paint.color = Color.RED
+        chart.setPaint(paint, PAINT_GRID_BACKGROUND)
+
         chart.invalidate()
+
+        //progress bar//
+        val progressbar: ProgressBar = findViewById(R.id.progressBar)
+        progressbar.progress = 75
     }
 
     inner class Data(var x: Float, var y: Float){
