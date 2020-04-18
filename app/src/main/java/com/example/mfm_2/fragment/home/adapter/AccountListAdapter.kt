@@ -13,11 +13,16 @@ class AccountListAdapter internal constructor(context: Context) :
     RecyclerView.Adapter<AccountListAdapter.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var account = emptyList<Account>()
+    private var listener: OnItemClickListener? = null
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val textView1: TextView = v.findViewById(R.id.textView4)
         val textView2: TextView = v.findViewById(R.id.textView5)
         val textView3: TextView = v.findViewById(R.id.textView7)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(account: Account)
     }
 
     override fun onCreateViewHolder(
@@ -43,8 +48,13 @@ class AccountListAdapter internal constructor(context: Context) :
         return "RM "
     }
 
-    fun setData(account: List<Account>){
+    fun setData(account: List<Account>) {
         this.account = account
         notifyDataSetChanged()
     }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
 }

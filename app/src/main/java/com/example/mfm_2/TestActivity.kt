@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ProgressBar
+import android.widget.TextView
 import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -96,6 +97,8 @@ class TestActivity : AppCompatActivity() {
         //progress bar//
         val progressbar: ProgressBar = findViewById(R.id.progressBar)
         progressbar.progress = 75
+
+        val testText: TextView = findViewById(R.id.textView_test)
     }
 
     inner class Data(var x: Float, var y: Float){

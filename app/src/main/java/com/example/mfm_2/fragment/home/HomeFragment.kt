@@ -46,6 +46,8 @@ class HomeFragment : Fragment() {
             data?.let { adapter.setData(it) }
         })
 
+//        adapter.setOnItemClickListener(object : )
+
         // Transaction recyclerview
         val recyclerView2: RecyclerView = view.findViewById(R.id.recyclerview2)
         val adapter2 = TransactionListAdapter(this.context!!)
@@ -66,7 +68,6 @@ class HomeFragment : Fragment() {
 
                 startActivity(intent)
             }
-
         })
 
         return view
