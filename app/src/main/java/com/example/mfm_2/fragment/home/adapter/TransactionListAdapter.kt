@@ -57,17 +57,21 @@ class TransactionListAdapter internal constructor(context: Context) :
         format.groupingSeparator = ' '
         formatter.decimalFormatSymbols = format
         holder.transactionAccount.text = current.accountName
-        holder.transactionAmount.text = resources.getString(R.string.currency, formatter.format(current.transactionAmount))
+        holder.transactionAmount.text =
+            resources.getString(R.string.currency, formatter.format(current.transactionAmount))
         holder.transactionBudget.text = current.budgetName
-        holder.transactionDate.text = resources.getString(R.string.date, current.transactionTime.get(Calendar.DAY_OF_MONTH), current.transactionTime.get(Calendar.MONTH), current.transactionTime.get(Calendar.YEAR))
+        holder.transactionDate.text = resources.getString(
+            R.string.date,
+            current.transactionTime.get(Calendar.DAY_OF_MONTH),
+            current.transactionTime.get(Calendar.MONTH),
+            current.transactionTime.get(Calendar.YEAR)
+        )
     }
 
     fun setData(transaction: List<TransactionWithAccountBudget>) {
         this.transaction = transaction
         notifyDataSetChanged()
     }
-
-
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener

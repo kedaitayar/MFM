@@ -2,21 +2,24 @@ package com.example.mfm_2.fragment.home
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.mfm_2.R
+import com.example.mfm_2.fragment.account.NotBudgetedFragment
 import com.example.mfm_2.fragment.addEditTransaction.AddEditTransactionActivity
 import com.example.mfm_2.fragment.home.adapter.AccountListAdapter
 import com.example.mfm_2.fragment.home.adapter.TransactionListAdapter
+import com.example.mfm_2.model.Account
 import com.example.mfm_2.pojo.TransactionWithAccountBudget
 import com.example.mfm_2.viewmodel.AccountViewModel
 import com.example.mfm_2.viewmodel.TransactionViewModel
@@ -36,6 +39,13 @@ class HomeFragment : Fragment() {
         accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
         transactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
 
+        val fragmentManager: FragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction().apply {
+//            replace(R.id.fragment_container1, NotBudgetedFragment())
+            replace(R.id.fragment_container1, NotBudgetedFragment())
+        }
+        fragmentTransaction.commit()
+
         // Account recyclerview
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview)
         val adapter = AccountListAdapter(this.context!!)
@@ -46,7 +56,12 @@ class HomeFragment : Fragment() {
             data?.let { adapter.setData(it) }
         })
 
-//        adapter.setOnItemClickListener(object : )
+        adapter.setOnItemClickListener(object : AccountListAdapter.OnItemClickListener{
+            override fun onItemClick(account: Account) {
+                Toast.makeText(this@HomeFragment.context , account.accountName, Toast.LENGTH_SHORT).show()
+//                TODO("implement edit account")
+            }
+        })
 
         // Transaction recyclerview
         val recyclerView2: RecyclerView = view.findViewById(R.id.recyclerview2)

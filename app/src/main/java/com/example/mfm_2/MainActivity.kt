@@ -12,7 +12,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mfm_2.fragment.account.AccountFragment
 import com.example.mfm_2.fragment.addEditTransaction.AddEditTransactionActivity
+import com.example.mfm_2.fragment.budget.BudgetFragment
 import com.example.mfm_2.fragment.home.HomeFragment
+import com.example.mfm_2.fragment.transaction.TransactionFragment
 import com.example.mfm_2.viewmodel.AccountViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 1 -> tab.text = "Account"
                 2 -> tab.text = "Transaction"
                 3 -> tab.text = "Budget"
-                4 -> tab.text = "Debt"
+//                4 -> tab.text = "Debt"
             }
         }.attach()
 
@@ -70,12 +72,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private inner class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-        override fun getItemCount(): Int = 5
+        override fun getItemCount(): Int = 4
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> HomeFragment()
                 1 -> AccountFragment()
+                2 -> TransactionFragment()
+                3 -> BudgetFragment()
                 else -> AccountFragment()
             }
         }
