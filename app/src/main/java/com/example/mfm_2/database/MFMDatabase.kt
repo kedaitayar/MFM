@@ -18,7 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class], version = 2, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -100,9 +100,9 @@ abstract class MFMDatabase : RoomDatabase(){
         suspend fun populateDatabase(budgetDao: BudgetDao){
             budgetDao.deleteAll()
 
-            var budget = Budget(budgetName = "Food", budgetAllocation = 50.0, budgetId = 1)
+            var budget = Budget(budgetName = "Food", budgetAllocation = 50.0, budgetGoal = 50.0, budgetId = 1)
             budgetDao.insert(budget)
-            budget = Budget(budgetName = "Transport", budgetAllocation = 50.0, budgetId = 2)
+            budget = Budget(budgetName = "Transport", budgetAllocation = 60.0, budgetGoal = 60.0, budgetId = 2)
             budgetDao.insert(budget)
         }
 

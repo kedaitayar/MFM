@@ -1,24 +1,61 @@
 package com.example.mfm_2.fragment.budget
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.mfm_2.R
+import com.example.mfm_2.fragment.budget.adapter.BudgetListAdapter
+import com.example.mfm_2.model.Budget
+import com.example.mfm_2.viewmodel.BudgetViewModel
+
 
 /**
  * A simple [Fragment] subclass.
  */
 class BudgetFragment : Fragment() {
+    private lateinit var budgetViewModel: BudgetViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_budget, container, false)
+        val view = inflater.inflate(R.layout.fragment_budget, container, false)
+        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview_budget)
+        val budgetAdapter = BudgetListAdapter(this.context!!)
+        recyclerView.adapter = budgetAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer {budget ->
+            budget?.let { budgetAdapter.setData(it) }
+        })
+
+//        (recyclerView.itemAnimator as SimpleItemAnimator?)!!.supportsChangeAnimations = false
+
+//        budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener{
+//            override fun onItemClick(budget: Budget, view: View) {
+////                Toast.makeText(this@BudgetFragment.context, "haha", Toast.LENGTH_SHORT).show()
+//                val expandable: ConstraintLayout = view.findViewById(R.id.constraint_layout_expandable_detail)
+//                if (expandable.visibility == View.GONE){
+//                    expandable.visibility = View.VISIBLE
+//                    expandable.animate().translationY(0f)//.alpha(1f)
+//                } else {
+//                    expandable.visibility = View.GONE
+//                    expandable.animate().translationY(0f)//.alpha(0f)
+//                }
+//            }
+//        })
+
+        return view
     }
 
 }
