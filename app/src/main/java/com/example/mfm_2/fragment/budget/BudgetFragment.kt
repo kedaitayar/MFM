@@ -1,9 +1,14 @@
 package com.example.mfm_2.fragment.budget
 
+import android.content.Intent
+import android.database.sqlite.SQLiteConstraintException
+import android.database.sqlite.SQLiteDatabaseCorruptException
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -16,6 +21,11 @@ import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.adapter.BudgetListAdapter
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.viewmodel.BudgetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -38,6 +48,22 @@ class BudgetFragment : Fragment() {
         budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer {budget ->
             budget?.let { budgetAdapter.setData(it) }
         })
+
+        val addBudget: Button = view.findViewById(R.id.button_add_budget)
+
+        addBudget.setOnClickListener {
+            val budget = Budget(budgetName = "New Budget", budgetGoal = 0.0, budgetAllocation = 0.0)
+            CoroutineScope(IO).launch {
+                val test = budgetViewModel.insertWithResult(budget)
+                withContext(Main){
+                    if (test == -1L){
+                        Toast.makeText(this@BudgetFragment.context, "Budget already exist", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@BudgetFragment.context, "New budget inserted", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
 
 //        (recyclerView.itemAnimator as SimpleItemAnimator?)!!.supportsChangeAnimations = false
 

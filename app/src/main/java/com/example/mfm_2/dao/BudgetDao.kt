@@ -3,6 +3,7 @@ package com.example.mfm_2.dao
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.mfm_2.model.Budget
 
@@ -11,8 +12,8 @@ interface BudgetDao {
     @Query("SELECT * FROM budget")
     fun getAllBudget(): LiveData<List<Budget>>
 
-    @Insert
-    suspend fun insert(budget: Budget)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(budget: Budget): Long
 
     @Query("Delete from budget")
     suspend fun deleteAll()

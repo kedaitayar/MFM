@@ -24,6 +24,10 @@ class BudgetViewModel (application: Application): AndroidViewModel(application){
         repo.insert(budget)
     }
 
+    suspend fun insertWithResult(budget: Budget): Long {
+        return repo.insert(budget)
+    }
+
     suspend fun getAllBudgetName(): List<String>{
         return runBlocking {
             repo.getAllBudgetName()

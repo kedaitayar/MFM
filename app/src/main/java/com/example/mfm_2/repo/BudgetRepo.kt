@@ -7,8 +7,8 @@ import com.example.mfm_2.model.Budget
 class BudgetRepo (private val budgetDao: BudgetDao){
     val allBudget: LiveData<List<Budget>> = budgetDao.getAllBudget()
 
-    suspend fun insert(budget: Budget){
-        budgetDao.insert(budget)
+    suspend fun insert(budget: Budget): Long{
+        return budgetDao.insert(budget)
     }
 
     suspend fun getAllBudgetName(): List<String>{
