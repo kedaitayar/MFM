@@ -4,48 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:id="@+id/budget_layout"
-    tools:context=".fragment.budget.BudgetFragment">
+    tools:context=".fragment.budget.BudgetingActivity">
 
-    <LinearLayout
-        android:id="@+id/budget_button_panel"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_budgeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:elevation="4dp"
+        android:theme="@style/Widget.Design.AppBarLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@android:color/primary_text_dark">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_budgeting"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:text="Budgeting" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_add_budget"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:text="Add Budget"
-            app:icon="@android:drawable/ic_input_add"
-            app:iconPadding="2dp"
-            app:iconSize="24dp" />
-    </LinearLayout>
-
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_margin="4dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budget_button_panel"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_budgeting"
         tools:layout_editor_absoluteX="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,8 +57,8 @@
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="28dp"
-                android:text="Used"
+                android:layout_marginRight="8dp"
+                android:text="Goal"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
                 app:layout_constraintRight_toRightOf="parent" />
 
@@ -91,12 +70,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_budget"
+                android:id="@+id/recyclerview_budgeting"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3"
-                tools:listitem="@layout/recyclerview_item_budget_list" />
+                tools:listitem="@layout/recyclerview_item_budgeting_list" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

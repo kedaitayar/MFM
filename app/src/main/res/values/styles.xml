@@ -13,4 +13,12 @@
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
+    <style name="NumberPickerText">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#fff</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
 </resources>

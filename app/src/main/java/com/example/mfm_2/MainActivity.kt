@@ -1,15 +1,19 @@
 package com.example.mfm_2
 
+import android.app.DatePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.mfm_2.custom_class.MonthString
+import com.example.mfm_2.custom_class.MonthYearPickerDialog
 import com.example.mfm_2.fragment.account.AccountFragment
 import com.example.mfm_2.fragment.addEditTransaction.AddEditTransactionActivity
 import com.example.mfm_2.fragment.budget.BudgetFragment
@@ -19,6 +23,9 @@ import com.example.mfm_2.viewmodel.AccountViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var accountViewModel: AccountViewModel
@@ -27,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
 
         val viewPager: ViewPager2 = findViewById(R.id.viewpager)
         viewPager.adapter = ViewPagerAdapter(this)
@@ -47,6 +56,20 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, AddEditTransactionActivity::class.java)
             startActivity(intent)
+        }
+
+        //toolbar date
+        val cal = Calendar.getInstance()
+//        val dateLayout: TextInputLayout = findViewById(R.id.textlayout_date)
+        val dateInput: TextInputEditText = findViewById(R.id.textinput_date)
+        val monthShortString = MonthString().monthShortString
+        dateInput.setText(monthShortString[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR))
+        dateInput.setOnClickListener {
+            val pickerDialog = MonthYearPickerDialog()
+            pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                dateInput.setText(monthShortString[month] + " " + year)
+            })
+            pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
         }
 
         accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)

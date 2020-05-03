@@ -11,6 +11,10 @@ class BudgetRepo (private val budgetDao: BudgetDao){
         return budgetDao.insert(budget)
     }
 
+    suspend fun delete(budget: Budget): Int{
+        return budgetDao.delete(budget)
+    }
+
     suspend fun getAllBudgetName(): List<String>{
         return budgetDao.getAllBudgetName()
     }

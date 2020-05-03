@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".fragment.budget.BudgetingActivity"></activity>
+        <activity android:name=".fragment.budget.edit.EditBudgetActivity" />
         <activity android:name=".TestActivity" />
         <activity
             android:name=".fragment.addEditTransaction.AddEditTransactionActivity"

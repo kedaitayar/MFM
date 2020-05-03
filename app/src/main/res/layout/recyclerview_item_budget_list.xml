@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="false"
-    android:elevation="4dp">
+    android:animateLayoutChanges="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_expandable_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:animateLayoutChanges="false"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -19,7 +18,7 @@
             style="@style/InTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="4dp"
             android:text="Budget"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,8 +28,8 @@
             style="@style/InTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:layout_marginRight="128dp"
+            android:padding="4dp"
             android:text="RM100"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView10"
             app:layout_constraintRight_toRightOf="parent" />
@@ -40,15 +39,15 @@
             style="@style/InTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
+            android:paddingTop="4dp"
             android:paddingRight="4dp"
+            android:paddingBottom="4dp"
             android:text="RM100"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView10"
-            app:layout_constraintRight_toLeftOf="@+id/textView_popup_menu" />
+            app:layout_constraintRight_toLeftOf="@+id/button_popup_menu" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/textView_popup_menu"
+            android:id="@+id/button_popup_menu"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +64,7 @@
             app:iconPadding="0dp"
             app:iconTint="@android:color/primary_text_light"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView10"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -76,27 +75,28 @@
         android:layout_height="wrap_content"
         android:animateLayoutChanges="false"
         android:visibility="visible"
+        android:paddingBottom="4dp"
         app:layout_constraintTop_toBottomOf="@+id/constraint_layout_expandable_view">
 
         <TextView
             android:id="@+id/textView13"
-            style="@style/InTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:text="Goal"
+            android:text="Goal: RM100"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView16"
-            style="@style/InTextStyle"
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:text="RM100"
-            app:layout_constraintLeft_toRightOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="Budget Type: Monthly"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,12 +1,18 @@
 package com.example.mfm_2
 
+import android.app.DatePickerDialog
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.DatePicker
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
+import com.example.mfm_2.custom_class.MonthYearPickerDialog
 import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -14,6 +20,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.util.*
 import kotlin.random.Random
 
 /**
@@ -99,9 +106,23 @@ class TestActivity : AppCompatActivity() {
         progressbar.progress = 75
 
         val testText: TextView = findViewById(R.id.textView_test)
+
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val button: Button = findViewById(R.id.buttontest)
+        button.setOnClickListener {
+//            val pickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+//            }, year, month, day)
+//            pickerDialog.show()
+
+            val pickerDialog = MonthYearPickerDialog()
+            pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->  })
+            pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
+        }
     }
 
     inner class Data(var x: Float, var y: Float){
     }
-
 }
