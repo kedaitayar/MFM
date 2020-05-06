@@ -26,4 +26,7 @@ interface BudgetDao {
 
     @Query("SELECT * FROM budget WHERE budgetName = :budgetName")
     suspend fun getBudget(budgetName: String): Budget
+
+    @Query("SELECT * FROM budget WHERE budgetId = :budgetId")
+    suspend fun getBudgetFromId(budgetId: Long): Budget
 }

@@ -4,26 +4,30 @@ import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetDao
 import com.example.mfm_2.model.Budget
 
-class BudgetRepo (private val budgetDao: BudgetDao){
+class BudgetRepo(private val budgetDao: BudgetDao) {
     val allBudget: LiveData<List<Budget>> = budgetDao.getAllBudget()
 
-    suspend fun insert(budget: Budget): Long{
+    suspend fun insert(budget: Budget): Long {
         return budgetDao.insert(budget)
     }
 
-    suspend fun delete(budget: Budget): Int{
+    suspend fun delete(budget: Budget): Int {
         return budgetDao.delete(budget)
     }
 
-    suspend fun getAllBudgetName(): List<String>{
+    suspend fun getAllBudgetName(): List<String> {
         return budgetDao.getAllBudgetName()
     }
 
-    suspend fun getAllBudget2(): List<Budget>{
+    suspend fun getAllBudget2(): List<Budget> {
         return budgetDao.getAllBudget2()
     }
 
-    suspend fun getBudget(budgetName: String): Budget{
+    suspend fun getBudget(budgetName: String): Budget {
         return budgetDao.getBudget(budgetName)
+    }
+
+    suspend fun getBudgetFromId(budgetId: Long): Budget {
+        return budgetDao.getBudgetFromId(budgetId)
     }
 }

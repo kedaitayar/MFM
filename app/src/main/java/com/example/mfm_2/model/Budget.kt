@@ -5,7 +5,7 @@ import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = arrayOf(Index(value = ["budgetName"], unique = true)))
+@Entity(indices = [Index(value = ["budgetName"], unique = true)])
 data class Budget(
     @PrimaryKey(autoGenerate = true)
     var budgetId: Long = 0,
@@ -13,8 +13,8 @@ data class Budget(
     var budgetCycle: String = "",
     var budgetGoal: Double = 0.0,
     var budgetName: String = "",
+    var budgetType: Int = 1,
     @Ignore var isExpanded: Boolean = false
 
 //   var budgetStartDate: String = ""
-//    var budgetType: String
 )

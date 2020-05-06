@@ -20,6 +20,7 @@ import com.example.mfm_2.fragment.budget.BudgetFragment
 import com.example.mfm_2.fragment.home.HomeFragment
 import com.example.mfm_2.fragment.transaction.TransactionFragment
 import com.example.mfm_2.viewmodel.AccountViewModel
+import com.example.mfm_2.viewmodel.SelectedDateViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -29,12 +30,16 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var accountViewModel: AccountViewModel
+    private lateinit var selectedDateViewModel: SelectedDateViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
+        selectedDateViewModel = ViewModelProvider(this).get(SelectedDateViewModel::class.java)
 
 
         val viewPager: ViewPager2 = findViewById(R.id.viewpager)
@@ -59,21 +64,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         //toolbar date
-        val cal = Calendar.getInstance()
-//        val dateLayout: TextInputLayout = findViewById(R.id.textlayout_date)
         val dateInput: TextInputEditText = findViewById(R.id.textinput_date)
         val monthShortString = MonthString().monthShortString
-        dateInput.setText(monthShortString[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR))
+        dateInput.setText(monthShortString[selectedDateViewModel.selectedDate.month] + " " + selectedDateViewModel.selectedDate.year)
         dateInput.setOnClickListener {
             val pickerDialog = MonthYearPickerDialog()
             pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 dateInput.setText(monthShortString[month] + " " + year)
+                selectedDateViewModel.selectedDate.month = month
+                selectedDateViewModel.selectedDate.year = year
             })
             pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
         }
-
-        accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.adapter.BudgetListAdapter
+import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.viewmodel.BudgetViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,6 +33,7 @@ import kotlinx.coroutines.withContext
  */
 class BudgetFragment : Fragment() {
     private lateinit var budgetViewModel: BudgetViewModel
+    private val editBudgetCode = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,6 +89,9 @@ class BudgetFragment : Fragment() {
                 popupMenu.setOnMenuItemClickListener {
                     when(it.itemId){
                         R.id.popup_menu_edit_budget -> {
+                            val intent = Intent(this@BudgetFragment.context, EditBudgetActivity::class.java)
+                            intent.putExtra(EditBudgetActivity.EXTRA_BUDGET_ID, budget.budgetId)
+                            startActivityForResult(intent, editBudgetCode)
                             true
                         }
                         R.id.popup_menu_delete_budget -> {

@@ -6,17 +6,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mfm_2.database.MFMDatabase
 import com.example.mfm_2.model.Budget
+import com.example.mfm_2.model.BudgetType
 import com.example.mfm_2.repo.BudgetRepo
+import com.example.mfm_2.repo.BudgetTypeRepo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class BudgetViewModel (application: Application): AndroidViewModel(application){
     private val repo: BudgetRepo
+    private val typeRepo: BudgetTypeRepo
     val allBudget: LiveData<List<Budget>>
 
     init {
-        val budget = MFMDatabase.getDatabase(application, viewModelScope).budgetDao()
-        repo = BudgetRepo(budget)
+        val database = MFMDatabase.getDatabase(application, viewModelScope)
+        repo = BudgetRepo(database.budgetDao())
+        typeRepo = BudgetTypeRepo(database.budgetTypeDao())
         allBudget = repo.allBudget
     }
 
@@ -44,5 +48,13 @@ class BudgetViewModel (application: Application): AndroidViewModel(application){
 
     suspend fun getBudget(budgetName: String): Budget{
         return repo.getBudget(budgetName)
+    }
+
+    suspend fun getBudgetFromId(budgetId: Long): Budget{
+        return repo.getBudgetFromId(budgetId)
+    }
+
+    suspend fun getAllBudgetType(): List<BudgetType>{
+        return typeRepo.getAllBudgetType()
     }
 }

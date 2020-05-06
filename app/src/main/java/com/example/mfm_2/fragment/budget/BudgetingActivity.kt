@@ -17,6 +17,7 @@ import com.example.mfm_2.viewmodel.BudgetViewModel
 
 class BudgetingActivity : AppCompatActivity() {
     private lateinit var budgetViewModel: BudgetViewModel
+    lateinit var testing: BudgetingListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +32,12 @@ class BudgetingActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerview_budgeting)
         val budgetingAdapter = BudgetingListAdapter(this)
-//        val budgetingAdapter = BudgetListAdapter(this)
         recyclerView.adapter = budgetingAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         budgetViewModel.allBudget.observe(this, Observer { budget ->
             budget?.let { budgetingAdapter.setData(it) }
         })
+        testing = budgetingAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,6 +48,8 @@ class BudgetingActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.save_budgeting -> {
+                Log.i("haha", "test")
+                Log.i("haha", testing.budgetAlloc.toString())
                 true
             }
             android.R.id.home -> {

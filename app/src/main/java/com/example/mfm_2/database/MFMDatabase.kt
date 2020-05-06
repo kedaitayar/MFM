@@ -6,25 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.mfm_2.dao.AccountDao
-import com.example.mfm_2.dao.BudgetDao
-import com.example.mfm_2.dao.DebtDao
-import com.example.mfm_2.dao.TransactionDao
-import com.example.mfm_2.model.Account
-import com.example.mfm_2.model.Budget
-import com.example.mfm_2.model.Debt
-import com.example.mfm_2.model.Transaction
+import com.example.mfm_2.dao.*
+import com.example.mfm_2.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class], version = 3, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class, BudgetTransaction::class, BudgetType::class], version = 5, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
     abstract fun transactionDao(): TransactionDao
     abstract fun budgetDao(): BudgetDao
     abstract fun debtDao(): DebtDao
+    abstract fun budgetTypeDao(): BudgetTypeDao
 
     companion object{
         @Volatile
@@ -67,6 +62,7 @@ abstract class MFMDatabase : RoomDatabase(){
 //                        populateDatabase(it.budgetDao())
 //                        populateDatabase(it.transactionDao())
 //                        populateDatabase(it.debtDao())
+                        populateDatabase(it.budgetTypeDao())
                     }
                 }
             }
@@ -111,6 +107,15 @@ abstract class MFMDatabase : RoomDatabase(){
 
             var debt = Debt(debtName = "Ahlong")
             debtDao.insert(debt)
+        }
+
+        suspend fun populateDatabase(budgetTypeDao: BudgetTypeDao){
+            budgetTypeDao.deleteAll()
+
+            var budgetType = BudgetType(budgetTypeId = 1, budgetTypeName = "Monthly")
+            budgetTypeDao.insert(budgetType)
+            budgetType = BudgetType(budgetTypeId = 2, budgetTypeName = "Yearly")
+            budgetTypeDao.insert(budgetType)
         }
     }
 }
