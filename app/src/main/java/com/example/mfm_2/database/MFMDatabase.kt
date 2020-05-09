@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class, BudgetTransaction::class, BudgetType::class], version = 5, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class, BudgetTransaction::class, BudgetType::class], version = 6, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -20,6 +20,7 @@ abstract class MFMDatabase : RoomDatabase(){
     abstract fun budgetDao(): BudgetDao
     abstract fun debtDao(): DebtDao
     abstract fun budgetTypeDao(): BudgetTypeDao
+    abstract fun budgetTransactionDao(): BudgetTransactionDao
 
     companion object{
         @Volatile
@@ -62,7 +63,7 @@ abstract class MFMDatabase : RoomDatabase(){
 //                        populateDatabase(it.budgetDao())
 //                        populateDatabase(it.transactionDao())
 //                        populateDatabase(it.debtDao())
-                        populateDatabase(it.budgetTypeDao())
+//                        populateDatabase(it.budgetTypeDao())
                     }
                 }
             }
@@ -116,6 +117,12 @@ abstract class MFMDatabase : RoomDatabase(){
             budgetTypeDao.insert(budgetType)
             budgetType = BudgetType(budgetTypeId = 2, budgetTypeName = "Yearly")
             budgetTypeDao.insert(budgetType)
+        }
+
+        suspend fun populateDatabase(budgetTransactionDao: BudgetTransactionDao){
+            budgetTransactionDao.deleteAll()
+
+//            var budgetTransaction = BudgetTransaction(budgetTransactionId = 1, budgetTransactionBudgetId = 1, budgetTransactionAmount = 10.0F, budgetTransactionMonth = 5,)
         }
     }
 }

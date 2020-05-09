@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class BudgetTransaction(
     @PrimaryKey(autoGenerate = true)
-    var budgetTransactionId: Long = -1,
+    var budgetTransactionId: Long = 0,
     var budgetTransactionAmount: Float = 0f,
-    var budgetTransactionDate: String = "",
-    var budgetTransactionBudget: Long = -1
+    var budgetTransactionMonth: Int = -1,
+    var budgetTransactionYear: Int = -1,
+    var budgetTransactionBudgetId: Long = -1
 )

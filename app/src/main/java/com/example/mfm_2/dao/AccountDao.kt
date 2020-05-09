@@ -13,10 +13,10 @@ interface AccountDao {
     fun getAllAccount(): LiveData<List<Account>>
 
     @Insert
-    suspend fun insert(account: Account)
+    suspend fun insert(account: Account): Long
 
     @Update
-    suspend fun update(account: Account)
+    suspend fun update(account: Account): Int
 
     @Query("Delete from account")
     suspend fun deleteAll()
@@ -26,4 +26,7 @@ interface AccountDao {
 
     @Query("SELECT * FROM account WHERE accountName = :accountName")
     suspend fun getAccount(accountName: String): Account
+
+    @Query("SELECT * FROM account WHERE accountId = :accountId")
+    suspend fun getAccountById(accountId: Long): Account
 }

@@ -16,6 +16,9 @@ interface TransactionDao {
     @Query("SELECT transactionId, transactionAmount, transactionTime, transactionType, accountName, budgetName FROM `Transaction` INNER JOIN Account ON `Transaction`.transactionAccountId = Account.accountId INNER JOIN Budget ON `Transaction`.transactionBudgetId = Budget.budgetId")
     fun getAllTransaction2(): LiveData<List<TransactionWithAccountBudget>>
 
+//    @Query("SELECT transactionId, transactionAmount, transactionTime, transactionType, accountName, budgetName FROM `Transaction` INNER JOIN Account ON `Transaction`.transactionAccountId = Account.accountId INNER JOIN Budget ON `Transaction`.transactionBudgetId = Budget.budgetId WHERE ")
+//    fun getAccountTransaction(account: String): LiveData<List<TransactionWithAccountBudget>>
+
     @Insert
     suspend fun insert(transaction: Transaction)
 

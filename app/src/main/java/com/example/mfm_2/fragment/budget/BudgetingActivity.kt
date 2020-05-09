@@ -11,13 +11,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.fragment.budget.adapter.BudgetListAdapter
 import com.example.mfm_2.fragment.budget.adapter.BudgetingListAdapter
+import com.example.mfm_2.model.BudgetTransaction
+import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.BudgetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BudgetingActivity : AppCompatActivity() {
     private lateinit var budgetViewModel: BudgetViewModel
-    lateinit var testing: BudgetingListAdapter
+    private lateinit var budgetingAdapter: BudgetingListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +35,21 @@ class BudgetingActivity : AppCompatActivity() {
         budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerview_budgeting)
-        val budgetingAdapter = BudgetingListAdapter(this)
+        budgetingAdapter = BudgetingListAdapter(this)
         recyclerView.adapter = budgetingAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         budgetViewModel.allBudget.observe(this, Observer { budget ->
-            budget?.let { budgetingAdapter.setData(it) }
+            budget?.let { budgetingAdapter.setBudget(budget) }
         })
-        testing = budgetingAdapter
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val date = SelectedDateSingleton.singletonSelectedDate
+            budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
+        }
+
+        budgetViewModel.budgetTransaction.observe(this, Observer {
+            it?.let { budgetingAdapter.setBudgetTransaction(it) }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,10 +58,24 @@ class BudgetingActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             R.id.save_budgeting -> {
-                Log.i("haha", "test")
-                Log.i("haha", testing.budgetAlloc.toString())
+                val date = SelectedDateSingleton.singletonSelectedDate
+                val budget = budgetingAdapter.getData()
+                for ((index, budget) in budget.withIndex()) {
+                    val budgetTransaction = BudgetTransaction(
+                        budgetTransactionAmount = ((budgetingAdapter.budgetAlloc[index]?.toFloat()) ?: 0.0F),
+                        budgetTransactionBudgetId = budget.budgetId,
+                        budgetTransactionMonth = date.month,
+                        budgetTransactionYear = date.year
+                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        budgetViewModel.insertTransaction(budgetTransaction)
+                        val date = SelectedDateSingleton.singletonSelectedDate
+                        budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
+                    }
+                }
+                finish()
                 true
             }
             android.R.id.home -> {
@@ -58,5 +84,10 @@ class BudgetingActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        const val EXTRA_MONTH = "com.example.mfm_2.fragment.budget.EXTRA_MONTH"
+        const val EXTRA_YEAR = "com.example.mfm_2.fragment.budget.EXTRA_YEAR"
     }
 }

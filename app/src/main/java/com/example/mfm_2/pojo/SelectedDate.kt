@@ -8,7 +8,7 @@ class SelectedDate {
 
     init {
         val cal = Calendar.getInstance()
-        month = cal.get(Calendar.MONTH)
+        month = cal.get(Calendar.MONTH) + 1
         year = cal.get(Calendar.YEAR)
     }
 }

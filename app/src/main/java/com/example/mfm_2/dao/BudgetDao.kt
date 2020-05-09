@@ -3,6 +3,7 @@ package com.example.mfm_2.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.mfm_2.model.Budget
+import com.example.mfm_2.pojo.BudgetWithBudgetType
 
 @Dao
 interface BudgetDao {
@@ -11,6 +12,9 @@ interface BudgetDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(budget: Budget): Long
+
+    @Update
+    suspend fun update(budget: Budget): Int
 
     @Delete
     suspend fun delete(budget: Budget): Int
@@ -28,5 +32,8 @@ interface BudgetDao {
     suspend fun getBudget(budgetName: String): Budget
 
     @Query("SELECT * FROM budget WHERE budgetId = :budgetId")
-    suspend fun getBudgetFromId(budgetId: Long): Budget
+    suspend fun getBudgetById(budgetId: Long): Budget
+
+    @Query("SELECT budgetId, budgetAllocation, budgetGoal, budgetName, budgetTypeId, budgetTypeName FROM budget INNER JOIN budgettype ON budget.budgetType = budgettype.budgetTypeId WHERE budgetId = :budgetId")
+    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetWithBudgetType
 }

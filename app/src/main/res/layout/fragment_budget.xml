@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/budget_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:id="@+id/budget_layout"
+    android:background="#F2F2F7"
     tools:context=".fragment.budget.BudgetFragment">
 
     <LinearLayout
@@ -17,19 +17,30 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_budgeting"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:text="Budgeting" />
+            android:minWidth="0dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:text="Budgeting"
+            app:icon="@drawable/ic_edit_white_24dp"
+            app:iconPadding="2dp"
+            app:iconSize="24dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_add_budget"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
+            android:minWidth="0dp"
+            android:paddingLeft="8dp"
             android:paddingTop="0dp"
+            android:paddingRight="8dp"
             android:paddingBottom="0dp"
             android:text="Add Budget"
             app:icon="@android:drawable/ic_input_add"
@@ -41,9 +52,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginLeft="4dp"
         app:cardElevation="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/budget_button_panel"
         tools:layout_editor_absoluteX="8dp">

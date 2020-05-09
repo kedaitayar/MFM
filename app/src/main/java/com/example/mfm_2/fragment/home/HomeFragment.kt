@@ -39,13 +39,6 @@ class HomeFragment : Fragment() {
         accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
         transactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
 
-        val fragmentManager: FragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction().apply {
-//            replace(R.id.fragment_container1, NotBudgetedFragment())
-            replace(R.id.fragment_container1, NotBudgetedFragment())
-        }
-        fragmentTransaction.commit()
-
         // Account recyclerview
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview)
         val adapter = AccountListAdapter(this.context!!)

@@ -21,9 +21,11 @@ class AccountFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_acccount, container, false)
         val fragmentManager: FragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_account_container1, NotBudgetedFragment())
+            replace(R.id.fragment_account_container1, AccountListFragment())
         }
         fragmentTransaction.commit()
+
+
         return view
     }
 }

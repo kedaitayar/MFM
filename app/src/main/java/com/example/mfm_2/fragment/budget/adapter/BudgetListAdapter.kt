@@ -10,10 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Budget
+import com.example.mfm_2.model.BudgetTransaction
 
 class BudgetListAdapter internal constructor(context: Context): RecyclerView.Adapter<BudgetListAdapter.ViewHolder>(){
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var budget = emptyList<Budget>()
+    private var budgetTransaction = mutableMapOf<Long, BudgetTransaction>()
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener{
@@ -40,6 +42,7 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         val budgetName: TextView = v.findViewById(R.id.textView10)
         val budgetAllocation: TextView = v.findViewById(R.id.textView12)
         val budgetGoal: TextView = v.findViewById(R.id.textView13)
+        val budgetType: TextView = v.findViewById(R.id.textView_type)
         val expandableView: ConstraintLayout = v.findViewById(R.id.constraint_layout_expandable_view)
         val expandableDetail: ConstraintLayout = v.findViewById(R.id.constraint_layout_expandable_detail)
         val popupMenuButton: Button = v.findViewById(R.id.button_popup_menu)
@@ -59,6 +62,12 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.text = current.budgetAllocation.toString()
         holder.budgetGoal.text = current.budgetGoal.toString()
+        if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0F){
+            holder.budgetAllocation.text = "0.0"
+        } else {
+            holder.budgetAllocation.text = (budgetTransaction[current.budgetId]?.budgetTransactionAmount?:0).toString()
+        }
+//        holder.budgetType.text = current.
 
         holder.expandableDetail.visibility = if(current.isExpanded) View.VISIBLE else View.GONE
         //moved to budgetFragment to follow SoC
@@ -90,6 +99,14 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
 
     fun setData(budget: List<Budget>){
         this.budget = budget
+        notifyDataSetChanged()
+    }
+
+    fun setBudgetTransaction(budgetTransaction: List<BudgetTransaction>) {
+        this.budgetTransaction.clear()
+        for (budgetTransaction in budgetTransaction){
+            this.budgetTransaction[budgetTransaction.budgetTransactionBudgetId] = budgetTransaction
+        }
         notifyDataSetChanged()
     }
 

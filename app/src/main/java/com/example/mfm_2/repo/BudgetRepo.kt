@@ -3,12 +3,17 @@ package com.example.mfm_2.repo
 import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetDao
 import com.example.mfm_2.model.Budget
+import com.example.mfm_2.pojo.BudgetWithBudgetType
 
 class BudgetRepo(private val budgetDao: BudgetDao) {
     val allBudget: LiveData<List<Budget>> = budgetDao.getAllBudget()
 
     suspend fun insert(budget: Budget): Long {
         return budgetDao.insert(budget)
+    }
+
+    suspend fun update(budget: Budget): Int {
+        return budgetDao.update(budget)
     }
 
     suspend fun delete(budget: Budget): Int {
@@ -27,7 +32,11 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         return budgetDao.getBudget(budgetName)
     }
 
-    suspend fun getBudgetFromId(budgetId: Long): Budget {
-        return budgetDao.getBudgetFromId(budgetId)
+    suspend fun getBudgetById(budgetId: Long): Budget {
+        return budgetDao.getBudgetById(budgetId)
+    }
+
+    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetWithBudgetType {
+        return budgetDao.getBudgetWithBudgetTypeById(budgetId)
     }
 }

@@ -38,10 +38,10 @@ public class MonthYearPickerDialog extends DialogFragment {
         final NumberPicker monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
         final NumberPicker yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
 
-        monthPicker.setMinValue(0);
-        monthPicker.setMaxValue(11);
+        monthPicker.setMinValue(1);
+        monthPicker.setMaxValue(12);
         monthPicker.setDisplayedValues(months);
-        monthPicker.setValue(cal.get(Calendar.MONTH));
+        monthPicker.setValue(cal.get(Calendar.MONTH)+1);
 
         int year = cal.get(Calendar.YEAR);
 //        yearPicker.setMinValue(year);

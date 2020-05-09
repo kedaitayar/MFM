@@ -1,5 +1,6 @@
 package com.example.mfm_2.fragment.budget
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,10 +19,12 @@ import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.adapter.BudgetListAdapter
 import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Budget
+import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.BudgetViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
@@ -46,27 +49,36 @@ class BudgetFragment : Fragment() {
         val budgetAdapter = BudgetListAdapter(this.context!!)
         recyclerView.adapter = budgetAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
-        budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer {budget ->
+        budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer { budget ->
             budget?.let { budgetAdapter.setData(it) }
         })
+        budgetViewModel = activity?.run { ViewModelProvider(this).get(BudgetViewModel::class.java) }?: throw Exception("Invalid Activity")
+
+        budgetViewModel.budgetTransaction.observe(viewLifecycleOwner, Observer {
+            it?.let { budgetAdapter.setBudgetTransaction(it) }
+        })
+        CoroutineScope(Dispatchers.IO).launch {
+            val date = SelectedDateSingleton.singletonSelectedDate
+            budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
+        }
 
         val addBudget: Button = view.findViewById(R.id.button_add_budget)
 
         addBudget.setOnClickListener {
             val budget = Budget(budgetName = "New Budget", budgetGoal = 0.0, budgetAllocation = 0.0)
             CoroutineScope(IO).launch {
-                val test = budgetViewModel.insertWithResult(budget)
-                withContext(Main){
-                    if (test == -1L){
+                val result = budgetViewModel.insertWithResult(budget)
+                withContext(Main) {
+                    if (result == -1L) {
 //                        Toast.makeText(this@BudgetFragment.context, "Budget already exist", Toast.LENGTH_SHORT).show()
                         val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
-                        if (mainView != null){
+                        if (mainView != null) {
                             Snackbar.make(mainView, "Budget already exist", Snackbar.LENGTH_SHORT).show()
                         }
                     } else {
 //                        Toast.makeText(this@BudgetFragment.context, "New budget inserted", Toast.LENGTH_SHORT).show()
                         val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
-                        if (mainView != null){
+                        if (mainView != null) {
                             Snackbar.make(mainView, "New budget inserted", Snackbar.LENGTH_SHORT).show()
                         }
                     }
@@ -76,7 +88,7 @@ class BudgetFragment : Fragment() {
 
 //        (recyclerView.itemAnimator as SimpleItemAnimator?)!!.supportsChangeAnimations = false
 
-        budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener{
+        budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 budgetAdapter.flipIsExpanded(position)
             }
@@ -87,7 +99,7 @@ class BudgetFragment : Fragment() {
                 val popupMenu = PopupMenu(this@BudgetFragment.context!!, popupMenuButton)
                 popupMenu.inflate(R.menu.menu_budget_option)
                 popupMenu.setOnMenuItemClickListener {
-                    when(it.itemId){
+                    when (it.itemId) {
                         R.id.popup_menu_edit_budget -> {
                             val intent = Intent(this@BudgetFragment.context, EditBudgetActivity::class.java)
                             intent.putExtra(EditBudgetActivity.EXTRA_BUDGET_ID, budget.budgetId)
@@ -99,22 +111,22 @@ class BudgetFragment : Fragment() {
                             MaterialAlertDialogBuilder(this@BudgetFragment.context)
                                 .setTitle("Confirm Delete")
                                 .setMessage("Are you sure you want to delete this budget? This action cannot be undone.")
-                                .setPositiveButton("Delete"){ dialog, which ->
+                                .setPositiveButton("Delete") { dialog, which ->
                                     //delete budget
                                     CoroutineScope(IO).launch {
                                         val result = budgetViewModel.delete(budget)
-                                        if (result == 1){
-                                            withContext(Main){
+                                        if (result == 1) {
+                                            withContext(Main) {
 //                                                Snackbar.make(activity!!.findViewById<CoordinatorLayout>(R.id.budget_layout), "Budget Deleted", Snackbar.LENGTH_SHORT).show()
                                                 val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
-                                                if (mainView != null){
+                                                if (mainView != null) {
                                                     Snackbar.make(mainView, "Budget Deleted", Snackbar.LENGTH_SHORT).show()
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                .setNegativeButton("Cancel"){ dialog, which ->
+                                .setNegativeButton("Cancel") { dialog, which ->
                                 }
                                 .show()
                             true
@@ -133,6 +145,21 @@ class BudgetFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == editBudgetCode && resultCode == Activity.RESULT_OK) {
+            val result = data!!.getIntExtra(EditBudgetActivity.EXTRA_UPDATE_RESULT, -1)
+            val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
+            if (mainView != null) {
+                if (result == 1) {
+                    Snackbar.make(mainView, "Budget Save", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(mainView, "Error", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 }

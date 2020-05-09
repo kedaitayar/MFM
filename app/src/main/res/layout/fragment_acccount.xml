@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F2F2F7"
     tools:context=".fragment.account.AccountFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/budget_button_panel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:id="@+id/fragment_account_container1"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_add_account"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:minWidth="0dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="0dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="0dp"
+            android:text="Add Account"
+            app:icon="@android:drawable/ic_input_add"
+            app:iconPadding="2dp"
+            app:iconSize="24dp" />
+    </LinearLayout>
 
-        </FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragment_account_container1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/budget_button_panel">
 
-        <FrameLayout
-            android:id="@+id/fragment_account_container2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/fragment_account_container1">
+    </FrameLayout>
 
-        </FrameLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/fragment_account_container2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/fragment_account_container1">
 
-</FrameLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
