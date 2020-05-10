@@ -7,7 +7,7 @@
     tools:context=".fragment.transaction.TransactionFragment">
 
     <FrameLayout
-        android:id="@+id/fragment_account_container1"
+        android:id="@+id/fragment_transaction_container1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">

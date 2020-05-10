@@ -39,6 +39,10 @@ class AccountViewModel(application: Application) : AndroidViewModel(application)
         return repo.insertWithResult(account)
     }
 
+    suspend fun delete(account: Account): Int {
+        return repo.delete(account)
+    }
+
     fun update(account: Account) = viewModelScope.launch {
         repo.update(account)
     }

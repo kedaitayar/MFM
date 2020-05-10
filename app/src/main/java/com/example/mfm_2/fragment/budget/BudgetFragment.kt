@@ -37,13 +37,15 @@ import kotlinx.coroutines.withContext
 class BudgetFragment : Fragment() {
     private lateinit var budgetViewModel: BudgetViewModel
     private val editBudgetCode = 1
+    private val editBudgetingCode = 2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_budget, container, false)
-        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
+//        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
+        budgetViewModel = activity?.run { ViewModelProvider(this).get(BudgetViewModel::class.java) } ?: throw Exception("Invalid Activity")
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview_budget)
         val budgetAdapter = BudgetListAdapter(this.context!!)
@@ -52,12 +54,11 @@ class BudgetFragment : Fragment() {
         budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer { budget ->
             budget?.let { budgetAdapter.setData(it) }
         })
-        budgetViewModel = activity?.run { ViewModelProvider(this).get(BudgetViewModel::class.java) }?: throw Exception("Invalid Activity")
 
         budgetViewModel.budgetTransaction.observe(viewLifecycleOwner, Observer {
             it?.let { budgetAdapter.setBudgetTransaction(it) }
         })
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(IO).launch {
             val date = SelectedDateSingleton.singletonSelectedDate
             budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
         }
@@ -141,10 +142,14 @@ class BudgetFragment : Fragment() {
         val budgetingButton: Button = view.findViewById(R.id.button_budgeting)
         budgetingButton.setOnClickListener {
             val intent = Intent(this.context, BudgetingActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, editBudgetingCode)
         }
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -158,6 +163,12 @@ class BudgetFragment : Fragment() {
                 } else {
                     Snackbar.make(mainView, "Error", Snackbar.LENGTH_SHORT).show()
                 }
+            }
+        } else if (requestCode == editBudgetingCode && resultCode == Activity.RESULT_OK){
+            CoroutineScope(IO).launch {
+                Log.i("haha", "pls work")
+                val date = SelectedDateSingleton.singletonSelectedDate
+                budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
             }
         }
     }

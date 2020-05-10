@@ -12,13 +12,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, Debt::class, BudgetTransaction::class, BudgetType::class], version = 6, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class], version = 7, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
     abstract fun transactionDao(): TransactionDao
     abstract fun budgetDao(): BudgetDao
-    abstract fun debtDao(): DebtDao
     abstract fun budgetTypeDao(): BudgetTypeDao
     abstract fun budgetTransactionDao(): BudgetTransactionDao
 
@@ -62,7 +61,6 @@ abstract class MFMDatabase : RoomDatabase(){
 //                        populateDatabase(it.accountDao())
 //                        populateDatabase(it.budgetDao())
 //                        populateDatabase(it.transactionDao())
-//                        populateDatabase(it.debtDao())
 //                        populateDatabase(it.budgetTypeDao())
                     }
                 }
@@ -103,19 +101,14 @@ abstract class MFMDatabase : RoomDatabase(){
             budgetDao.insert(budget)
         }
 
-        suspend fun populateDatabase(debtDao: DebtDao){
-            debtDao.deleteAll()
-
-            var debt = Debt(debtName = "Ahlong")
-            debtDao.insert(debt)
-        }
-
         suspend fun populateDatabase(budgetTypeDao: BudgetTypeDao){
             budgetTypeDao.deleteAll()
 
             var budgetType = BudgetType(budgetTypeId = 1, budgetTypeName = "Monthly")
             budgetTypeDao.insert(budgetType)
             budgetType = BudgetType(budgetTypeId = 2, budgetTypeName = "Yearly")
+            budgetTypeDao.insert(budgetType)
+            budgetType = BudgetType(budgetTypeId = 3, budgetTypeName = "Debt")
             budgetTypeDao.insert(budgetType)
         }
 

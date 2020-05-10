@@ -1,5 +1,6 @@
 package com.example.mfm_2.fragment.account
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,15 +18,21 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.account.adapter.AccountListAdapter
+import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Account
 import com.example.mfm_2.viewmodel.AccountViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass.
  */
 class AccountListFragment : Fragment() {
     private lateinit var accountViewModel: AccountViewModel
-    private val editAccountCode = 1
+    val editAccountCode = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,10 +55,26 @@ class AccountListFragment : Fragment() {
                 popupMenu.inflate(R.menu.menu_all_account)
                 popupMenu.setOnMenuItemClickListener {
                     when (it.itemId) {
+                        R.id.popup_menu_add_fund_account -> {
+//                            TODO("link to add transaction income")
+                            true
+                        }
                         R.id.popup_menu_edit_account -> {
                             val intent = Intent(this@AccountListFragment.context, EditAccountActivity::class.java)
                             intent.putExtra(EditAccountActivity.EXTRA_ACCOUNT_ID, account.accountId)
                             startActivityForResult(intent, editAccountCode)
+                            true
+                        }
+                        R.id.popup_menu_delete_account -> {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                accountViewModel.delete(account)
+                                withContext(Dispatchers.Main) {
+                                    val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
+                                    if (mainView != null) {
+                                        Snackbar.make(mainView, "Account deleted", Snackbar.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
                             true
                         }
                         else -> false
@@ -65,4 +89,18 @@ class AccountListFragment : Fragment() {
         return view
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == editAccountCode && resultCode == Activity.RESULT_OK) {
+            val result = data!!.getIntExtra(EditAccountActivity.EXTRA_UPDATE_RESULT, -1)
+            val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
+            if (mainView != null) {
+                if (result == 1) {
+                    Snackbar.make(mainView, "Budget Save", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(mainView, "Error", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 }

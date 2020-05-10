@@ -15,6 +15,10 @@ class AccountRepo(private val accountDao: AccountDao) {
         return accountDao.insert(account)
     }
 
+    suspend fun delete(account: Account): Int {
+        return accountDao.delete(account)
+    }
+
     suspend fun getAllAccountName(): List<String> {
         return accountDao.getAllAccountName()
     }

@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         //fab
         val fab: FloatingActionButton = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddEditTransactionActivity::class.java)
+            val intent = Intent(this@MainActivity, com.example.mfm_2.fragment.transaction.AddEditTransactionActivity::class.java)
             startActivity(intent)
         }
 

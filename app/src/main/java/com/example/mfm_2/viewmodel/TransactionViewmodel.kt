@@ -13,13 +13,13 @@ import kotlinx.coroutines.runBlocking
 
 class TransactionViewModel (application: Application): AndroidViewModel(application){
     private val repo : TransactionRepo
-//    val allTransaction: LiveData<List<Transaction>>
+    val allTransaction: LiveData<List<Transaction>>
     val allTransaction2: LiveData<List<TransactionWithAccountBudget>>
 
     init {
         val transaction = MFMDatabase.getDatabase(application, viewModelScope).transactionDao()
         repo = TransactionRepo(transaction)
-//        allTransaction = repo.allTransaction
+        allTransaction = repo.allTransaction
         allTransaction2 = repo.allTransaction2
     }
 

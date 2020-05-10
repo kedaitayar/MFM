@@ -1,5 +1,6 @@
 package com.example.mfm_2.fragment.budget
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -75,6 +76,7 @@ class BudgetingActivity : AppCompatActivity() {
                         budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
                     }
                 }
+                setResult(Activity.RESULT_OK)
                 finish()
                 true
             }

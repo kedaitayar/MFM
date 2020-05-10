@@ -6,7 +6,7 @@ import com.example.mfm_2.model.Transaction
 import com.example.mfm_2.pojo.TransactionWithAccountBudget
 
 class TransactionRepo (private val transactionDao: TransactionDao){
-//    val allTransaction: LiveData<List<Transaction>> = transactionDao.getAllTransaction()
+    val allTransaction: LiveData<List<Transaction>> = transactionDao.getAllTransaction()
     val allTransaction2: LiveData<List<TransactionWithAccountBudget>> = transactionDao.getAllTransaction2()
 
     suspend fun insert(transaction: Transaction){

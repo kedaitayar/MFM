@@ -121,6 +121,11 @@ class TestActivity : AppCompatActivity() {
             pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->  })
             pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
         }
+
+        val c2 = Calendar.getInstance()
+        c2.set(2020, 5, 0)
+        Log.i("haha", c2.timeInMillis.toString())
+
     }
 
     inner class Data(var x: Float, var y: Float){

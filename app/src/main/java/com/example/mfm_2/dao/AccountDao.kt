@@ -1,10 +1,7 @@
 package com.example.mfm_2.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.mfm_2.model.Account
 
 @Dao
@@ -18,7 +15,10 @@ interface AccountDao {
     @Update
     suspend fun update(account: Account): Int
 
-    @Query("Delete from account")
+    @Delete
+    suspend fun delete(account: Account): Int
+
+    @Query("Delete FROM account")
     suspend fun deleteAll()
 
     @Query("SELECT accountName FROM account")

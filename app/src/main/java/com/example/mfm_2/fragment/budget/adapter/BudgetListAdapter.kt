@@ -1,6 +1,7 @@
 package com.example.mfm_2.fragment.budget.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         val budgetName: TextView = v.findViewById(R.id.textView10)
         val budgetAllocation: TextView = v.findViewById(R.id.textView12)
         val budgetGoal: TextView = v.findViewById(R.id.textView13)
+        val budgetUsed: TextView = v.findViewById(R.id.textView11)
         val budgetType: TextView = v.findViewById(R.id.textView_type)
         val expandableView: ConstraintLayout = v.findViewById(R.id.constraint_layout_expandable_view)
         val expandableDetail: ConstraintLayout = v.findViewById(R.id.constraint_layout_expandable_detail)
@@ -62,6 +64,7 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.text = current.budgetAllocation.toString()
         holder.budgetGoal.text = current.budgetGoal.toString()
+        holder.budgetUsed.text = "TODO"
         if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0F){
             holder.budgetAllocation.text = "0.0"
         } else {

@@ -9,8 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragment.account.EditAccountActivity"></activity>
-        <activity android:name=".fragment.budget.BudgetingActivity" />
+        <activity
+            android:name=".fragment.transaction.AddEditTransactionActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".fragment.account.EditAccountActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".fragment.budget.BudgetingActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".fragment.budget.edit.EditBudgetActivity"
             android:windowSoftInputMode="adjustResize" />

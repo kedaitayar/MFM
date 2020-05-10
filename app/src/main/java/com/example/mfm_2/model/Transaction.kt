@@ -23,13 +23,12 @@ import java.util.*
 )
 data class Transaction(
     var transactionAccount: String = "",
-    var transactionBudget: String = "",
-    var transactionDebt: String = "",
     var transactionAmount: Double = 0.0,
     var transactionTime: Calendar = Calendar.getInstance(),
     var transactionType: String = "",
     var transactionAccountId: Long = 0,
     var transactionBudgetId: Long = 0,
+    var transactionAccountTransferTo: Long = 0,
     @PrimaryKey(autoGenerate = true)
     var transactionId: Long = 0
 )
