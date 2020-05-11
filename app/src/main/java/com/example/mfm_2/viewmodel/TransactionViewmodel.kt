@@ -14,13 +14,13 @@ import kotlinx.coroutines.runBlocking
 class TransactionViewModel (application: Application): AndroidViewModel(application){
     private val repo : TransactionRepo
     val allTransaction: LiveData<List<Transaction>>
-    val allTransaction2: LiveData<List<TransactionWithAccountBudget>>
+//    val allTransaction2: LiveData<List<TransactionWithAccountBudget>>
 
     init {
         val transaction = MFMDatabase.getDatabase(application, viewModelScope).transactionDao()
         repo = TransactionRepo(transaction)
         allTransaction = repo.allTransaction
-        allTransaction2 = repo.allTransaction2
+//        allTransaction2 = repo.allTransaction2
     }
 
     fun insert(transaction: Transaction) = viewModelScope.launch {
@@ -29,6 +29,14 @@ class TransactionViewModel (application: Application): AndroidViewModel(applicat
 
     fun update(transaction: Transaction) = viewModelScope.launch {
         repo.update(transaction)
+    }
+
+    suspend fun delete(transaction: Transaction): Int{
+        return repo.delete(transaction)
+    }
+
+    suspend fun getTransactionById(transactionId: Long): Transaction {
+        return repo.getTransactionById(transactionId)
     }
 
 //    fun getTransactionWithAccount(): List<TransactionWithAccountAndBudget>{

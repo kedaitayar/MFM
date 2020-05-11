@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 /**
@@ -54,14 +55,44 @@ class BudgetFragment : Fragment() {
         budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer { budget ->
             budget?.let { budgetAdapter.setData(it) }
         })
-
         budgetViewModel.budgetTransaction.observe(viewLifecycleOwner, Observer {
             it?.let { budgetAdapter.setBudgetTransaction(it) }
         })
+        budgetViewModel.transaction.observe(viewLifecycleOwner, Observer {
+            it?.let { budgetAdapter.setTransactionGrpByBudget(it) }
+        })
+        budgetViewModel.allTransaction.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                val date = SelectedDateSingleton.singletonSelectedDate
+                val c1 = Calendar.getInstance()
+                c1.set(date.year, date.month - 1, 1, 0, 0, 0)
+                val c2 = c1.clone() as Calendar
+                c2.add(Calendar.MONTH, 1)
+                c2.add(Calendar.SECOND, -1)
+                CoroutineScope(IO).launch {
+                    budgetViewModel.getTransactionGrpByBudgetLV(c1,c2)
+                }
+            }
+        })
         CoroutineScope(IO).launch {
             val date = SelectedDateSingleton.singletonSelectedDate
+//            val c1 = Calendar.getInstance()
+//            c1.set(date.year, date.month - 1, 1, 0, 0, 0)
+//            val c2 = c1.clone() as Calendar
+//            c2.add(Calendar.MONTH, 1)
+//            c2.add(Calendar.SECOND, -1)
             budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
+//            budgetViewModel.getTransactionGrpByBudgetLV(c1, c2)
+//            val test = budgetViewModel.getTransactionGrpByBudget(c1, c2)
+//            Log.i("haha", c1.timeInMillis.toString() + "=" + c1.time)
+//            Log.i("haha", c2.timeInMillis.toString() + "=" + c2.time)
+//            Log.i("haha", budgetViewModel.transaction.value.toString())
+//            Log.i("haha", test.size.toString())
+//            for (a in test) {
+//                Log.i("haha", a.toString())
+//            }
         }
+
 
         val addBudget: Button = view.findViewById(R.id.button_add_budget)
 
@@ -86,8 +117,6 @@ class BudgetFragment : Fragment() {
                 }
             }
         }
-
-//        (recyclerView.itemAnimator as SimpleItemAnimator?)!!.supportsChangeAnimations = false
 
         budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
@@ -164,9 +193,8 @@ class BudgetFragment : Fragment() {
                     Snackbar.make(mainView, "Error", Snackbar.LENGTH_SHORT).show()
                 }
             }
-        } else if (requestCode == editBudgetingCode && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == editBudgetingCode && resultCode == Activity.RESULT_OK) {
             CoroutineScope(IO).launch {
-                Log.i("haha", "pls work")
                 val date = SelectedDateSingleton.singletonSelectedDate
                 budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
             }

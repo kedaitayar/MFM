@@ -27,7 +27,7 @@ data class Transaction(
     var transactionTime: Calendar = Calendar.getInstance(),
     var transactionType: String = "",
     var transactionAccountId: Long = 0,
-    var transactionBudgetId: Long = 0,
+    var transactionBudgetId: Long? = null,
     var transactionAccountTransferTo: Long = 0,
     @PrimaryKey(autoGenerate = true)
     var transactionId: Long = 0

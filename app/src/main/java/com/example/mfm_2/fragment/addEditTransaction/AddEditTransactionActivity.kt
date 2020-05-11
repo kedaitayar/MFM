@@ -2,7 +2,6 @@ package com.example.mfm_2.fragment.addEditTransaction
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
@@ -14,9 +13,7 @@ import com.example.mfm_2.viewmodel.TransactionViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AddEditTransactionActivity : AppCompatActivity(), ExpenseFragment.FragmentExpenseListener {
     private lateinit var accountViewModel: AccountViewModel
@@ -45,7 +42,7 @@ class AddEditTransactionActivity : AppCompatActivity(), ExpenseFragment.Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_edit_transaction)
+        setContentView(R.layout.activity_add_transaction)
         setSupportActionBar(findViewById(R.id.toolbar))
         accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
         budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)

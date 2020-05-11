@@ -18,17 +18,20 @@ import kotlinx.coroutines.runBlocking
 class AccountViewModel(application: Application) : AndroidViewModel(application) {
     private val repo: AccountRepo
     private val transactionRepo: TransactionRepo
+    val allTransaction: LiveData<List<Transaction>>
     val allAccount: LiveData<List<Account>>
+
     private val _accountTransaction: MutableLiveData<List<Transaction>> = MutableLiveData()
     val accountTransaction: LiveData<List<Transaction>>
         get() = _accountTransaction
-    private val uiScope = CoroutineScope(Dispatchers.IO)
+
 
     init {
         val database = MFMDatabase.getDatabase(application, viewModelScope)
         repo = AccountRepo(database.accountDao())
         transactionRepo = TransactionRepo(database.transactionDao())
         allAccount = repo.allAccount
+        allTransaction = transactionRepo.allTransaction
     }
 
     fun insert(account: Account) = viewModelScope.launch {
@@ -70,5 +73,13 @@ class AccountViewModel(application: Application) : AndroidViewModel(application)
 
     suspend fun getAccountById(accountId: Long): Account {
         return repo.getAccountById(accountId)
+    }
+
+    suspend fun getAccountIncome(): List<Transaction>{
+        return transactionRepo.getAccountIncome()
+    }
+
+    suspend fun getAccountExpense(): List<Transaction>{
+        return transactionRepo.getAccountExpense()
     }
 }

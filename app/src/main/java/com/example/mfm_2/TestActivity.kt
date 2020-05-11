@@ -1,18 +1,16 @@
 package com.example.mfm_2
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.mfm_2.custom_class.MonthYearPickerDialog
+import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -122,9 +120,16 @@ class TestActivity : AppCompatActivity() {
             pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
         }
 
+        val date = SelectedDateSingleton.singletonSelectedDate
         val c2 = Calendar.getInstance()
-        c2.set(2020, 5, 0)
+        c2.set(date.year, date.month-1, 1, 0,0,0)
         Log.i("haha", c2.timeInMillis.toString())
+        Log.i("haha", c2.time.toString())
+
+        c2.add(Calendar.MONTH, 1)
+        c2.add(Calendar.SECOND, -1)
+        Log.i("haha", c2.timeInMillis.toString())
+        Log.i("haha", c2.time.toString())
 
     }
 

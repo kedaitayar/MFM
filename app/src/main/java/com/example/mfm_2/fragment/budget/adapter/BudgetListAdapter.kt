@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.model.BudgetTransaction
+import com.example.mfm_2.model.Transaction
 
 class BudgetListAdapter internal constructor(context: Context): RecyclerView.Adapter<BudgetListAdapter.ViewHolder>(){
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var budget = emptyList<Budget>()
     private var budgetTransaction = mutableMapOf<Long, BudgetTransaction>()
+    private var transactionGrpByBudget = emptyList<Transaction>()
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener{
@@ -64,7 +66,9 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.text = current.budgetAllocation.toString()
         holder.budgetGoal.text = current.budgetGoal.toString()
-        holder.budgetUsed.text = "TODO"
+//        val test = transactionGrpByBudget.find { it.transactionBudgetId == current.budgetId }
+//        Log.i("haha", test.toString())
+        holder.budgetUsed.text = (transactionGrpByBudget.find { it.transactionBudgetId == current.budgetId }?.transactionAmount?:0.0).toString()
         if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0F){
             holder.budgetAllocation.text = "0.0"
         } else {
@@ -110,6 +114,11 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         for (budgetTransaction in budgetTransaction){
             this.budgetTransaction[budgetTransaction.budgetTransactionBudgetId] = budgetTransaction
         }
+        notifyDataSetChanged()
+    }
+
+    fun setTransactionGrpByBudget(transaction: List<Transaction>){
+        this.transactionGrpByBudget = transaction
         notifyDataSetChanged()
     }
 

@@ -16,9 +16,7 @@ import com.example.mfm_2.custom_class.MonthString
 import com.example.mfm_2.custom_class.MonthYearPickerDialog
 import com.example.mfm_2.fragment.NotBudgetedFragment
 import com.example.mfm_2.fragment.account.AccountFragment
-import com.example.mfm_2.fragment.addEditTransaction.AddEditTransactionActivity
 import com.example.mfm_2.fragment.budget.BudgetFragment
-import com.example.mfm_2.fragment.home.HomeFragment
 import com.example.mfm_2.fragment.transaction.TransactionFragment
 import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.AccountViewModel
@@ -77,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         //fab
         val fab: FloatingActionButton = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, com.example.mfm_2.fragment.transaction.AddEditTransactionActivity::class.java)
+            val intent = Intent(this@MainActivity, com.example.mfm_2.fragment.transaction.AddTransactionActivity::class.java)
             startActivity(intent)
         }
 
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> AccountFragment()
                 1 -> TransactionFragment()
                 2 -> BudgetFragment()
-                else -> HomeFragment()
+                else -> AccountFragment()
             }
         }
     }

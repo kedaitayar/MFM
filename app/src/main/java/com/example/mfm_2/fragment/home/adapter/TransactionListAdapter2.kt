@@ -2,7 +2,6 @@ package com.example.mfm_2.fragment.home.adapter
 
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,8 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
-class TransactionListAdapter internal constructor(context: Context) :
-    RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter2 internal constructor(context: Context) :
+    RecyclerView.Adapter<TransactionListAdapter2.ViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var transaction = emptyList<TransactionWithAccountBudget>()
     private var listener: OnItemClickListener? = null

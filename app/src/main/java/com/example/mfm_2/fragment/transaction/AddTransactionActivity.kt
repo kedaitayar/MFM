@@ -18,7 +18,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
-class AddEditTransactionActivity : AppCompatActivity() {
+class AddTransactionActivity : AppCompatActivity() {
     private lateinit var transactionViewModel: TransactionViewModel
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var budgetViewModel: BudgetViewModel
@@ -33,6 +33,7 @@ class AddEditTransactionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_edit_transaction2)
         setSupportActionBar(findViewById(R.id.toolbar_add_edit_transaction))
         title = "Add Transaction"
+
 
         val viewPager2: ViewPager2 = findViewById(R.id.viewpager)
         val viewPagerAdapter = ViewPagerAdapter(this)

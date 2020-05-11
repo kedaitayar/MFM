@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".fragment.transaction.AddEditTransactionActivity"
+            android:name=".fragment.transaction.EditTransactionActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".fragment.transaction.AddTransactionActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".fragment.account.EditAccountActivity"
@@ -22,9 +25,6 @@
             android:name=".fragment.budget.edit.EditBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".TestActivity" />
-        <activity
-            android:name=".fragment.addEditTransaction.AddEditTransactionActivity"
-            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

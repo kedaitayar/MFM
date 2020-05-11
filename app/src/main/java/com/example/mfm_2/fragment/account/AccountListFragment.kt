@@ -22,10 +22,7 @@ import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Account
 import com.example.mfm_2.viewmodel.AccountViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 /**
  * A simple [Fragment] subclass.
@@ -48,9 +45,20 @@ class AccountListFragment : Fragment() {
         accountViewModel.allAccount.observe(viewLifecycleOwner, Observer {
             it?.let { recyclerViewAdapter.setAccount(it) }
         })
+        accountViewModel.allTransaction.observe(viewLifecycleOwner, Observer {
+            CoroutineScope(Dispatchers.IO).launch {
+                val income = async { accountViewModel.getAccountIncome() }
+                val expense = async { accountViewModel.getAccountExpense() }
+                withContext(Dispatchers.Main) {
+                    recyclerViewAdapter.setIncome(income.await())
+                    recyclerViewAdapter.setExpense(expense.await())
+                }
+
+            }
+        })
         recyclerViewAdapter.setOnItemClickListener(object : AccountListAdapter.OnItemClickListener {
-            override fun onPopupMenuButtonClick(account: Account) {
-                val popupMenuButton: Button = view.findViewById(R.id.button_popup_menu)
+            override fun onPopupMenuButtonClick(account: Account, popupMenuButton: Button) {
+//                val popupMenuButton: Button = view.findViewById(R.id.button_popup_menu)
                 val popupMenu = PopupMenu(this@AccountListFragment.context, popupMenuButton)
                 popupMenu.inflate(R.menu.menu_all_account)
                 popupMenu.setOnMenuItemClickListener {
