@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class], version = 8, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class], version = 11, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -70,9 +70,11 @@ abstract class MFMDatabase : RoomDatabase(){
         suspend fun populateDatabase(accountDao: AccountDao){
             accountDao.deleteAll()
 
-            var account = Account(accountName = "Cash", accountBalance = 100.0, accountAllocationBalance = 100.0, accountId = 1)
+            var account = Account(accountName = "Cash", accountId = 1)
             accountDao.insert(account)
-            account = Account(accountName = "Bank", accountBalance = 50.0, accountAllocationBalance = 50.0, accountId = 2)
+            account = Account(accountName = "Bank", accountId = 2)
+            accountDao.insert(account)
+            account = Account(accountName = "Bank 2", accountId = 3)
             accountDao.insert(account)
         }
 

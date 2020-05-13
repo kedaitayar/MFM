@@ -18,6 +18,12 @@ import java.util.*
             parentColumns = arrayOf("budgetId"),
             childColumns = arrayOf("transactionBudgetId"),
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Account::class,
+            parentColumns = arrayOf("accountId"),
+            childColumns = arrayOf("transactionAccountTransferTo"),
+            onDelete = ForeignKey.CASCADE
         )
     )
 )
@@ -28,7 +34,7 @@ data class Transaction(
     var transactionType: String = "",
     var transactionAccountId: Long = 0,
     var transactionBudgetId: Long? = null,
-    var transactionAccountTransferTo: Long = 0,
+    var transactionAccountTransferTo: Long? = null,
     @PrimaryKey(autoGenerate = true)
     var transactionId: Long = 0
 )

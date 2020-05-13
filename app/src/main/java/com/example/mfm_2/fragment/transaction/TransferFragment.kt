@@ -49,7 +49,7 @@ class TransferFragment : Fragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 val transaction = async { transactionViewModel.getTransactionById(transactionId!!) }
                 val accountFrom = async { accountViewModel.getAccountById(transaction.await().transactionAccountId) }
-                val accountTo = async { accountViewModel.getAccountById(transaction.await().transactionAccountTransferTo) }
+                val accountTo = async { accountViewModel.getAccountById(transaction.await().transactionAccountTransferTo!!) }
                 withContext(Dispatchers.Main) {
                     accountFromDropdown.setText(accountFrom.await().accountName)
                     accountToDropdown.setText(accountTo.await().accountName)

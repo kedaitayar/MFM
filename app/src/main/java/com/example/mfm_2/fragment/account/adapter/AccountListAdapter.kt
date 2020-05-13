@@ -7,20 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Account
 import com.example.mfm_2.model.Transaction
+import com.example.mfm_2.pojo.AccountListAdapterDataObject
 
-class AccountListAdapter internal constructor(context: Context) : RecyclerView.Adapter<AccountListAdapter.ViewHolder>() {
+class AccountListAdapter internal constructor(context: Context) : ListAdapter<AccountListAdapterDataObject, AccountListAdapter.ViewHolder>(AccountListDiffCallback()) {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var listener: OnItemClickListener? = null
-    private var account = emptyList<Account>()
-    private var accountIncome = emptyList<Transaction>()
-    private var accountExpense = emptyList<Transaction>()
+//    private var account = emptyList<Account>()
+//    private var accountIncome = emptyList<Transaction>()
+//    private var accountExpense = emptyList<Transaction>()
+//    private var accountTransfer = emptyList<Transaction>()
+//    private var accountBalance = emptyList<Transaction>()
+//    private var accountList = emptyList<AccountListAdapterDataObject>()
 
     interface OnItemClickListener {
-        fun onPopupMenuButtonClick(account: Account, popupMenuButton: Button)
+        fun onPopupMenuButtonClick(accountListAdapterDataObject: AccountListAdapterDataObject, popupMenuButton: Button)
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -29,7 +35,7 @@ class AccountListAdapter internal constructor(context: Context) : RecyclerView.A
             popupMenuButton.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    listener?.onPopupMenuButtonClick(account[position], popupMenuButton)
+                    listener?.onPopupMenuButtonClick(getItem(position), popupMenuButton)
                 }
             }
         }
@@ -45,37 +51,25 @@ class AccountListAdapter internal constructor(context: Context) : RecyclerView.A
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return account.size
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val current = account[position]
-        val income = accountIncome.find { it.transactionAccountId == current.accountId }
-        val expense = accountExpense.find { it.transactionAccountId == current.accountId }
-        val accountBalance = (income?.transactionAmount ?: 0.0) - (expense?.transactionAmount ?: 0.0)
+        val current = getItem(position)
         holder.accountName.text = current.accountName
-        holder.accountBalance.text = accountBalance.toString()
+        holder.accountBalance.text = (current.accountIncome - current.accountExpense - current.accountTransferOut + current.accountTransferIn).toString()
         holder.accountAllocationBalance.text = "TODO"
-    }
-
-    fun setAccount(account: List<Account>) {
-        this.account = account
-        notifyDataSetChanged()
-    }
-
-    fun setIncome(transaction: List<Transaction>) {
-        this.accountIncome = transaction
-        notifyDataSetChanged()
-    }
-
-    fun setExpense(transaction: List<Transaction>) {
-        this.accountExpense = transaction
-        notifyDataSetChanged()
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
+    private class AccountListDiffCallback : DiffUtil.ItemCallback<AccountListAdapterDataObject>() {
+        override fun areItemsTheSame(oldItem: AccountListAdapterDataObject, newItem: AccountListAdapterDataObject): Boolean {
+            return (oldItem.accountId == newItem.accountId)
+        }
+
+        override fun areContentsTheSame(oldItem: AccountListAdapterDataObject, newItem: AccountListAdapterDataObject): Boolean {
+            return ((oldItem.accountName == newItem.accountName) && (oldItem.accountIncome == newItem.accountIncome) && (oldItem.accountExpense == newItem.accountExpense) && (oldItem.accountTransferIn == newItem.accountTransferIn) && (oldItem.accountTransferOut == newItem.accountTransferOut))
+        }
+
+    }
 }

@@ -1,16 +1,19 @@
 package com.example.mfm_2.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.mfm_2.model.BudgetTransaction
 
 @Dao
 interface BudgetTransactionDao {
     @Insert
     suspend fun insert(budgetTransaction: BudgetTransaction): Long
+
+    @Update
+    suspend fun update(budgetTransaction: BudgetTransaction): Int
+
+    @Delete
+    suspend fun delete(budgetTransaction: BudgetTransaction): Int
 
     @Query("SELECT * FROM BudgetTransaction WHERE budgetTransactionMonth = :month AND budgetTransactionYear = :year GROUP BY budgetTransactionMonth, budgetTransactionYear, budgetTransactionBudgetId")
     suspend fun getBudgetTransactionByDate(month: Int, year: Int): List<BudgetTransaction>

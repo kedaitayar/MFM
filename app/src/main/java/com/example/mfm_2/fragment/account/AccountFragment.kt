@@ -16,6 +16,7 @@ import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Account
 import com.example.mfm_2.viewmodel.AccountViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,12 +28,14 @@ import kotlinx.coroutines.withContext
  */
 class AccountFragment : Fragment() {
     private lateinit var accountViewModel: AccountViewModel
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         accountViewModel = activity?.run { ViewModelProvider(this).get(AccountViewModel::class.java) } ?: throw Exception("Invalid Activity")
+        mfmViewModel = activity?.run { ViewModelProvider(this).get(MFMViewModel::class.java) } ?: throw Exception("Invalid Activity")
 
         val view = inflater.inflate(R.layout.fragment_acccount, container, false)
         val fragmentManager: FragmentManager = parentFragmentManager
@@ -45,7 +48,7 @@ class AccountFragment : Fragment() {
         buttonAddAccount.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val newAccount = Account(accountName = "New Account")
-                accountViewModel.insertWithResult(newAccount)
+                mfmViewModel.insert(newAccount)
                 withContext(Dispatchers.Main) {
                     val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
                     if (mainView != null) {

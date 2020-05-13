@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,7 +21,9 @@ import com.example.mfm_2.R
 import com.example.mfm_2.fragment.account.adapter.AccountListAdapter
 import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Account
+import com.example.mfm_2.pojo.AccountListAdapterDataObject
 import com.example.mfm_2.viewmodel.AccountViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
@@ -28,37 +31,27 @@ import kotlinx.coroutines.*
  * A simple [Fragment] subclass.
  */
 class AccountListFragment : Fragment() {
-    private lateinit var accountViewModel: AccountViewModel
+    private lateinit var mfmViewModel: MFMViewModel
     val editAccountCode = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        accountViewModel = activity?.run { ViewModelProvider(this).get(AccountViewModel::class.java) } ?: throw Exception("Invalid Activity")
+        mfmViewModel = activity?.run { ViewModelProvider(this).get(MFMViewModel::class.java) } ?: throw Exception("Invalid Activity")
 
         val view = inflater.inflate(R.layout.fragment_account_list, container, false)
         val recyclerview: RecyclerView = view.findViewById(R.id.recyclerview_account_list)
         val recyclerViewAdapter = AccountListAdapter(this.context!!)
         recyclerview.adapter = recyclerViewAdapter
         recyclerview.layoutManager = GridLayoutManager(this.context, 2)
-        accountViewModel.allAccount.observe(viewLifecycleOwner, Observer {
-            it?.let { recyclerViewAdapter.setAccount(it) }
-        })
-        accountViewModel.allTransaction.observe(viewLifecycleOwner, Observer {
-            CoroutineScope(Dispatchers.IO).launch {
-                val income = async { accountViewModel.getAccountIncome() }
-                val expense = async { accountViewModel.getAccountExpense() }
-                withContext(Dispatchers.Main) {
-                    recyclerViewAdapter.setIncome(income.await())
-                    recyclerViewAdapter.setExpense(expense.await())
-                }
 
-            }
+        mfmViewModel.accountListData.observe(viewLifecycleOwner, Observer {
+            it?.let { recyclerViewAdapter.submitList(it) }
         })
+
         recyclerViewAdapter.setOnItemClickListener(object : AccountListAdapter.OnItemClickListener {
-            override fun onPopupMenuButtonClick(account: Account, popupMenuButton: Button) {
-//                val popupMenuButton: Button = view.findViewById(R.id.button_popup_menu)
+            override fun onPopupMenuButtonClick(accountListAdapterDataObject: AccountListAdapterDataObject, popupMenuButton: Button) {
                 val popupMenu = PopupMenu(this@AccountListFragment.context, popupMenuButton)
                 popupMenu.inflate(R.menu.menu_all_account)
                 popupMenu.setOnMenuItemClickListener {
@@ -69,13 +62,14 @@ class AccountListFragment : Fragment() {
                         }
                         R.id.popup_menu_edit_account -> {
                             val intent = Intent(this@AccountListFragment.context, EditAccountActivity::class.java)
-                            intent.putExtra(EditAccountActivity.EXTRA_ACCOUNT_ID, account.accountId)
+                            intent.putExtra(EditAccountActivity.EXTRA_ACCOUNT_ID, accountListAdapterDataObject.accountId)
                             startActivityForResult(intent, editAccountCode)
                             true
                         }
                         R.id.popup_menu_delete_account -> {
                             CoroutineScope(Dispatchers.IO).launch {
-                                accountViewModel.delete(account)
+                                val account = mfmViewModel.getAccountById(accountListAdapterDataObject.accountId)
+                                mfmViewModel.delete(account)
                                 withContext(Dispatchers.Main) {
                                     val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
                                     if (mainView != null) {
@@ -90,10 +84,7 @@ class AccountListFragment : Fragment() {
                 }
                 popupMenu.show()
             }
-
         })
-
-
         return view
     }
 

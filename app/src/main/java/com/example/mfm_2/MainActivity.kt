@@ -9,10 +9,10 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.mfm_2.custom_class.MonthString
 import com.example.mfm_2.custom_class.MonthYearPickerDialog
 import com.example.mfm_2.fragment.NotBudgetedFragment
 import com.example.mfm_2.fragment.account.AccountFragment
@@ -21,6 +21,7 @@ import com.example.mfm_2.fragment.transaction.TransactionFragment
 import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.AccountViewModel
 import com.example.mfm_2.viewmodel.BudgetViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -30,8 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var accountViewModel: AccountViewModel
-    private lateinit var budgetViewModel: BudgetViewModel
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +39,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
-        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
-//        budgetViewModel = ViewmodelProvide
-
-//        Log.i("haha", SelectedDateSingleton.singletonSelectedDate.toString())
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val date = SelectedDateSingleton.singletonSelectedDate
-            budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
-        }
-
+        mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
 
         val viewPager: ViewPager2 = findViewById(R.id.viewpager)
         viewPager.adapter = ViewPagerAdapter(this)
@@ -57,10 +47,6 @@ class MainActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-//                0 -> tab.text = "Home"
-//                1 -> tab.text = "Account"
-//                2 -> tab.text = "Transaction"
-//                3 -> tab.text = "Budget"
                 0 -> tab.text = "Account"
                 1 -> tab.text = "Transaction"
                 2 -> tab.text = "Budget"
@@ -81,21 +67,23 @@ class MainActivity : AppCompatActivity() {
 
         //toolbar date
         val dateInput: TextInputEditText = findViewById(R.id.textinput_date)
-        val monthShortString = MonthString().monthShortString
+        val monthShortString = MonthYearPickerDialog().months
         dateInput.setText(monthShortString[(SelectedDateSingleton.singletonSelectedDate.month - 1)] + " " + SelectedDateSingleton.singletonSelectedDate.year)
         dateInput.setOnClickListener {
-            val pickerDialog = MonthYearPickerDialog()
-            pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                dateInput.setText(monthShortString[(SelectedDateSingleton.singletonSelectedDate.month - 1)] + " " + SelectedDateSingleton.singletonSelectedDate.year)
-//                Log.i("haha", selectedDateViewModel.selectedDate.toString())
-//                Log.i("haha", selectedDateViewModel.selectedDate.month.toString())
-//                Log.i("haha", selectedDateViewModel.selectedDate.year.toString())
-                SelectedDateSingleton.singletonSelectedDate.month = month
-                SelectedDateSingleton.singletonSelectedDate.year = year
-                Log.i("haha", SelectedDateSingleton.singletonSelectedDate.toString())
-            })
-            pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
+            val selectedDate = mfmViewModel.selectedDate.value
+            selectedDate?.let {
+                val pickerDialog = MonthYearPickerDialog(it.month, it.year)
+                pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    mfmViewModel.setSelectedDate(month, year)
+                })
+                pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
+            }
         }
+        mfmViewModel.selectedDate.observe(this, Observer {
+            it?.let {
+                dateInput.setText("${monthShortString[it.month - 1]} ${it.year}")
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -121,11 +109,6 @@ class MainActivity : AppCompatActivity() {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-//                0 -> HomeFragment()
-//                1 -> AccountFragment()
-//                2 -> TransactionFragment()
-//                3 -> BudgetFragment()
-//                else -> AccountFragment()
                 0 -> AccountFragment()
                 1 -> TransactionFragment()
                 2 -> BudgetFragment()

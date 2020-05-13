@@ -1,10 +1,7 @@
 package com.example.mfm_2.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.mfm_2.model.BudgetType
 
 @Dao
@@ -17,6 +14,12 @@ interface BudgetTypeDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(budgetType: BudgetType): Long
+
+    @Update
+    suspend fun update(budgetType: BudgetType): Int
+
+    @Delete
+    suspend fun delete(budgetType: BudgetType): Int
 
     @Query("Delete from budgettype")
     suspend fun deleteAll()

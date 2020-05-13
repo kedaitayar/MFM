@@ -39,7 +39,7 @@ class AccountViewModel(application: Application) : AndroidViewModel(application)
     }
 
     suspend fun insertWithResult(account: Account): Long {
-        return repo.insertWithResult(account)
+        return repo.insert(account)
     }
 
     suspend fun delete(account: Account): Int {
@@ -81,5 +81,9 @@ class AccountViewModel(application: Application) : AndroidViewModel(application)
 
     suspend fun getAccountExpense(): List<Transaction>{
         return transactionRepo.getAccountExpense()
+    }
+
+    suspend fun getAccountTransfer(): List<Transaction>{
+        return transactionRepo.getAccountTransfer()
     }
 }

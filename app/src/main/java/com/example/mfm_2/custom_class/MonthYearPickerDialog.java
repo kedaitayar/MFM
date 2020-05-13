@@ -16,11 +16,20 @@ import com.example.mfm_2.R;
 import java.util.Calendar;
 
 public class MonthYearPickerDialog extends DialogFragment {
-
+    private int month;
+    private int year;
     private static final int MAX_YEAR = 2099;
     private static final int MIN_YEAR = 2019;
     private DatePickerDialog.OnDateSetListener listener;
     public String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEPT", "OCT", "NOV", "DEC"};
+
+    public MonthYearPickerDialog(int month, int year) {
+        this.month = month;
+        this.year = year;
+    }
+
+    public MonthYearPickerDialog() {
+    }
 
     public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
@@ -32,8 +41,6 @@ public class MonthYearPickerDialog extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        Calendar cal = Calendar.getInstance();
-
         View dialog = inflater.inflate(R.layout.date_picker_dialog, null);
         final NumberPicker monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
         final NumberPicker yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
@@ -41,10 +48,8 @@ public class MonthYearPickerDialog extends DialogFragment {
         monthPicker.setMinValue(1);
         monthPicker.setMaxValue(12);
         monthPicker.setDisplayedValues(months);
-        monthPicker.setValue(cal.get(Calendar.MONTH)+1);
+        monthPicker.setValue(month);
 
-        int year = cal.get(Calendar.YEAR);
-//        yearPicker.setMinValue(year);
         yearPicker.setMinValue(MIN_YEAR);
         yearPicker.setMaxValue(MAX_YEAR);
         yearPicker.setValue(year);

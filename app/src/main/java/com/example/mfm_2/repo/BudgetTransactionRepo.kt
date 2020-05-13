@@ -10,6 +10,14 @@ class BudgetTransactionRepo(private val budgetTransactionDao: BudgetTransactionD
         return budgetTransactionDao.insert(budgetTransaction)
     }
 
+    suspend fun update(budgetTransaction: BudgetTransaction): Int{
+        return budgetTransactionDao.update(budgetTransaction)
+    }
+
+    suspend fun delete(budgetTransaction: BudgetTransaction): Int {
+        return budgetTransactionDao.delete(budgetTransaction)
+    }
+
     suspend fun getBudgetTransactionByDate(month: Int, year: Int): List<BudgetTransaction> {
         return budgetTransactionDao.getBudgetTransactionByDate(month, year)
     }

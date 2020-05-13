@@ -7,7 +7,5 @@ import androidx.room.PrimaryKey
 data class Account(
     @PrimaryKey(autoGenerate = true)
     var accountId: Long = 0,
-    var accountName: String = "",
-    var accountBalance: Double = 0.0,
-    var accountAllocationBalance: Double = 0.0
+    var accountName: String = ""
 )

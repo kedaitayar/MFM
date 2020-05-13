@@ -105,20 +105,20 @@ class TestActivity : AppCompatActivity() {
 
         val testText: TextView = findViewById(R.id.textView_test)
 
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        val button: Button = findViewById(R.id.buttontest)
-        button.setOnClickListener {
-//            val pickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-//            }, year, month, day)
-//            pickerDialog.show()
-
-            val pickerDialog = MonthYearPickerDialog()
-            pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->  })
-            pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
-        }
+//        val c = Calendar.getInstance()
+//        val year = c.get(Calendar.YEAR)
+//        val month = c.get(Calendar.MONTH)
+//        val day = c.get(Calendar.DAY_OF_MONTH)
+//        val button: Button = findViewById(R.id.buttontest)
+//        button.setOnClickListener {
+////            val pickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+////            }, year, month, day)
+////            pickerDialog.show()
+//
+//            val pickerDialog = MonthYearPickerDialog()
+//            pickerDialog.setListener(DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->  })
+//            pickerDialog.show(supportFragmentManager, "MonthYearPickerDialog")
+//        }
 
         val date = SelectedDateSingleton.singletonSelectedDate
         val c2 = Calendar.getInstance()
