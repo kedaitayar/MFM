@@ -3,7 +3,9 @@ package com.example.mfm_2.repo
 import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetDao
 import com.example.mfm_2.model.Budget
+import com.example.mfm_2.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.pojo.BudgetWithBudgetType
+import java.util.*
 
 class BudgetRepo(private val budgetDao: BudgetDao) {
     val allBudget: LiveData<List<Budget>> = budgetDao.getAllBudget()
@@ -38,5 +40,17 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
 
     suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetWithBudgetType {
         return budgetDao.getBudgetWithBudgetTypeById(budgetId)
+    }
+
+    fun getBudgetListAdapterDO(month: Int, year: Int): LiveData<List<BudgetListAdapterDataObject>> {
+        val timeFrom = Calendar.getInstance()
+        timeFrom.set(year,month-1,1,0,0,0)
+        val timeTo = Calendar.getInstance()
+        timeTo.timeInMillis = timeFrom.timeInMillis
+        timeTo.add(Calendar.MONTH, 1)
+        timeTo.add(Calendar.SECOND, -1)
+        return budgetDao.getBudgetListAdapterDO(month, year, timeFrom, timeTo)
+//        return budgetDao.getBudgetListAdapterDO(timeFrom, timeTo)
+//        return budgetDao.getBudgetListAdapterDO()
     }
 }

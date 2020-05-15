@@ -15,15 +15,10 @@ import com.example.mfm_2.model.Account
 import com.example.mfm_2.model.Transaction
 import com.example.mfm_2.pojo.AccountListAdapterDataObject
 
-class AccountListAdapter internal constructor(context: Context) : ListAdapter<AccountListAdapterDataObject, AccountListAdapter.ViewHolder>(AccountListDiffCallback()) {
+class AccountListAdapter internal constructor(context: Context) :
+    ListAdapter<AccountListAdapterDataObject, AccountListAdapter.ViewHolder>(AccountListDiffCallback()) {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var listener: OnItemClickListener? = null
-//    private var account = emptyList<Account>()
-//    private var accountIncome = emptyList<Transaction>()
-//    private var accountExpense = emptyList<Transaction>()
-//    private var accountTransfer = emptyList<Transaction>()
-//    private var accountBalance = emptyList<Transaction>()
-//    private var accountList = emptyList<AccountListAdapterDataObject>()
 
     interface OnItemClickListener {
         fun onPopupMenuButtonClick(accountListAdapterDataObject: AccountListAdapterDataObject, popupMenuButton: Button)
@@ -54,7 +49,8 @@ class AccountListAdapter internal constructor(context: Context) : ListAdapter<Ac
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = getItem(position)
         holder.accountName.text = current.accountName
-        holder.accountBalance.text = (current.accountIncome - current.accountExpense - current.accountTransferOut + current.accountTransferIn).toString()
+        holder.accountBalance.text =
+            (current.accountIncome - current.accountExpense - current.accountTransferOut + current.accountTransferIn).toString()
         holder.accountAllocationBalance.text = "TODO"
     }
 

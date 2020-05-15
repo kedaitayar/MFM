@@ -10,7 +10,6 @@ data class Budget(
     @PrimaryKey(autoGenerate = true)
     var budgetId: Long = 0,
     var budgetAllocation: Double = 0.0,
-    var budgetCycle: String = "",
     var budgetGoal: Double = 0.0,
     var budgetName: String = "",
     var budgetType: Int = 1,

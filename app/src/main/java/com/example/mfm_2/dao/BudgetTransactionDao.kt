@@ -6,7 +6,7 @@ import com.example.mfm_2.model.BudgetTransaction
 
 @Dao
 interface BudgetTransactionDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(budgetTransaction: BudgetTransaction): Long
 
     @Update
@@ -23,4 +23,7 @@ interface BudgetTransactionDao {
 
     @Query("Delete from budgettransaction")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM budgettransaction")
+    fun getAllBudgetTransaction(): LiveData<List<BudgetTransaction>>
 }

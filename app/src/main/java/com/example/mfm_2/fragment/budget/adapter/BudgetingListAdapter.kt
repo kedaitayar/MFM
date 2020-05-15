@@ -66,7 +66,7 @@ class BudgetingListAdapter internal constructor(context: Context) :
         val current = budget[position]
         holder.budgetName.text = current.budgetName
         holder.budgetGoal.text = current.budgetGoal.toString()
-        if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0F){
+        if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0){
             holder.budgetAllocation.setText("")
         } else {
             holder.budgetAllocation.setText((budgetTransaction[current.budgetId]?.budgetTransactionAmount?:0).toString())

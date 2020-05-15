@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.TransactionDao
 import com.example.mfm_2.model.Transaction
 import com.example.mfm_2.pojo.AccountListAdapterDataObject
+import com.example.mfm_2.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.pojo.TransactionWithAccountBudget
 import java.util.*
 
@@ -13,6 +14,7 @@ class TransactionRepo(private val transactionDao: TransactionDao) {
     val accountExpense: LiveData<List<Transaction>> = transactionDao.getAccountExpenseLV()
     val accountTransfer: LiveData<List<Transaction>> = transactionDao.getAccountTransferLV()
     val accountListData: LiveData<List<AccountListAdapterDataObject>> = transactionDao.getAccountListData()
+    val transactionListData: LiveData<List<TransactionListAdapterDataObject>> = transactionDao.getTransactionListData()
 
     suspend fun insert(transaction: Transaction): Long {
         return transactionDao.insert(transaction)

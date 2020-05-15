@@ -21,6 +21,7 @@ import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.BudgetViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -37,8 +38,14 @@ import java.util.*
  */
 class BudgetFragment : Fragment() {
     private lateinit var budgetViewModel: BudgetViewModel
+    private lateinit var mfmViewModel: MFMViewModel
     private val editBudgetCode = 1
     private val editBudgetingCode = 2
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mfmViewModel = activity?.run { ViewModelProvider(this).get(MFMViewModel::class.java) } ?: throw Exception("Invalid Activity")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +54,24 @@ class BudgetFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_budget, container, false)
 //        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
         budgetViewModel = activity?.run { ViewModelProvider(this).get(BudgetViewModel::class.java) } ?: throw Exception("Invalid Activity")
+
+//        mfmViewModel.allBudgetTransactionByDate.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                Log.i("haha", it.size.toString())
+//                for (a in it) {
+//                    Log.i("haha", a.toString())
+//                }
+//            }
+//        })
+
+        mfmViewModel.budgetListData.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Log.i("haha", it.size.toString())
+                for ((i,value) in it.withIndex()) {
+                    Log.i("haha", "$i-$value")
+                }
+            }
+        })
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview_budget)
         val budgetAdapter = BudgetListAdapter(this.context!!)

@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class], version = 11, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class], version = 15, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -60,8 +60,9 @@ abstract class MFMDatabase : RoomDatabase(){
                     scope.launch(Dispatchers.IO) {
 //                        populateDatabase(it.accountDao())
 //                        populateDatabase(it.budgetDao())
-//                        populateDatabase(it.transactionDao())
+////                        populateDatabase(it.transactionDao())
 //                        populateDatabase(it.budgetTypeDao())
+//                        populateDatabase(it.budgetTransactionDao())
                     }
                 }
             }
@@ -97,9 +98,9 @@ abstract class MFMDatabase : RoomDatabase(){
         suspend fun populateDatabase(budgetDao: BudgetDao){
             budgetDao.deleteAll()
 
-            var budget = Budget(budgetName = "Food", budgetAllocation = 50.0, budgetGoal = 50.0, budgetId = 1)
+            var budget = Budget(budgetName = "Food", budgetId = 1)
             budgetDao.insert(budget)
-            budget = Budget(budgetName = "Transport", budgetAllocation = 60.0, budgetGoal = 60.0, budgetId = 2)
+            budget = Budget(budgetName = "Transport", budgetId = 2)
             budgetDao.insert(budget)
         }
 
@@ -115,9 +116,16 @@ abstract class MFMDatabase : RoomDatabase(){
         }
 
         suspend fun populateDatabase(budgetTransactionDao: BudgetTransactionDao){
-            budgetTransactionDao.deleteAll()
+//            budgetTransactionDao.deleteAll()
 
-//            var budgetTransaction = BudgetTransaction(budgetTransactionId = 1, budgetTransactionBudgetId = 1, budgetTransactionAmount = 10.0F, budgetTransactionMonth = 5,)
+            var budgetTransaction = BudgetTransaction(budgetTransactionMonth = 5, budgetTransactionYear = 2020, budgetTransactionAmount = 10.0, budgetTransactionBudgetId = 1)
+            budgetTransactionDao.insert(budgetTransaction)
+            budgetTransaction = BudgetTransaction(budgetTransactionMonth = 5, budgetTransactionYear = 2020, budgetTransactionAmount = 20.0, budgetTransactionBudgetId = 2)
+            budgetTransactionDao.insert(budgetTransaction)
+            budgetTransaction = BudgetTransaction(budgetTransactionMonth = 6, budgetTransactionYear = 2020, budgetTransactionAmount = 11.0, budgetTransactionBudgetId = 1)
+            budgetTransactionDao.insert(budgetTransaction)
+            budgetTransaction = BudgetTransaction(budgetTransactionMonth = 7, budgetTransactionYear = 2020, budgetTransactionAmount = 21.0, budgetTransactionBudgetId = 1)
+            budgetTransactionDao.insert(budgetTransaction)
         }
     }
 }

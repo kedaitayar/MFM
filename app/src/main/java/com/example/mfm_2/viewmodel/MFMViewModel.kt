@@ -5,7 +5,9 @@ import androidx.lifecycle.*
 import com.example.mfm_2.database.MFMDatabase
 import com.example.mfm_2.model.*
 import com.example.mfm_2.pojo.AccountListAdapterDataObject
+import com.example.mfm_2.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.pojo.SelectedDate2
+import com.example.mfm_2.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.repo.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,19 +20,19 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     private val transactionRepo: TransactionRepo
     private val budgetTransactionRepo: BudgetTransactionRepo
     private val budgetTypeRepo: BudgetTypeRepo
+    private val selectedDateRepo = SelectedDateRepo
 
     //simple livedata
     val allAccount: LiveData<List<Account>>
     val allBudget: LiveData<List<Budget>>
-    val allTransaction: LiveData<List<Transaction>>
-    val accountIncome: LiveData<List<Transaction>>
-    val accountExpense: LiveData<List<Transaction>>
-    val accountTransfer: LiveData<List<Transaction>>
-    val accountListData: LiveData<List<AccountListAdapterDataObject>>
 
-    private val _selectedDate = MutableLiveData<SelectedDate2>()
+    //    val allTransaction: LiveData<List<Transaction>>
+    val allBudgetTransaction: LiveData<List<BudgetTransaction>>
+    val accountListData: LiveData<List<AccountListAdapterDataObject>>
+    val transactionListData: LiveData<List<TransactionListAdapterDataObject>>
     val selectedDate: LiveData<SelectedDate2>
-        get() = _selectedDate
+//    val allBudgetTransactionByDate: LiveData<List<BudgetTransaction>>
+    val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
 
     init {
         //repo init
@@ -44,12 +46,17 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         //livedata init
         allAccount = accountRepo.allAccount
         allBudget = budgetRepo.allBudget
-        allTransaction = transactionRepo.allTransaction
-        _selectedDate.postValue(SelectedDate2())
-        accountIncome = transactionRepo.accountIncome
-        accountExpense = transactionRepo.accountExpense
-        accountTransfer = transactionRepo.accountTransfer
-        accountListData =  transactionRepo.accountListData
+//        allTransaction = transactionRepo.allTransaction
+        allBudgetTransaction = budgetTransactionRepo.allBudgetTransaction
+        selectedDate = selectedDateRepo.selectedDate
+        accountListData = transactionRepo.accountListData
+        transactionListData = transactionRepo.transactionListData
+//        allBudgetTransactionByDate = Transformations.switchMap(selectedDate) {
+//            budgetTransactionRepo.getBudgetTransactionByDateLV(it.month, it.year)
+//        }
+        budgetListData = Transformations.switchMap(selectedDate) {
+            budgetRepo.getBudgetListAdapterDO(it.month, it.year)
+        }
     }
 
     suspend fun insert(account: Account): Long {
@@ -116,7 +123,11 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         return accountRepo.getAccountById(accountId)
     }
 
-    fun setSelectedDate(month: Int, year: Int){
-        _selectedDate.postValue(SelectedDate2(month = month, year = year))
+    suspend fun getTransactionById(transactionId: Long): Transaction {
+        return transactionRepo.getTransactionById(transactionId)
+    }
+
+    fun setSelectedDate(month: Int, year: Int) {
+        selectedDateRepo.setSelectedDate(month, year)
     }
 }

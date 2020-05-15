@@ -7,8 +7,10 @@ import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Transaction
+import com.example.mfm_2.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.AccountViewModel
 import com.example.mfm_2.viewmodel.BudgetViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.example.mfm_2.viewmodel.TransactionViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EditTransactionActivity : AppCompatActivity() {
-    private lateinit var transactionViewModel: TransactionViewModel
-    private lateinit var accountViewModel: AccountViewModel
-    private lateinit var budgetViewModel: BudgetViewModel
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,43 +26,36 @@ class EditTransactionActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar_edit_transaction))
         title = "Edit Transaction"
 
-        transactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
-        accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
-        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
+        mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
 
         val buttonSave: Button = findViewById(R.id.button_save)
-        val transactionId = intent.getLongExtra(EXTRA_TRANSACTION_ID, -1)
+        val transactionListAdapterDataObject = intent.getParcelableExtra<TransactionListAdapterDataObject>(EXTRA_TRANSACTION)
 
         val fragmentManager = supportFragmentManager.beginTransaction()
-        val expenseFragment = ExpenseFragment.newInstance(transactionId)
-        val incomeFragment = IncomeFragment.newInstance(transactionId)
-        val transferFragment = TransferFragment.newInstance(transactionId)
+        val expenseFragment = ExpenseFragment.newInstance(transactionListAdapterDataObject)
+        val incomeFragment = IncomeFragment.newInstance(transactionListAdapterDataObject)
+        val transferFragment = TransferFragment.newInstance(transactionListAdapterDataObject)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            var transaction = transactionViewModel.getTransactionById(transactionId)
-            when (transaction.transactionType) {
-                "EXPENSE" -> {
-                    fragmentManager.replace(R.id.fragment_container, expenseFragment)
-                    fragmentManager.commit()
-                }
-                "INCOME" -> {
-                    fragmentManager.replace(R.id.fragment_container, incomeFragment)
-                    fragmentManager.commit()
-
-                }
-                "TRANSFER" -> {
-                    fragmentManager.replace(R.id.fragment_container, transferFragment)
-                    fragmentManager.commit()
-                }
-                else -> {
-
-                }
+        when (transactionListAdapterDataObject.transactionType) {
+            "EXPENSE" -> {
+                fragmentManager.replace(R.id.fragment_container, expenseFragment)
+                fragmentManager.commit()
             }
+            "INCOME" -> {
+                fragmentManager.replace(R.id.fragment_container, incomeFragment)
+                fragmentManager.commit()
+
+            }
+            "TRANSFER" -> {
+                fragmentManager.replace(R.id.fragment_container, transferFragment)
+                fragmentManager.commit()
+            }
+            else -> { }
         }
 
         buttonSave.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                var transaction = transactionViewModel.getTransactionById(transactionId)
+                var transaction = mfmViewModel.getTransactionById(transactionListAdapterDataObject.transactionId)
                 withContext(Dispatchers.Main) {
                     when (transaction.transactionType) {
                         "EXPENSE" -> {
@@ -84,6 +77,6 @@ class EditTransactionActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_TRANSACTION_ID = "com.example.mfm_2.fragment.transaction.EXTRA_TRANSACTION_ID"
+        const val EXTRA_TRANSACTION = "com.example.mfm_2.fragment.transaction.EXTRA_TRANSACTION"
     }
 }

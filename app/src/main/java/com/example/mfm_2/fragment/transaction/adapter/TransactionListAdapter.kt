@@ -3,30 +3,27 @@ package com.example.mfm_2.fragment.transaction.adapter
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.model.Account
-import com.example.mfm_2.model.Budget
-import com.example.mfm_2.model.Transaction
+import com.example.mfm_2.pojo.TransactionListAdapterDataObject
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
-class TransactionListAdapter internal constructor(context: Context) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter internal constructor(context: Context) :
+    ListAdapter<TransactionListAdapterDataObject, TransactionListAdapter.ViewHolder>(TransactionListDiffCallback()) {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var listener: OnItemClickListener? = null
-    private var transaction = emptyList<Transaction>()
-    private var budget = emptyList<Budget>()
-    private var account = emptyList<Account>()
 
     interface OnItemClickListener {
-        fun onPopupMenuButtonClick(transaction: Transaction, popupMenuButton: Button)
+        fun onPopupMenuButtonClick(transactionList: TransactionListAdapterDataObject, popupMenuButton: Button)
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -35,7 +32,7 @@ class TransactionListAdapter internal constructor(context: Context) : RecyclerVi
             popupMenuButton.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    listener?.onPopupMenuButtonClick(transaction[position], popupMenuButton)
+                    listener?.onPopupMenuButtonClick(getItem(position), popupMenuButton)
                 }
             }
         }
@@ -53,14 +50,8 @@ class TransactionListAdapter internal constructor(context: Context) : RecyclerVi
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return transaction.size
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentTransaction = transaction[position]
-        val currentAccount = account.find { it.accountId == currentTransaction.transactionAccountId }
-        val currentBudget = budget.find { it.budgetId == currentTransaction.transactionBudgetId }
+        val currentTransaction = getItem(position)
         val resources: Resources = holder.itemView.context.resources
         val formatter = DecimalFormat(resources.getString(R.string.currency_format))
         val format = DecimalFormatSymbols(Locale.getDefault())
@@ -68,33 +59,21 @@ class TransactionListAdapter internal constructor(context: Context) : RecyclerVi
         formatter.decimalFormatSymbols = format
         when (currentTransaction.transactionType) {
             "EXPENSE" -> {
-                if (currentAccount != null) {
-                    holder.transactionAccount.text = currentAccount.accountName
-                }
-                if (currentBudget != null) {
-                    holder.transactionBudget.text = currentBudget.budgetName
-                }
+                holder.transactionAccount.text = currentTransaction.transactionAccountName
+                holder.transactionBudget.text = currentTransaction.transactionBudgetName
                 holder.transactionAccountTo.visibility = View.GONE
                 holder.transactionAmount.setTextColor(Color.parseColor("#d50000"))
             }
             "INCOME" -> {
-                if (currentAccount != null) {
-                    holder.transactionAccount.text = currentAccount.accountName
-                }
+                holder.transactionAccount.text = currentTransaction.transactionAccountName
                 holder.transactionAccountTo.visibility = View.GONE
                 holder.transactionBudget.text = "Income"
                 holder.transactionAmount.setTextColor(Color.parseColor("#00c853"))
             }
             "TRANSFER" -> {
-                val currentAccountFrom = account.find { it.accountId == currentTransaction.transactionAccountId }
-                val currentAccountTo = account.find { it.accountId == currentTransaction.transactionAccountTransferTo }
-                if (currentAccountTo != null) {
-                    holder.transactionAccountTo.text = currentAccountTo.accountName
-                    holder.transactionAccountTo.visibility = View.VISIBLE
-                }
-                if (currentAccountFrom != null) {
-                    holder.transactionAccount.text = currentAccountFrom.accountName
-                }
+                holder.transactionAccountTo.text = currentTransaction.transactionAccountTransferToName
+                holder.transactionAccountTo.visibility = View.VISIBLE
+                holder.transactionAccount.text = currentTransaction.transactionAccountName
                 holder.transactionBudget.text = "Transfer"
                 holder.transactionAmount.setTextColor(Color.parseColor("#000000"))
             }
@@ -112,18 +91,18 @@ class TransactionListAdapter internal constructor(context: Context) : RecyclerVi
         this.listener = listener
     }
 
-    fun setTransaction(transaction: List<Transaction>) {
-        this.transaction = transaction
-        notifyDataSetChanged()
-    }
+    private class TransactionListDiffCallback : DiffUtil.ItemCallback<TransactionListAdapterDataObject>() {
+        override fun areItemsTheSame(oldItem: TransactionListAdapterDataObject, newItem: TransactionListAdapterDataObject): Boolean {
+            return (oldItem.transactionId == newItem.transactionId)
+        }
 
-    fun setAccount(account: List<Account>) {
-        this.account = account
-        notifyDataSetChanged()
-    }
+        override fun areContentsTheSame(oldItem: TransactionListAdapterDataObject, newItem: TransactionListAdapterDataObject): Boolean {
+            return ((oldItem.transactionAmount == newItem.transactionAmount) && (oldItem.transactionTime == newItem.transactionTime) &&
+                    (oldItem.transactionType == newItem.transactionType) && (oldItem.transactionAccountId == newItem.transactionAccountId) &&
+                    (oldItem.transactionBudgetId == newItem.transactionBudgetId) && (oldItem.transactionAccountTransferTo == newItem.transactionAccountTransferTo) &&
+                    (oldItem.transactionAccountName == newItem.transactionAccountName) && (oldItem.transactionBudgetName == newItem.transactionBudgetName) &&
+                    (oldItem.transactionAccountTransferToName == newItem.transactionAccountTransferToName))
+        }
 
-    fun setBudget(budget: List<Budget>) {
-        this.budget = budget
-        notifyDataSetChanged()
     }
 }

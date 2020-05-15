@@ -12,25 +12,23 @@ import androidx.lifecycle.ViewModelProvider
 
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Transaction
+import com.example.mfm_2.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.AccountViewModel
 import com.example.mfm_2.viewmodel.BudgetViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.example.mfm_2.viewmodel.TransactionViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
 
-private const val ARG_TRANSACTION_ID = "com.example.mfm_2.fragment.transaction.ARG_TRANSACTION_ID"
+private const val ARG_TRANSACTION = "com.example.mfm_2.fragment.transaction.ARG_TRANSACTION"
 
 class IncomeFragment : Fragment() {
-    private var transactionId: Long? = null
-    private lateinit var transactionViewModel: TransactionViewModel
-    private lateinit var accountViewModel: AccountViewModel
-    private lateinit var budgetViewModel: BudgetViewModel
+    private var transaction: TransactionListAdapterDataObject? = null
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        transactionViewModel = activity?.run { ViewModelProvider(this).get(TransactionViewModel::class.java) } ?: throw Exception("Invalid Activity")
-        accountViewModel = activity?.run { ViewModelProvider(this).get(AccountViewModel::class.java) } ?: throw Exception("Invalid Activity")
-        budgetViewModel = activity?.run { ViewModelProvider(this).get(BudgetViewModel::class.java) } ?: throw Exception("Invalid Activity")
+        mfmViewModel = activity?.run { ViewModelProvider(this).get(MFMViewModel::class.java) } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateView(
@@ -43,20 +41,16 @@ class IncomeFragment : Fragment() {
         val amount: TextInputEditText = view.findViewById(R.id.textedit_transaction_amount)
 
         arguments?.let {
-            transactionId = it.getLong(ARG_TRANSACTION_ID)
-            val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
-            val amountEditText: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-            CoroutineScope(Dispatchers.IO).launch {
-                val transaction = async { transactionViewModel.getTransactionById(transactionId!!) }
-                val account = async { accountViewModel.getAccountById(transaction.await().transactionAccountId) }
-                withContext(Dispatchers.Main) {
-                    accountDropdown.setText(account.await().accountName)
-                    amountEditText.setText(transaction.await().transactionAmount.toString())
-                }
+            transaction = it.getParcelable(ARG_TRANSACTION)
+            transaction?.let {transaction ->
+                val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
+                val amountEditText: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
+                accountDropdown.setText(transaction.transactionAccountName)
+                amountEditText.setText(transaction.transactionAmount.toString())
             }
         }
 
-        accountViewModel.allAccount.observe(viewLifecycleOwner, Observer {
+        mfmViewModel.allAccount.observe(viewLifecycleOwner, Observer {
             it?.let {
                 var accountNameList: MutableList<String> = mutableListOf()
                 for (account in it) {
@@ -73,43 +67,43 @@ class IncomeFragment : Fragment() {
     fun addIncome() {
         val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val account = accountViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
+        val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
         val newTransaction =
             Transaction(transactionAccountId = account.accountId, transactionType = "INCOME", transactionAmount = amount.text.toString().toDouble())
         CoroutineScope(Dispatchers.IO).launch {
-            transactionViewModel.insert(newTransaction)
+            mfmViewModel.insert(newTransaction)
         }
     }
 
-    fun setInitialData(transaction: Transaction) {
-        val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
-        val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        CoroutineScope(Dispatchers.IO).launch {
-            val account = async { accountViewModel.getAccountById(transaction.transactionAccountId) }
-            withContext(Dispatchers.Main) {
-                accountDropdown.setText(account.await().accountName)
-                amount.setText(transaction.transactionAmount.toString())
-            }
-        }
-    }
+//    fun setInitialData(transaction: Transaction) {
+//        val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
+//        val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val account = async { accountViewModel.getAccountById(transaction.transactionAccountId) }
+//            withContext(Dispatchers.Main) {
+//                accountDropdown.setText(account.await().accountName)
+//                amount.setText(transaction.transactionAmount.toString())
+//            }
+//        }
+//    }
 
     fun saveIncome(transaction: Transaction) {
         val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val account = accountViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
+        val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
         transaction.transactionAmount = amount.text.toString().toDouble()
         transaction.transactionAccountId = account.accountId
         CoroutineScope(Dispatchers.IO).launch {
-            transactionViewModel.update(transaction)
+            mfmViewModel.update(transaction)
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(transactionId: Long) =
+        fun newInstance(transactionListAdapterDataObject: TransactionListAdapterDataObject) =
             IncomeFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_TRANSACTION_ID, transactionId)
+                    putParcelable(ARG_TRANSACTION, transactionListAdapterDataObject)
                 }
             }
     }

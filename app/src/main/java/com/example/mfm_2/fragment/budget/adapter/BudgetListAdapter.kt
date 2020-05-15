@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Budget
@@ -66,42 +67,13 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.text = current.budgetAllocation.toString()
         holder.budgetGoal.text = current.budgetGoal.toString()
-//        val test = transactionGrpByBudget.find { it.transactionBudgetId == current.budgetId }
-//        Log.i("haha", test.toString())
         holder.budgetUsed.text = (transactionGrpByBudget.find { it.transactionBudgetId == current.budgetId }?.transactionAmount?:0.0).toString()
-        if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0F){
+        if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0){
             holder.budgetAllocation.text = "0.0"
         } else {
             holder.budgetAllocation.text = (budgetTransaction[current.budgetId]?.budgetTransactionAmount?:0).toString()
         }
-//        holder.budgetType.text = current.
-
         holder.expandableDetail.visibility = if(current.isExpanded) View.VISIBLE else View.GONE
-        //moved to budgetFragment to follow SoC
-//        holder.expandableView.setOnClickListener {
-//            budget[position].isExpanded = !current.isExpanded
-//            notifyItemChanged(position)
-//        }
-
-        //moved to budgetFragment to follow SoC
-//        holder.popupMenuButton.setOnClickListener {
-//            val popupMenu = PopupMenu(context, holder.popupMenuButton)
-//            popupMenu.inflate(R.menu.menu_budget_option)
-//            popupMenu.setOnMenuItemClickListener {
-//                when(it.itemId){
-//                    R.id.popup_menu_edit_budget -> {
-//                        Log.i("haha", "edit" + current.budgetName)
-//                        true
-//                    }
-//                    R.id.popup_menu_delete_budget -> {
-//                        Log.i("haha", "delete" + current.budgetName)
-//                        true
-//                    }
-//                    else -> false
-//                }
-//            }
-//            popupMenu.show()
-//        }
     }
 
     fun setData(budget: List<Budget>){
@@ -130,4 +102,6 @@ class BudgetListAdapter internal constructor(context: Context): RecyclerView.Ada
         budget[position].isExpanded = !budget[position].isExpanded
         notifyItemChanged(position)
     }
+
+//    private class BudgetListDiffCallback : DiffUtil.ItemCallback<>
 }
