@@ -11,24 +11,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.home.HomeFragment
-import com.example.mfm_2.viewmodel.AccountViewModel
-import com.example.mfm_2.viewmodel.BudgetViewModel
-import com.example.mfm_2.viewmodel.TransactionViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
 class AddTransactionActivity : AppCompatActivity() {
-    private lateinit var transactionViewModel: TransactionViewModel
-    private lateinit var accountViewModel: AccountViewModel
-    private lateinit var budgetViewModel: BudgetViewModel
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        transactionViewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
-        accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
-        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
+        mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
 
         setContentView(R.layout.activity_add_edit_transaction2)
         setSupportActionBar(findViewById(R.id.toolbar_add_edit_transaction))

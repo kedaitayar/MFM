@@ -44,7 +44,7 @@
         android:id="@+id/fragment_account_container2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/fragment_account_container1">
+        app:layout_constraintTop_toBottomOf="@+id/fragment_account_container1">
 
     </FrameLayout>
 

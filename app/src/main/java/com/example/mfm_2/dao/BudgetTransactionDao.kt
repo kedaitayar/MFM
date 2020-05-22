@@ -26,4 +26,7 @@ interface BudgetTransactionDao {
 
     @Query("SELECT * FROM budgettransaction")
     fun getAllBudgetTransaction(): LiveData<List<BudgetTransaction>>
+
+    @Query("SELECT SUM(budgetTransactionAmount) FROM budgettransaction")
+    fun getTotalBudgetedAmount(): LiveData<Double>
 }

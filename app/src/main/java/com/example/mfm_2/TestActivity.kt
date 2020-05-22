@@ -11,12 +11,11 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.mfm_2.custom_class.MonthYearPickerDialog
 import com.example.mfm_2.singleton.SelectedDateSingleton
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.utils.ColorTemplate
 import java.util.*
 import kotlin.random.Random
@@ -32,8 +31,10 @@ class TestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test)
 
         val chart: LineChart = findViewById(R.id.chart1)
+        val chart2: BarChart = findViewById(R.id.chart2)
 //        Log.i("test", "hoho")
         var entries: MutableList<Entry> = mutableListOf()
+        var entries2: MutableList<BarEntry> = mutableListOf()
         var data = listOf<Data>(Data(1f,1f), Data(2f,2f), Data(3f,3f), Data(4f,2f), Data(5f,1f))
         var data2 = arrayOf<Array<Int>>(arrayOf(1,2,3,4,5), arrayOf(1,2,3,4,5))
         var data3 = arrayOf(1 ,9 ,3 ,9 ,10 ,4 ,3 ,5 ,9 ,6 ,1 ,6 ,7 ,9 ,2 ,10 ,5 ,2 ,5 ,5 ,2 ,2 ,5 ,8 ,5 ,1 ,7 ,2 ,10 ,4 ,1 ,9 ,3 ,3 ,10 ,5 ,9 ,8 ,8 ,3 ,4 ,9 ,7 ,3 ,10 ,9 ,5 ,7 ,9 ,4 ,6 ,10 ,9 ,6 ,5 ,4 ,8 ,3 ,4 ,3 ,6 ,2 ,7 ,4 ,7 ,1 ,7 ,10 ,8 ,2 ,10 ,4 ,6 ,7 ,8 ,9 ,1 ,2 ,1 ,7 ,1 ,6 ,10 ,1 ,1 ,9 ,8 ,3 ,6 ,3 ,10 ,9 ,5 ,4 ,10 ,9 ,10 ,9 ,5 ,8 )
@@ -51,6 +52,7 @@ class TestActivity : AppCompatActivity() {
             data5.add(i)
             data6.add(total)
             entries.add(Entry(i.toFloat(), total.toFloat()))
+            entries2.add(BarEntry(i.toFloat(), total.toFloat()))
             i++
         }
 
@@ -69,9 +71,13 @@ class TestActivity : AppCompatActivity() {
         dataSet.color = Color.GREEN
         dataSet.fillColor = dataSet.color
 
+        var dataSet2 = BarDataSet(entries2, "test")
+
 
         var lineData: LineData = LineData(dataSet)
         lineData.setDrawValues(false)
+
+        var barData = BarData(dataSet2)
 
         var xAxis = chart.xAxis
         var leftAxis = chart.axisLeft
@@ -86,6 +92,11 @@ class TestActivity : AppCompatActivity() {
         xAxis.setDrawGridLines(false)
         xAxis.textSize = 14f
 
+        chart2.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        chart2.xAxis.setDrawGridLines(false)
+        chart2.axisLeft.setDrawGridLines(false)
+        chart2.axisRight.setDrawGridLines(false)
+
 
         chart.data = lineData
         chart.description.isEnabled = false
@@ -98,6 +109,10 @@ class TestActivity : AppCompatActivity() {
         chart.setPaint(paint, PAINT_GRID_BACKGROUND)
 
         chart.invalidate()
+
+        chart2.data = barData
+        chart2.description.isEnabled = false
+        chart2.legend.isEnabled = false
 
         //progress bar//
         val progressbar: ProgressBar = findViewById(R.id.progressBar)

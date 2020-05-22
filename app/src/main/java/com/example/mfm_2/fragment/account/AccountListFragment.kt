@@ -22,7 +22,6 @@ import com.example.mfm_2.fragment.account.adapter.AccountListAdapter
 import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Account
 import com.example.mfm_2.pojo.AccountListAdapterDataObject
-import com.example.mfm_2.viewmodel.AccountViewModel
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -83,6 +82,10 @@ class AccountListFragment : Fragment() {
                     }
                 }
                 popupMenu.show()
+            }
+
+            override fun onItemClick(accountId: Long) {
+                mfmViewModel.setSelectedAccount(accountId)
             }
         })
         return view

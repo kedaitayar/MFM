@@ -36,8 +36,8 @@ interface BudgetDao {
     @Query("SELECT * FROM budget WHERE budgetId = :budgetId")
     suspend fun getBudgetById(budgetId: Long): Budget
 
-    @Query("SELECT budgetId, budgetAllocation, budgetGoal, budgetName, budgetTypeId, budgetTypeName FROM budget INNER JOIN budgettype ON budget.budgetType = budgettype.budgetTypeId WHERE budgetId = :budgetId")
-    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetWithBudgetType
+    @Query("SELECT budgetId, 0 AS budgetAllocation, budgetGoal, budgetName, budgetTypeId, budgetTypeName, 0 AS budgetUsed, 0 AS isExpanded FROM budget INNER JOIN budgettype ON budget.budgetType = budgettype.budgetTypeId WHERE budgetId = :budgetId")
+    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetListAdapterDataObject
 
 //    @Query("SELECT budgetId, budgetName, budgetTransactionAmount AS budgetAllocation, budgetGoal, 0 AS budgetUsed, budgetTypeId, budgetTypeName, 0 AS isExpanded FROM budget LEFT JOIN budgettype ON budgetType = budgetTypeId LEFT JOIN budgettransaction ON budgetId = budgetTransactionBudgetId WHERE budgetTransactionMonth = :month AND budgetTransactionYear = :year")
 //    fun getBudgetListAdapterDO(month: Int, year: Int): LiveData<List<BudgetListAdapterDataObject>>

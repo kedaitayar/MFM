@@ -7,9 +7,6 @@ import com.example.mfm_2.model.BudgetType
 @Dao
 interface BudgetTypeDao {
     @Query("SELECT * FROM budgettype")
-    fun getAllBudgetType(): List<BudgetType>
-
-    @Query("SELECT * FROM budgettype")
     fun getAllBudgetTypeLV(): LiveData<List<BudgetType>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -23,4 +20,7 @@ interface BudgetTypeDao {
 
     @Query("Delete from budgettype")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM budgettype")
+    suspend fun getAllBudgetType(): List<BudgetType>
 }

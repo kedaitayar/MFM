@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Account
-import com.example.mfm_2.viewmodel.AccountViewModel
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -27,20 +26,19 @@ import kotlinx.coroutines.withContext
  * A simple [Fragment] subclass.
  */
 class AccountFragment : Fragment() {
-    private lateinit var accountViewModel: AccountViewModel
     private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        accountViewModel = activity?.run { ViewModelProvider(this).get(AccountViewModel::class.java) } ?: throw Exception("Invalid Activity")
         mfmViewModel = activity?.run { ViewModelProvider(this).get(MFMViewModel::class.java) } ?: throw Exception("Invalid Activity")
 
         val view = inflater.inflate(R.layout.fragment_acccount, container, false)
         val fragmentManager: FragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction().apply {
             replace(R.id.fragment_account_container1, AccountListFragment())
+            replace(R.id.fragment_account_container2, AccountGraphFragment())
         }
         fragmentTransaction.commit()
 

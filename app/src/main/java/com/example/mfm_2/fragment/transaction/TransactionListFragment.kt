@@ -14,15 +14,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.transaction.adapter.TransactionListAdapter
-import com.example.mfm_2.model.Transaction
 import com.example.mfm_2.pojo.TransactionListAdapterDataObject
-import com.example.mfm_2.viewmodel.AccountViewModel
-import com.example.mfm_2.viewmodel.BudgetViewModel
 import com.example.mfm_2.viewmodel.MFMViewModel
-import com.example.mfm_2.viewmodel.TransactionViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +51,7 @@ class TransactionListFragment : Fragment() {
         mfmViewModel.transactionListData.observe(viewLifecycleOwner, Observer {
             it?.let { recyclerViewAdapter.submitList(it) }
         })
+
 
         recyclerViewAdapter.setOnItemClickListener(object : TransactionListAdapter.OnItemClickListener {
             override fun onPopupMenuButtonClick(transactionList: TransactionListAdapterDataObject, popupMenuButton: Button) {

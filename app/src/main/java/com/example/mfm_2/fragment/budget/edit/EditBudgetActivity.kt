@@ -1,9 +1,11 @@
 package com.example.mfm_2.fragment.budget.edit
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.TextKeyListener
+import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -13,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.model.BudgetType
-import com.example.mfm_2.viewmodel.BudgetViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,12 +24,12 @@ import kotlinx.coroutines.withContext
 
 
 class EditBudgetActivity : AppCompatActivity() {
-    private lateinit var budgetViewModel: BudgetViewModel
     private lateinit var budgetTypeArrayAdapter: ArrayAdapter<BudgetType>
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
+        mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
 
         setContentView(R.layout.activity_edit_budget)
         val toolbar: Toolbar = findViewById(R.id.toolbar_edit_budget)
@@ -45,9 +47,9 @@ class EditBudgetActivity : AppCompatActivity() {
         val budgetId = intent.getLongExtra(EXTRA_BUDGET_ID, -1)
         if (budgetId > 0) {
             CoroutineScope(Dispatchers.IO).launch {
-                val budget = budgetViewModel.getBudgetWithBudgetTypeById(budgetId)
-                dropdownPos = budget.budgetTypeId
-                val budgetType: List<BudgetType> = budgetViewModel.getAllBudgetType()
+                val budget = mfmViewModel.getBudgetWithBudgetTypeById(budgetId)
+                dropdownPos = budget.budgetTypeId.toInt()
+                val budgetType: List<BudgetType> = mfmViewModel.getAllBudgetType()
                 budgetTypeArrayAdapter =
                     object : ArrayAdapter<BudgetType>(this@EditBudgetActivity, R.layout.dropdown_menu_popup_item, budgetType) {
                         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -94,10 +96,10 @@ class EditBudgetActivity : AppCompatActivity() {
         }
 
         buttonSave.setOnClickListener {
-            val budget = Budget(budgetId = budgetId, budgetName = budgetName.text.toString(), budgetGoal = budgetGoal.text.toString().toDouble(), budgetType = budgetTypeArrayAdapter.getItem(dropdownPos-1)!!.budgetTypeId)
+            val budget = Budget(budgetId = budgetId, budgetName = budgetName.text.toString(), budgetGoal = budgetGoal.text.toString().toDouble(), budgetType = budgetTypeArrayAdapter.getItem(dropdownPos)!!.budgetTypeId)
             val replyIntent = Intent()
             CoroutineScope(Dispatchers.IO).launch {
-                val resultCode = budgetViewModel.updateWithResult(budget)
+                val resultCode = mfmViewModel.update(budget)
                 replyIntent.putExtra(EXTRA_UPDATE_RESULT, resultCode)
                 setResult(Activity.RESULT_OK, replyIntent)
                 finish()

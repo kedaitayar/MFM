@@ -1,17 +1,12 @@
 package com.example.mfm_2.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.mfm_2.database.MFMDatabase
 import com.example.mfm_2.model.*
-import com.example.mfm_2.pojo.AccountListAdapterDataObject
-import com.example.mfm_2.pojo.BudgetListAdapterDataObject
-import com.example.mfm_2.pojo.SelectedDate2
-import com.example.mfm_2.pojo.TransactionListAdapterDataObject
+import com.example.mfm_2.pojo.*
 import com.example.mfm_2.repo.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MFMViewModel(application: Application) : AndroidViewModel(application) {
     //repo
@@ -28,11 +23,38 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     //    val allTransaction: LiveData<List<Transaction>>
     val allBudgetTransaction: LiveData<List<BudgetTransaction>>
+    val allBudgetType: LiveData<List<BudgetType>>
     val accountListData: LiveData<List<AccountListAdapterDataObject>>
     val transactionListData: LiveData<List<TransactionListAdapterDataObject>>
     val selectedDate: LiveData<SelectedDate2>
-//    val allBudgetTransactionByDate: LiveData<List<BudgetTransaction>>
+
+    //    val allBudgetTransactionByDate: LiveData<List<BudgetTransaction>>
     val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
+    val totalBudgetedAmount: LiveData<Double>
+    val totalIncome: LiveData<Double>
+    val accountListDataPrevMonth: LiveData<List<AccountListAdapterDataObject>>
+//    val accountTransactionChartExpense: LiveData<List<AccountTransactionChartDataObject>>
+//    val accountTransactionChartIncome: LiveData<List<AccountTransactionChartDataObject>>
+//    val accountTransactionChartTransferIn: LiveData<List<AccountTransactionChartDataObject>>
+//    val accountTransactionChartTransferOut: LiveData<List<AccountTransactionChartDataObject>>
+    val accountTransactionChartData: LiveData<List<AccountTransactionChartDataObject>>
+
+    //non room livedata
+    val selectedAccount: LiveData<Long>
+        get() = _selectedAccount
+    private val _selectedAccount = MutableLiveData<Long>()
+
+    class SelectedAccountAndSelectedDateTrigger<Long, SelectedDate2>(selectedAccount: LiveData<Long>, selectedDate: LiveData<SelectedDate2>) :
+        MediatorLiveData<Pair<Long?, SelectedDate2?>>() {
+        init {
+            addSource(selectedAccount) {
+                value = it to selectedDate.value
+            }
+            addSource(selectedDate) {
+                value = selectedAccount.value to it
+            }
+        }
+    }
 
     init {
         //repo init
@@ -48,6 +70,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         allBudget = budgetRepo.allBudget
 //        allTransaction = transactionRepo.allTransaction
         allBudgetTransaction = budgetTransactionRepo.allBudgetTransaction
+        allBudgetType = budgetTypeRepo.allBudgetType
         selectedDate = selectedDateRepo.selectedDate
         accountListData = transactionRepo.accountListData
         transactionListData = transactionRepo.transactionListData
@@ -56,6 +79,27 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 //        }
         budgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year)
+        }
+        totalBudgetedAmount = budgetTransactionRepo.totalBudgetedAmount
+        totalIncome = transactionRepo.totalIncome
+        accountListDataPrevMonth = Transformations.switchMap(selectedDate) {
+            transactionRepo.getAccountListDataPrevMonth(it.month, it.year)
+        }
+        _selectedAccount.postValue(2)
+//        accountTransactionChartExpense = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
+//            transactionRepo.getAccountTransactionChartExpense(it.first?:0, it.second?.month?:0, it.second?.year?:0)
+//        }
+//        accountTransactionChartIncome = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
+//            transactionRepo.getAccountTransactionChartIncome(it.first?:0, it.second?.month?:0, it.second?.year?:0)
+//        }
+//        accountTransactionChartTransferIn = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
+//            transactionRepo.getAccountTransactionChartTransferIn(it.first?:0, it.second?.month?:0, it.second?.year?:0)
+//        }
+//        accountTransactionChartTransferOut = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
+//            transactionRepo.getAccountTransactionChartTransferOut(it.first?:0, it.second?.month?:0, it.second?.year?:0)
+//        }
+        accountTransactionChartData = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
+            transactionRepo.getAccountTransactionChartData(it.first?:0, it.second?.month?:0, it.second?.year?:0)
         }
     }
 
@@ -123,11 +167,31 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         return accountRepo.getAccountById(accountId)
     }
 
+    suspend fun getBudgetById(budgetId: Long): Budget {
+        return budgetRepo.getBudgetById(budgetId)
+    }
+
     suspend fun getTransactionById(transactionId: Long): Transaction {
         return transactionRepo.getTransactionById(transactionId)
     }
 
     fun setSelectedDate(month: Int, year: Int) {
         selectedDateRepo.setSelectedDate(month, year)
+    }
+
+    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetListAdapterDataObject {
+        return budgetRepo.getBudgetWithBudgetTypeById(budgetId)
+    }
+
+    suspend fun getTime(): List<String> {
+        return transactionRepo.getTime()
+    }
+
+    suspend fun getAllBudgetType(): List<BudgetType> {
+        return budgetTypeRepo.getAllBudgetType()
+    }
+
+    fun setSelectedAccount(accountId: Long) {
+        _selectedAccount.postValue(accountId)
     }
 }

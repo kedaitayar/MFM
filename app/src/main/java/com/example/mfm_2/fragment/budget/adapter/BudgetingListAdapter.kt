@@ -7,17 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.model.BudgetTransaction
+import com.example.mfm_2.pojo.BudgetListAdapterDataObject
 import com.google.android.material.textfield.TextInputEditText
 
 class BudgetingListAdapter internal constructor(context: Context) :
-    RecyclerView.Adapter<BudgetingListAdapter.ViewHolder>() {
+    ListAdapter<BudgetListAdapterDataObject, BudgetingListAdapter.ViewHolder>(BudgetListDiffCallback()) {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var budget = emptyList<Budget>()
-    private var budgetTransaction = mutableMapOf<Long, BudgetTransaction>()
     var budgetAlloc = mutableMapOf<Int, String>()
 
 
@@ -58,35 +59,23 @@ class BudgetingListAdapter internal constructor(context: Context) :
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return budget.size
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val current = budget[position]
+        val current = getItem(position)
         holder.budgetName.text = current.budgetName
         holder.budgetGoal.text = current.budgetGoal.toString()
-        if (budgetTransaction[current.budgetId]?.budgetTransactionAmount == 0.0){
-            holder.budgetAllocation.setText("")
-        } else {
-            holder.budgetAllocation.setText((budgetTransaction[current.budgetId]?.budgetTransactionAmount?:0).toString())
+        holder.budgetAllocation.setText(current.budgetAllocation.toString())
+    }
+
+    private class BudgetListDiffCallback : DiffUtil.ItemCallback<BudgetListAdapterDataObject>() {
+        override fun areItemsTheSame(oldItem: BudgetListAdapterDataObject, newItem: BudgetListAdapterDataObject): Boolean {
+//            return (oldItem.budgetId == newItem.budgetId)
+            return oldItem.budgetId == newItem.budgetId
         }
-    }
 
-    fun setBudget(budget: List<Budget>) {
-        this.budget = budget
-        notifyDataSetChanged()
-    }
-
-    fun setBudgetTransaction(budgetTransaction: List<BudgetTransaction>) {
-        this.budgetTransaction.clear()
-        for (budgetTransaction in budgetTransaction){
-            this.budgetTransaction[budgetTransaction.budgetTransactionBudgetId] = budgetTransaction
+        override fun areContentsTheSame(oldItem: BudgetListAdapterDataObject, newItem: BudgetListAdapterDataObject): Boolean {
+//            return ((oldItem.budgetName == newItem.budgetName) && (oldItem.budgetAllocation == newItem.budgetAllocation) && (oldItem.budgetGoal == newItem.budgetGoal) && (oldItem.budgetTypeId == newItem.budgetTypeId) && (oldItem.budgetTypeName == newItem.budgetTypeName) && (oldItem.isExpanded == newItem.isExpanded))
+            return oldItem == newItem
         }
-        notifyDataSetChanged()
-    }
 
-    fun getData(): List<Budget> {
-        return budget
     }
 }

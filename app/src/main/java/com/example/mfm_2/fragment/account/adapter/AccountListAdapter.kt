@@ -22,6 +22,7 @@ class AccountListAdapter internal constructor(context: Context) :
 
     interface OnItemClickListener {
         fun onPopupMenuButtonClick(accountListAdapterDataObject: AccountListAdapterDataObject, popupMenuButton: Button)
+        fun onItemClick(accountId: Long)
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -33,11 +34,16 @@ class AccountListAdapter internal constructor(context: Context) :
                     listener?.onPopupMenuButtonClick(getItem(position), popupMenuButton)
                 }
             }
+            v.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener?.onItemClick(getItem(position).accountId)
+                }
+            }
         }
 
         val accountName: TextView = v.findViewById(R.id.textView4)
         val accountBalance: TextView = v.findViewById(R.id.textView5)
-        val accountAllocationBalance: TextView = v.findViewById(R.id.textView7)
         val popupMenuButton: Button = v.findViewById(R.id.button_popup_menu)
     }
 
@@ -51,7 +57,6 @@ class AccountListAdapter internal constructor(context: Context) :
         holder.accountName.text = current.accountName
         holder.accountBalance.text =
             (current.accountIncome - current.accountExpense - current.accountTransferOut + current.accountTransferIn).toString()
-        holder.accountAllocationBalance.text = "TODO"
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

@@ -3,7 +3,6 @@ package com.example.mfm_2.fragment.budget
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,29 +14,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.adapter.BudgetListAdapter
 import com.example.mfm_2.fragment.budget.edit.EditBudgetActivity
 import com.example.mfm_2.model.Budget
-import com.example.mfm_2.singleton.SelectedDateSingleton
-import com.example.mfm_2.viewmodel.BudgetViewModel
+import com.example.mfm_2.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class BudgetFragment : Fragment() {
-    private lateinit var budgetViewModel: BudgetViewModel
     private lateinit var mfmViewModel: MFMViewModel
     private val editBudgetCode = 1
     private val editBudgetingCode = 2
@@ -52,79 +48,24 @@ class BudgetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_budget, container, false)
-//        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
-        budgetViewModel = activity?.run { ViewModelProvider(this).get(BudgetViewModel::class.java) } ?: throw Exception("Invalid Activity")
-
-//        mfmViewModel.allBudgetTransactionByDate.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                Log.i("haha", it.size.toString())
-//                for (a in it) {
-//                    Log.i("haha", a.toString())
-//                }
-//            }
-//        })
-
-        mfmViewModel.budgetListData.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                Log.i("haha", it.size.toString())
-                for ((i,value) in it.withIndex()) {
-                    Log.i("haha", "$i-$value")
-                }
-            }
-        })
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview_budget)
         val budgetAdapter = BudgetListAdapter(this.context!!)
         recyclerView.adapter = budgetAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
-        budgetViewModel.allBudget.observe(viewLifecycleOwner, Observer { budget ->
-            budget?.let { budgetAdapter.setData(it) }
-        })
-        budgetViewModel.budgetTransaction.observe(viewLifecycleOwner, Observer {
-            it?.let { budgetAdapter.setBudgetTransaction(it) }
-        })
-        budgetViewModel.transaction.observe(viewLifecycleOwner, Observer {
-            it?.let { budgetAdapter.setTransactionGrpByBudget(it) }
-        })
-        budgetViewModel.allTransaction.observe(viewLifecycleOwner, Observer {
+//        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        mfmViewModel.budgetListData.observe(viewLifecycleOwner, Observer {
             it?.let {
-                val date = SelectedDateSingleton.singletonSelectedDate
-                val c1 = Calendar.getInstance()
-                c1.set(date.year, date.month - 1, 1, 0, 0, 0)
-                val c2 = c1.clone() as Calendar
-                c2.add(Calendar.MONTH, 1)
-                c2.add(Calendar.SECOND, -1)
-                CoroutineScope(IO).launch {
-                    budgetViewModel.getTransactionGrpByBudgetLV(c1,c2)
-                }
+//                budgetAdapter.submitList(it)
+                budgetAdapter.submitData(it)
             }
         })
-        CoroutineScope(IO).launch {
-            val date = SelectedDateSingleton.singletonSelectedDate
-//            val c1 = Calendar.getInstance()
-//            c1.set(date.year, date.month - 1, 1, 0, 0, 0)
-//            val c2 = c1.clone() as Calendar
-//            c2.add(Calendar.MONTH, 1)
-//            c2.add(Calendar.SECOND, -1)
-            budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
-//            budgetViewModel.getTransactionGrpByBudgetLV(c1, c2)
-//            val test = budgetViewModel.getTransactionGrpByBudget(c1, c2)
-//            Log.i("haha", c1.timeInMillis.toString() + "=" + c1.time)
-//            Log.i("haha", c2.timeInMillis.toString() + "=" + c2.time)
-//            Log.i("haha", budgetViewModel.transaction.value.toString())
-//            Log.i("haha", test.size.toString())
-//            for (a in test) {
-//                Log.i("haha", a.toString())
-//            }
-        }
-
 
         val addBudget: Button = view.findViewById(R.id.button_add_budget)
-
         addBudget.setOnClickListener {
-            val budget = Budget(budgetName = "New Budget", budgetGoal = 0.0, budgetAllocation = 0.0)
+            val budget = Budget(budgetName = "New Budget")
             CoroutineScope(IO).launch {
-                val result = budgetViewModel.insertWithResult(budget)
+                val result = mfmViewModel.insert(budget)
                 withContext(Main) {
                     if (result == -1L) {
 //                        Toast.makeText(this@BudgetFragment.context, "Budget already exist", Toast.LENGTH_SHORT).show()
@@ -145,10 +86,10 @@ class BudgetFragment : Fragment() {
 
         budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                budgetAdapter.flipIsExpanded(position)
+//                budgetAdapter.expandedOrCollapse(position)
             }
 
-            override fun onPopupMenuButtonClick(view: View, budget: Budget) {
+            override fun onPopupMenuButtonClick(view: View, budgetListAdapterDataObject: BudgetListAdapterDataObject) {
                 val popupMenuButton: Button = view.findViewById(R.id.button_popup_menu)
 
                 val popupMenu = PopupMenu(this@BudgetFragment.context!!, popupMenuButton)
@@ -157,7 +98,7 @@ class BudgetFragment : Fragment() {
                     when (it.itemId) {
                         R.id.popup_menu_edit_budget -> {
                             val intent = Intent(this@BudgetFragment.context, EditBudgetActivity::class.java)
-                            intent.putExtra(EditBudgetActivity.EXTRA_BUDGET_ID, budget.budgetId)
+                            intent.putExtra(EditBudgetActivity.EXTRA_BUDGET_ID, budgetListAdapterDataObject.budgetId)
                             startActivityForResult(intent, editBudgetCode)
                             true
                         }
@@ -169,10 +110,10 @@ class BudgetFragment : Fragment() {
                                 .setPositiveButton("Delete") { dialog, which ->
                                     //delete budget
                                     CoroutineScope(IO).launch {
-                                        val result = budgetViewModel.delete(budget)
+                                        val budget = mfmViewModel.getBudgetById(budgetListAdapterDataObject.budgetId)
+                                        val result = mfmViewModel.delete(budget)
                                         if (result == 1) {
                                             withContext(Main) {
-//                                                Snackbar.make(activity!!.findViewById<CoordinatorLayout>(R.id.budget_layout), "Budget Deleted", Snackbar.LENGTH_SHORT).show()
                                                 val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
                                                 if (mainView != null) {
                                                     Snackbar.make(mainView, "Budget Deleted", Snackbar.LENGTH_SHORT).show()
@@ -202,10 +143,6 @@ class BudgetFragment : Fragment() {
         return view
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == editBudgetCode && resultCode == Activity.RESULT_OK) {
@@ -219,10 +156,10 @@ class BudgetFragment : Fragment() {
                 }
             }
         } else if (requestCode == editBudgetingCode && resultCode == Activity.RESULT_OK) {
-            CoroutineScope(IO).launch {
-                val date = SelectedDateSingleton.singletonSelectedDate
-                budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
-            }
+//            CoroutineScope(IO).launch {
+//                val date = SelectedDateSingleton.singletonSelectedDate
+//                budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
+//            }
         }
     }
 

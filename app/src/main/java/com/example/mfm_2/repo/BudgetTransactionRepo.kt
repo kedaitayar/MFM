@@ -6,6 +6,7 @@ import com.example.mfm_2.model.BudgetTransaction
 
 class BudgetTransactionRepo(private val budgetTransactionDao: BudgetTransactionDao) {
     val allBudgetTransaction = budgetTransactionDao.getAllBudgetTransaction()
+    val totalBudgetedAmount = budgetTransactionDao.getTotalBudgetedAmount()
 
     suspend fun insert(budgetTransaction: BudgetTransaction): Long {
         return budgetTransactionDao.insert(budgetTransaction)

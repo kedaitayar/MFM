@@ -9,7 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.model.Account
-import com.example.mfm_2.viewmodel.AccountViewModel
+import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,11 +17,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EditAccountActivity : AppCompatActivity() {
-    private lateinit var accountViewModel: AccountViewModel
+//    private lateinit var accountViewModel: AccountViewModel
+    private lateinit var mfmViewModel: MFMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        accountViewModel = ViewModelProvider(this).get(AccountViewModel::class.java)
+        mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
 
         setContentView(R.layout.activity_edit_account)
         val toolbar: Toolbar = findViewById(R.id.toolbar_edit_account)
@@ -37,7 +38,7 @@ class EditAccountActivity : AppCompatActivity() {
         val accountId = intent.getLongExtra(EXTRA_ACCOUNT_ID, -1)
         if (accountId > 0) {
             CoroutineScope(Dispatchers.IO).launch {
-                account = accountViewModel.getAccountById(accountId)
+                account = mfmViewModel.getAccountById(accountId)
                 withContext(Dispatchers.Main) {
                     accountName.setText(account.accountName)
                 }
@@ -48,7 +49,7 @@ class EditAccountActivity : AppCompatActivity() {
             val newAccount = account
             newAccount.accountName = accountName.text.toString()
             CoroutineScope(Dispatchers.IO).launch {
-                val resultCode = accountViewModel.updateWithResult(newAccount)
+                val resultCode = mfmViewModel.update(newAccount)
                 val replyIntent = Intent()
                 replyIntent.putExtra(EXTRA_UPDATE_RESULT, resultCode)
                 setResult(Activity.RESULT_OK, replyIntent)

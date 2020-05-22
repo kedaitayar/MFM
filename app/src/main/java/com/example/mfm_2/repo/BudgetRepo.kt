@@ -38,7 +38,7 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         return budgetDao.getBudgetById(budgetId)
     }
 
-    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetWithBudgetType {
+    suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetListAdapterDataObject {
         return budgetDao.getBudgetWithBudgetTypeById(budgetId)
     }
 
@@ -50,7 +50,5 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         timeTo.add(Calendar.MONTH, 1)
         timeTo.add(Calendar.SECOND, -1)
         return budgetDao.getBudgetListAdapterDO(month, year, timeFrom, timeTo)
-//        return budgetDao.getBudgetListAdapterDO(timeFrom, timeTo)
-//        return budgetDao.getBudgetListAdapterDO()
     }
 }

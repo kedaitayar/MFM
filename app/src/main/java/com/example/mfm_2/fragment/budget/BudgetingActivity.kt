@@ -14,15 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.fragment.budget.adapter.BudgetingListAdapter
 import com.example.mfm_2.model.BudgetTransaction
-import com.example.mfm_2.singleton.SelectedDateSingleton
-import com.example.mfm_2.viewmodel.BudgetViewModel
 import com.example.mfm_2.viewmodel.MFMViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class BudgetingActivity : AppCompatActivity() {
-    private lateinit var budgetViewModel: BudgetViewModel
     private lateinit var budgetingAdapter: BudgetingListAdapter
     private lateinit var mfmViewModel: MFMViewModel
 
@@ -35,37 +32,14 @@ class BudgetingActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        budgetViewModel = ViewModelProvider(this).get(BudgetViewModel::class.java)
         mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
-
-        mfmViewModel.selectedDate.observe(this, Observer {
-            it?.let { Log.i("haha", it.toString()) }
-        })
-
-        mfmViewModel.allBudgetTransaction.observe(this, Observer {
-            it?.let {
-                Log.i("haha", it.size.toString())
-                for (a in it) {
-                    Log.i("haha", a.toString())
-                }
-            }
-        })
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerview_budgeting)
         budgetingAdapter = BudgetingListAdapter(this)
         recyclerView.adapter = budgetingAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        budgetViewModel.allBudget.observe(this, Observer { budget ->
-            budget?.let { budgetingAdapter.setBudget(budget) }
-        })
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val date = SelectedDateSingleton.singletonSelectedDate
-            budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
-        }
-
-        budgetViewModel.budgetTransaction.observe(this, Observer {
-            it?.let { budgetingAdapter.setBudgetTransaction(it) }
+        mfmViewModel.budgetListData.observe(this, Observer {
+            it?.let { budgetingAdapter.submitList(it) }
         })
     }
 
@@ -78,7 +52,8 @@ class BudgetingActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.save_budgeting -> {
 //                val date = SelectedDateSingleton.singletonSelectedDate
-                val budget = budgetingAdapter.getData()
+//                val budget = budgetingAdapter.getData()
+                val budget = budgetingAdapter.currentList
                 val date = mfmViewModel.selectedDate.value!!
 //                val budget = mfmViewModel.allBudget.value!!
                 for ((index, budget) in budget.withIndex()) {
@@ -105,10 +80,5 @@ class BudgetingActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    companion object {
-        const val EXTRA_MONTH = "com.example.mfm_2.fragment.budget.EXTRA_MONTH"
-        const val EXTRA_YEAR = "com.example.mfm_2.fragment.budget.EXTRA_YEAR"
     }
 }
