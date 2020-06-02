@@ -53,10 +53,8 @@ class BudgetFragment : Fragment() {
         val budgetAdapter = BudgetListAdapter(this.context!!)
         recyclerView.adapter = budgetAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
-//        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mfmViewModel.budgetListData.observe(viewLifecycleOwner, Observer {
             it?.let {
-//                budgetAdapter.submitList(it)
                 budgetAdapter.submitData(it)
             }
         })
@@ -68,13 +66,11 @@ class BudgetFragment : Fragment() {
                 val result = mfmViewModel.insert(budget)
                 withContext(Main) {
                     if (result == -1L) {
-//                        Toast.makeText(this@BudgetFragment.context, "Budget already exist", Toast.LENGTH_SHORT).show()
                         val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
                         if (mainView != null) {
                             Snackbar.make(mainView, "Budget already exist", Snackbar.LENGTH_SHORT).show()
                         }
                     } else {
-//                        Toast.makeText(this@BudgetFragment.context, "New budget inserted", Toast.LENGTH_SHORT).show()
                         val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
                         if (mainView != null) {
                             Snackbar.make(mainView, "New budget inserted", Snackbar.LENGTH_SHORT).show()
@@ -82,6 +78,18 @@ class BudgetFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        val budgetingButton: Button = view.findViewById(R.id.button_budgeting)
+        budgetingButton.setOnClickListener {
+            val intent = Intent(this.context, BudgetingActivity::class.java)
+            startActivityForResult(intent, editBudgetingCode)
+        }
+
+        val budgetDetailButton: Button = view.findViewById(R.id.button_budget_detail)
+        budgetDetailButton.setOnClickListener {
+            val intent = Intent(this.context, BudgetDetailActivity::class.java)
+            startActivity(intent)
         }
 
         budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener {
@@ -133,13 +141,6 @@ class BudgetFragment : Fragment() {
                 popupMenu.show()
             }
         })
-
-        val budgetingButton: Button = view.findViewById(R.id.button_budgeting)
-        budgetingButton.setOnClickListener {
-            val intent = Intent(this.context, BudgetingActivity::class.java)
-            startActivityForResult(intent, editBudgetingCode)
-        }
-
         return view
     }
 

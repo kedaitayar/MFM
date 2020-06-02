@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.pojo.BudgetListAdapterDataObject
+import com.example.mfm_2.pojo.BudgetPieChartDataObject
 import com.example.mfm_2.pojo.BudgetWithBudgetType
 import java.util.*
 
@@ -50,4 +51,7 @@ interface BudgetDao {
 
     @Query("SELECT budgetId, budgetName, budgetTransactionAmount AS budgetAllocation, budgetGoal, tbl.transactionAmount AS budgetUsed, budgetTypeId, budgetTypeName, 0 AS isExpanded FROM budget LEFT JOIN budgettype ON budgetType = budgetTypeId LEFT JOIN budgettransaction ON budgetId = budgetTransactionBudgetId LEFT JOIN (SELECT transactionBudgetId, SUM(transactionAmount) AS transactionAmount FROM `transaction` WHERE transactionTime BETWEEN :timeFrom AND :timeTo GROUP BY transactionBudgetId) AS tbl ON budgetId = transactionBudgetId WHERE budgetTransactionMonth = :month AND budgetTransactionYear = :year UNION SELECT budgetId, budgetName, 0 AS budgetAllocation, 0 AS budgetGoal, 0 AS budgetUsed, budgetType AS budgetTypeId, budgetTypeName, 0 AS isExpanded FROM budget LEFT JOIN budgettype ON budgetType = budgetTypeId WHERE NOT EXISTS (SELECT * FROM budgettransaction WHERE budget.budgetId = budgettransaction.budgetTransactionBudgetId AND budgetTransactionMonth = :month AND budgetTransactionYear = :year)")
     fun getBudgetListAdapterDO(month: Int, year: Int, timeFrom: Calendar, timeTo: Calendar): LiveData<List<BudgetListAdapterDataObject>>
+
+    @Query("SELECT budgetId, budgetName, SUM(transactionAmount) AS budgetTransactionTotal FROM `transaction` INNER JOIN budget ON transactionBudgetId = budgetId GROUP BY budgetId")
+    suspend fun getBudgetDetail(): List<BudgetPieChartDataObject>
 }

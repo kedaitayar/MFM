@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetDao
 import com.example.mfm_2.model.Budget
 import com.example.mfm_2.pojo.BudgetListAdapterDataObject
+import com.example.mfm_2.pojo.BudgetPieChartDataObject
 import com.example.mfm_2.pojo.BudgetWithBudgetType
 import java.util.*
 
@@ -50,5 +51,9 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         timeTo.add(Calendar.MONTH, 1)
         timeTo.add(Calendar.SECOND, -1)
         return budgetDao.getBudgetListAdapterDO(month, year, timeFrom, timeTo)
+    }
+
+    suspend fun getBudgetDetail(): List<BudgetPieChartDataObject> {
+        return budgetDao.getBudgetDetail()
     }
 }

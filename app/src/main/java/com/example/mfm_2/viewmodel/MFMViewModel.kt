@@ -85,7 +85,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         accountListDataPrevMonth = Transformations.switchMap(selectedDate) {
             transactionRepo.getAccountListDataPrevMonth(it.month, it.year)
         }
-        _selectedAccount.postValue(2)
+        _selectedAccount.postValue(0)
 //        accountTransactionChartExpense = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
 //            transactionRepo.getAccountTransactionChartExpense(it.first?:0, it.second?.month?:0, it.second?.year?:0)
 //        }
@@ -193,5 +193,9 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setSelectedAccount(accountId: Long) {
         _selectedAccount.postValue(accountId)
+    }
+
+    suspend fun getBudgetDetail(): List<BudgetPieChartDataObject> {
+        return budgetRepo.getBudgetDetail()
     }
 }

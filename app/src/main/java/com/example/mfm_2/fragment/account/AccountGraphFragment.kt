@@ -1,7 +1,7 @@
 package com.example.mfm_2.fragment.account
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.pojo.AccountTransactionChartDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.CombinedChart
+import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,35 +50,29 @@ class AccountGraphFragment : Fragment() {
 //        val chart: BarChart = view.findViewById(R.id.chart)
         val chart: CombinedChart = view.findViewById(R.id.chart)
         val dataMap: MutableMap<Int, AccountTransactionChartDataObject> = mutableMapOf()
-
         val cal = Calendar.getInstance()
-//        mfmViewModel.selectedDate.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            it?.let {
-//                cal.set(it.year,it.month-1,1,0,0,0)
-//            }
-//        })
-
-//        val data = BarData()
-//        val data2 = LineData()
-//        val combinedData = CombinedData()
-//        combinedData.setData(BarData())
-//        combinedData.setData(LineData())
-//        chart.data = combinedData
+        chart.description.isEnabled = false
+        chart.setDrawGridBackground(false)
+        chart.drawOrder = arrayOf(DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER)
         chart.data = CombinedData().apply {
             this.setData(BarData())
             this.setData(LineData())
         }
+        chart.legend.isEnabled = false
+        chart.xAxis.setDrawGridLines(false)
+        chart.xAxis.position = XAxis.XAxisPosition.BOTH_SIDED
+        chart.axisLeft.setDrawGridLines(false)
+        chart.axisRight.setDrawGridLines(false)
 
         mfmViewModel.accountTransactionChartData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {
-                Log.i("haha", it.toString())
                 val entries = mutableListOf<BarEntry>()
                 val entries2 = mutableListOf<Entry>()
+                dataMap.clear()
                 for (data in it) {
                     dataMap[data.accountTransactionDate.substring(8).toInt()] = data
                 }
                 cal.set(mfmViewModel.selectedDate.value?.year ?: 0, mfmViewModel.selectedDate.value?.month ?: 0 - 1, 1, 0, 0, 0)
-                Log.i("haha", cal.time.toString())
                 var total: Double = 0.0
                 for (i in 0 until cal.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                     var moneyIn: Double = (dataMap[i]?.accountTransactionIncome ?: 0.0) + (dataMap[i]?.accountTransactionTransferIn ?: 0.0)
@@ -90,55 +82,30 @@ class AccountGraphFragment : Fragment() {
                     total -= moneyOut
                     entries2.add(Entry(i - 1f, total.toFloat()))
                 }
-                val dataSet = BarDataSet(entries, "test")
-                val barData = BarData(dataSet)
+                val barDataSet = BarDataSet(entries, "test")
+//                barDataSet.stackLabels = arrayOf("Income", "Expense")
+                barDataSet.colors = arrayListOf(Color.GREEN, Color.RED)
+                barDataSet.setDrawValues(false)
+                val barData = BarData(barDataSet)
                 val lineDataSet = LineDataSet(entries2, "test2")
+                lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+                lineDataSet.lineWidth = 1.5f
+                lineDataSet.color = Color.BLACK
+                lineDataSet.setCircleColor(Color.BLACK)
+//                lineDataSet.circleRadius = 4f
+//                lineDataSet.setDrawCircles(false)
+                lineDataSet.setDrawValues(false)
                 val lineData = LineData(lineDataSet)
-//                val combinedData = CombinedData()
-                val combinedData = chart.combinedData
+                val combinedData = CombinedData()
                 combinedData.setData(barData)
                 combinedData.setData(lineData)
                 combinedData.notifyDataChanged()
                 chart.data = combinedData
                 chart.notifyDataSetChanged()
-                chart.postInvalidate()
+                chart.invalidate()
+                chart.animateX(500)
             }
         })
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val entries = mutableListOf<BarEntry>()
-//            val entries2 = mutableListOf<Entry>()
-//            val data = mfmViewModel.getAccountTransactionChartExpense()
-//            val data2 = mfmViewModel.getAccountTransactionChartIncome()
-//            for (d in data) {
-//                dataMap[d.accountTransactionDate.substring(8).toInt()] = -d.accountTransactionAmount
-//            }
-//            for (d in data2) {
-//                dataMap2[d.accountTransactionDate.substring(8).toInt()] = d.accountTransactionAmount
-//            }
-//            var total: Double = 0.0
-//            for (i in 0 until maxDayOfMonth) {
-//                entries.add(BarEntry(i-1f, floatArrayOf(dataMap[i]?.toFloat()?:0f, dataMap2[i]?.toFloat()?:0f)))
-//                total += (dataMap2[i] ?: 0.0)
-//                total += (dataMap[i] ?: 0.0)
-//                entries2.add(Entry(i-1f, total.toFloat()))
-////                if (dataMap[i] == null){
-////                    entries.add(BarEntry(i-1f, 0f))
-////                } else {
-////                    entries.add(BarEntry(i-1f, dataMap[i]!!.toFloat()))
-////                }
-//            }
-//            val dataSet = BarDataSet(entries, "test")
-//            val barData = BarData(dataSet)
-//            val lineDataSet = LineDataSet(entries2, "test2")
-//            val lineData = LineData(lineDataSet)
-//            val combinedData = CombinedData()
-//            combinedData.setData(barData)
-//            combinedData.setData(lineData)
-////            chart.data = barData
-//            chart.data = combinedData
-//            chart.postInvalidate()
-//        }
         return view
     }
 
