@@ -54,4 +54,7 @@ interface BudgetDao {
 
     @Query("SELECT budgetId, budgetName, SUM(transactionAmount) AS budgetTransactionTotal FROM `transaction` INNER JOIN budget ON transactionBudgetId = budgetId GROUP BY budgetId")
     suspend fun getBudgetDetail(): List<BudgetPieChartDataObject>
+
+    @Query("SELECT budgetId, budgetName, SUM(transactionAmount) AS budgetTransactionTotal FROM `transaction` INNER JOIN budget ON transactionBudgetId = budgetId WHERE transactionTime BETWEEN :timeFrom AND :timeTo GROUP BY budgetId")
+    suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar): List<BudgetPieChartDataObject>
 }

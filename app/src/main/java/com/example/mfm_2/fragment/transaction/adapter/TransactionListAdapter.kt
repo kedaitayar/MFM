@@ -82,7 +82,7 @@ class TransactionListAdapter internal constructor(context: Context) :
         holder.transactionDate.text = resources.getString(
             R.string.date,
             currentTransaction.transactionTime.get(Calendar.DAY_OF_MONTH),
-            currentTransaction.transactionTime.get(Calendar.MONTH),
+            currentTransaction.transactionTime.get(Calendar.MONTH) + 1,
             currentTransaction.transactionTime.get(Calendar.YEAR)
         )
     }

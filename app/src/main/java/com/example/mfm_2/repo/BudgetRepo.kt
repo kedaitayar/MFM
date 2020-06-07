@@ -56,4 +56,8 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
     suspend fun getBudgetDetail(): List<BudgetPieChartDataObject> {
         return budgetDao.getBudgetDetail()
     }
+
+    suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar): List<BudgetPieChartDataObject> {
+        return budgetDao.getBudgetDetail(timeFrom, timeTo)
+    }
 }

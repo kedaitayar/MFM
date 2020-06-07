@@ -19,40 +19,32 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BudgetDetailActivity : AppCompatActivity(), OnChartValueSelectedListener {
     private lateinit var mfmViewModel: MFMViewModel
-    private val chart: PieChart = findViewById(R.id.chart)
+    private lateinit var chart: PieChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_budget_detail)
         mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
+        val chipGroup: ChipGroup = findViewById(R.id.chip_group1)
 
-        val filter1: AutoCompleteTextView = findViewById(R.id.dropdown_filter1)
-        val filter1Option: MutableList<String> = mutableListOf("This Month", "All Time")
-        val filter1Adapter = ArrayAdapter<String>(this, R.layout.dropdown_menu_popup_item, filter1Option)
-        filter1.setAdapter(filter1Adapter)
-        filter1.setText(filter1.adapter.getItem(0).toString(), false)
-
-        filter1.setOnItemClickListener { parent, view, position, id ->
-            if (position == 0) {
-
-            } else if (position == 1) {
-
-            }
-        }
-
+        chart = findViewById(R.id.chart)
         chart.description.isEnabled = false
         chart.setUsePercentValues(true)
         chart.isDrawHoleEnabled = false
         chart.animateY(1400, Easing.EaseInOutQuad)
         chart.setEntryLabelTextSize(24f)
         chart.setOnChartValueSelectedListener(this)
+        chart.legend.isEnabled = false
 
 //        val l = chart.legend
 //        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
@@ -64,6 +56,56 @@ class BudgetDetailActivity : AppCompatActivity(), OnChartValueSelectedListener {
 //        l.yOffset = 0f
 //        l.textSize = 18f
 
+        updateChart()
+
+        chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.chip1 -> {
+                    val timeFrom = Calendar.getInstance()
+//                    timeFrom.set(year,month-1,1,0,0,0)
+                    timeFrom.set(timeFrom.get(Calendar.YEAR), timeFrom.get(Calendar.MONTH), 1,0,0,0)
+                    val timeTo = Calendar.getInstance()
+                    timeTo.timeInMillis = timeFrom.timeInMillis
+                    timeTo.add(Calendar.MONTH, 1)
+                    timeTo.add(Calendar.SECOND, -1)
+                    updateChart(timeFrom, timeTo)
+                }
+                R.id.chip2 -> {
+                    val timeFrom = Calendar.getInstance()
+                    timeFrom.set(timeFrom.get(Calendar.YEAR), timeFrom.get(Calendar.MONTH), 1,0,0,0)
+                    val timeTo = Calendar.getInstance()
+                    timeTo.timeInMillis = timeFrom.timeInMillis
+                    timeFrom.add(Calendar.MONTH, -3)
+                    timeTo.add(Calendar.MONTH, 1)
+                    timeTo.add(Calendar.SECOND, -1)
+                    updateChart(timeFrom, timeTo)
+                }
+                R.id.chip3 -> {
+                    val timeFrom = Calendar.getInstance()
+//                    timeFrom.set(timeFrom.get(Calendar.YEAR), 0, 1,0,0,0)
+                    val timeTo = Calendar.getInstance()
+//                    timeTo.timeInMillis = timeFrom.timeInMillis
+                    timeFrom.add(Calendar.MONTH, -12)
+                    updateChart(timeFrom, timeTo)
+                }
+                R.id.chip4 -> {
+                    updateChart()
+                }
+            }
+        }
+    }
+
+    override fun onNothingSelected() {
+    }
+
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        Log.i("haha", "Value: " + e!!.y.toString() + ", index: " + h!!.x.toString() + ", DataSet index: " + h.dataSetIndex)
+        val test = chart.data.dataSet
+        val test2 = test.getEntryForIndex(h.x.toInt())
+        Log.i("haha", test2.label)
+    }
+
+    private fun updateChart() {
         CoroutineScope(Dispatchers.IO).launch {
             val entries = ArrayList<PieEntry>()
             val query = mfmViewModel.getBudgetDetail()
@@ -82,20 +124,14 @@ class BudgetDetailActivity : AppCompatActivity(), OnChartValueSelectedListener {
         }
     }
 
-    override fun onNothingSelected() {
-    }
-
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-        Log.i("haha", "Value: " + e!!.y.toString() + ", index: " + h!!.x.toString() + ", DataSet index: " + h.dataSetIndex)
-        val test = chart.data.dataSet
-        val test2 = test.getEntryForIndex(h.x.toInt())
-        Log.i("haha", test2.label)
-    }
-
-    private fun updateChart(position: Int) {
+    private fun updateChart(timeFrom: Calendar, timeTo: Calendar) {
+        Log.i("haha", "timeFrom:"+timeFrom.time.toString())
+        Log.i("haha", "timeTo:"+timeTo.time.toString())
+//        chart.clearValues()
         CoroutineScope(Dispatchers.IO).launch {
             val entries = ArrayList<PieEntry>()
-            val query = mfmViewModel.getBudgetDetail()
+            val query = mfmViewModel.getBudgetDetail(timeFrom, timeTo)
+            Log.i("haha", query.toString())
             for (q in query) {
                 entries.add(PieEntry(q.budgetTransactionTotal.toFloat(), q.budgetName))
             }

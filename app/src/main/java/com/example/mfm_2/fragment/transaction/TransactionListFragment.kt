@@ -60,6 +60,7 @@ class TransactionListFragment : Fragment() {
                 popupMenu.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.popup_menu_edit_transaction -> {
+                            Log.i("haha", transactionList.transactionTime.time.toString())
                             val intent = Intent(this@TransactionListFragment.context, EditTransactionActivity::class.java)
                             intent.putExtra(EditTransactionActivity.EXTRA_TRANSACTION, transactionList)
                             startActivityForResult(intent, editTransactionCode)

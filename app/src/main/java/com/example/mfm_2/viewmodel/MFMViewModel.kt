@@ -7,6 +7,7 @@ import com.example.mfm_2.database.MFMDatabase
 import com.example.mfm_2.model.*
 import com.example.mfm_2.pojo.*
 import com.example.mfm_2.repo.*
+import java.util.*
 
 class MFMViewModel(application: Application) : AndroidViewModel(application) {
     //repo
@@ -197,5 +198,9 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun getBudgetDetail(): List<BudgetPieChartDataObject> {
         return budgetRepo.getBudgetDetail()
+    }
+
+    suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar): List<BudgetPieChartDataObject> {
+        return budgetRepo.getBudgetDetail(timeFrom, timeTo)
     }
 }
