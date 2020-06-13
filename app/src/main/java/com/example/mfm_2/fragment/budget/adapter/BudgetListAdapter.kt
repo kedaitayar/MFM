@@ -19,9 +19,11 @@ import com.example.mfm_2.model.Transaction
 import com.example.mfm_2.pojo.BudgetListAdapterDataObject
 
 //class BudgetListAdapter internal constructor(context: Context) : ListAdapter<BudgetListAdapterDataObject, BudgetListAdapter.ViewHolder>(BudgetListDiffCallback()) {
-class BudgetListAdapter internal constructor(context: Context) : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
+//class BudgetListAdapter internal constructor(context: Context) : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
+class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
+//    private  var budgetListData: List<BudgetListAdapterDataObject> = emptyList()
     private val mDiffer = AsyncListDiffer<BudgetListAdapterDataObject>(this, BudgetListDiffCallback())
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
+//    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var listener: OnItemClickListener? = null
 
     interface OnItemClickListener {
@@ -42,8 +44,8 @@ class BudgetListAdapter internal constructor(context: Context) : RecyclerView.Ad
             popupMenuButton.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-//                    listener?.onPopupMenuButtonClick(v, budgetList[position])
                     listener?.onPopupMenuButtonClick(v, mDiffer.currentList[position])
+//                    listener?.onPopupMenuButtonClick(v, budgetListData[position])
                 }
             }
         }
@@ -59,13 +61,15 @@ class BudgetListAdapter internal constructor(context: Context) : RecyclerView.Ad
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = inflater.inflate(R.layout.recyclerview_item_budget_list, parent, false)
+//        val itemView = inflater.inflate(R.layout.recyclerview_item_budget_list, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item_budget_list, parent, false)
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 //        Log.i("haha", position.toString())
         val current = mDiffer.currentList[position]
+//        val current = budgetListData[position]
         holder.expandableDetail.visibility = if (current.isExpanded) View.VISIBLE else View.GONE
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.text = current.budgetAllocation.toString()
@@ -83,6 +87,8 @@ class BudgetListAdapter internal constructor(context: Context) : RecyclerView.Ad
         val budgetList = mDiffer.currentList.toMutableList()
         budgetList[position] = budgetList[position].copy(isExpanded = !budgetList[position].isExpanded)
         mDiffer.submitList(budgetList)
+//        budgetListData[position].isExpanded = !budgetListData[position].isExpanded
+//        notifyItemChanged(position)
     }
 
     private class BudgetListDiffCallback : DiffUtil.ItemCallback<BudgetListAdapterDataObject>() {
@@ -99,12 +105,13 @@ class BudgetListAdapter internal constructor(context: Context) : RecyclerView.Ad
     }
 
     override fun getItemCount(): Int {
-//        return budgetList.size
         return mDiffer.currentList.size
+//        return budgetListData.size
     }
 
     fun submitData(budgetList: List<BudgetListAdapterDataObject>) {
-//        this.budgetList = budgetList
         mDiffer.submitList(budgetList)
+//        budgetListData = budgetList
+//        notifyDataSetChanged()
     }
 }

@@ -31,6 +31,8 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     //    val allBudgetTransactionByDate: LiveData<List<BudgetTransaction>>
     val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
+    val monthlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
+    val yearlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val totalBudgetedAmount: LiveData<Double>
     val totalIncome: LiveData<Double>
     val accountListDataPrevMonth: LiveData<List<AccountListAdapterDataObject>>
@@ -80,6 +82,12 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 //        }
         budgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year)
+        }
+        monthlyBudgetListData = Transformations.switchMap(selectedDate) {
+            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 1)
+        }
+        yearlyBudgetListData = Transformations.switchMap(selectedDate) {
+            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 2)
         }
         totalBudgetedAmount = budgetTransactionRepo.totalBudgetedAmount
         totalIncome = transactionRepo.totalIncome

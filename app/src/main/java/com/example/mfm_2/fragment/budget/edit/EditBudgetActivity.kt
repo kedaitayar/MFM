@@ -48,7 +48,7 @@ class EditBudgetActivity : AppCompatActivity() {
         if (budgetId > 0) {
             CoroutineScope(Dispatchers.IO).launch {
                 val budget = mfmViewModel.getBudgetWithBudgetTypeById(budgetId)
-                dropdownPos = budget.budgetTypeId.toInt()
+                dropdownPos = budget.budgetTypeId.toInt() - 1
                 val budgetType: List<BudgetType> = mfmViewModel.getAllBudgetType()
                 budgetTypeArrayAdapter =
                     object : ArrayAdapter<BudgetType>(this@EditBudgetActivity, R.layout.dropdown_menu_popup_item, budgetType) {
@@ -82,9 +82,9 @@ class EditBudgetActivity : AppCompatActivity() {
 //                val budgetTypeArrayAdapter = BudgetTypeDropdownAdapter(this@EditBudgetActivity, R.layout.dropdown_menu_popup_item,0, budgetType)
                 withContext(Dispatchers.Main) {
                     budgetName.setText(budget.budgetName)
-                    if (budget.budgetGoal != 0.0){
+//                    if (budget.budgetGoal != 0.0){
                         budgetGoal.setText(budget.budgetGoal.toString())
-                    }
+//                    }
                     budgetTypeDropdown.setAdapter(budgetTypeArrayAdapter)
                     budgetTypeDropdown.setText(budget.budgetTypeName)
                 }
