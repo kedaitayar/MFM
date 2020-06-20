@@ -14,7 +14,7 @@
         android:theme="@style/Widget.Design.AppBarLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/primary_text_dark"/>
+        app:titleTextColor="@android:color/primary_text_dark" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textlayout_budget_name"
@@ -60,11 +60,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textlayout_budget_goal"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Type">
+        android:hint="Type"
+        app:layout_constraintTop_toBottomOf="@+id/textlayout_budget_goal">
 
         <AutoCompleteTextView
             android:id="@+id/dropdown_budget_type"
@@ -72,6 +72,32 @@
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:focusable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textlayout_budget_deadline"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Deadline"
+        android:visibility="gone"
+        app:endIconDrawable="@drawable/ic_baseline_event_24"
+        app:endIconMode="custom"
+        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textlayout_budget_type">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textedit_budget_deadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -87,6 +113,6 @@
         android:paddingBottom="8dp"
         android:text="SAVE"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

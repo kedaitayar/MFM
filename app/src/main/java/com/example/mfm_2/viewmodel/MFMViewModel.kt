@@ -16,6 +16,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     private val transactionRepo: TransactionRepo
     private val budgetTransactionRepo: BudgetTransactionRepo
     private val budgetTypeRepo: BudgetTypeRepo
+    private val budgetDeadlineRepo: BudgetDeadlineRepo
     private val selectedDateRepo = SelectedDateRepo
 
     //simple livedata
@@ -33,6 +34,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val monthlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val yearlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
+    val debtBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val totalBudgetedAmount: LiveData<Double>
     val totalIncome: LiveData<Double>
     val accountListDataPrevMonth: LiveData<List<AccountListAdapterDataObject>>
@@ -67,6 +69,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         transactionRepo = TransactionRepo(database.transactionDao())
         budgetTransactionRepo = BudgetTransactionRepo(database.budgetTransactionDao())
         budgetTypeRepo = BudgetTypeRepo(database.budgetTypeDao())
+        budgetDeadlineRepo = BudgetDeadlineRepo(database.budgetDeadlineDao())
 
         //livedata init
         allAccount = accountRepo.allAccount
@@ -88,6 +91,9 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         }
         yearlyBudgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year, 2)
+        }
+        debtBudgetListData = Transformations.switchMap(selectedDate) {
+            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 3)
         }
         totalBudgetedAmount = budgetTransactionRepo.totalBudgetedAmount
         totalIncome = transactionRepo.totalIncome
@@ -130,6 +136,10 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun insert(budgetType: BudgetType): Long {
         return budgetTypeRepo.insert(budgetType)
+    }
+
+    suspend fun insert(budgetDeadline: BudgetDeadline): Long {
+        return budgetDeadlineRepo.insert(budgetDeadline)
     }
 
     suspend fun update(account: Account): Int {
@@ -182,6 +192,10 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun getTransactionById(transactionId: Long): Transaction {
         return transactionRepo.getTransactionById(transactionId)
+    }
+
+    suspend fun getBudgetDeadlineById(budgetId: Long): BudgetDeadline? {
+        return budgetDeadlineRepo.getBudgetDeadlineById(budgetId)
     }
 
     fun setSelectedDate(month: Int, year: Int) {

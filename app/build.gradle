@@ -60,4 +60,7 @@ dependencies {
 
     //chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //Android Debug Database
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

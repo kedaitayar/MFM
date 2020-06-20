@@ -56,7 +56,7 @@ class AccountListFragment : Fragment() {
                 popupMenu.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.popup_menu_add_fund_account -> {
-//                            TODO("link to add transaction income")
+                            TODO("link to add transaction income")
                             true
                         }
                         R.id.popup_menu_edit_account -> {

@@ -51,6 +51,7 @@ class BudgetFragment : Fragment() {
 
         childFragmentManager.beginTransaction().replace(R.id.fragment_container1, BudgetListFragment.newInstance(1)).commit()
         childFragmentManager.beginTransaction().replace(R.id.fragment_container2, BudgetListFragment.newInstance(2)).commit()
+        childFragmentManager.beginTransaction().replace(R.id.fragment_container3, BudgetListFragment.newInstance(3)).commit()
 
         val addBudget: Button = view.findViewById(R.id.button_add_budget)
         addBudget.setOnClickListener {

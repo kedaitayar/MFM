@@ -67,6 +67,9 @@ class BudgetListFragment : Fragment() {
             2 -> {
                 mfmViewModel.yearlyBudgetListData
             }
+            3 -> {
+                mfmViewModel.debtBudgetListData
+            }
             else -> {
                 mfmViewModel.budgetListData
             }
@@ -75,17 +78,14 @@ class BudgetListFragment : Fragment() {
         data.observe(viewLifecycleOwner, Observer {
             it?.let {
                 budgetAdapter.submitData(it)
-                Log.i("haha", "budgetType:"+budgetType)
-                for (a in it) {
-                    Log.i("haha", a.toString())
-                }
+                Log.i("haha", it.toString())
             }
         })
 
         budgetAdapter.setOnItemClickListener(object : BudgetListAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-//                budgetAdapter.expandedOrCollapse(position)
-            }
+//            override fun onItemClick(position: Int) {
+////                budgetAdapter.expandedOrCollapse(position)
+//            }
 
             override fun onPopupMenuButtonClick(view: View, budgetListAdapterDataObject: BudgetListAdapterDataObject) {
                 val popupMenuButton: Button = view.findViewById(R.id.button_popup_menu)

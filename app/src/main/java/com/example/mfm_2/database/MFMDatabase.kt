@@ -11,8 +11,9 @@ import com.example.mfm_2.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class], version = 16, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 19, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -20,6 +21,7 @@ abstract class MFMDatabase : RoomDatabase(){
     abstract fun budgetDao(): BudgetDao
     abstract fun budgetTypeDao(): BudgetTypeDao
     abstract fun budgetTransactionDao(): BudgetTransactionDao
+    abstract fun budgetDeadlineDao(): BudgetDeadlineDao
 
     companion object{
         @Volatile
@@ -60,8 +62,9 @@ abstract class MFMDatabase : RoomDatabase(){
                     scope.launch(Dispatchers.IO) {
 //                        populateDatabase(it.accountDao())
 //                        populateDatabase(it.budgetDao())
-////                        populateDatabase(it.transactionDao())
+//                        populateDatabase(it.transactionDao())
 //                        populateDatabase(it.budgetTypeDao())
+//                        populateDatabase(it.budgetDeadlineDao())
 //                        populateDatabase(it.budgetTransactionDao())
                     }
                 }
@@ -81,26 +84,41 @@ abstract class MFMDatabase : RoomDatabase(){
 
         suspend fun populateDatabase(transactionDao: TransactionDao){
             transactionDao.deleteAll()
-
-            var transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1)
+            val cal = Calendar.getInstance()
+            cal.set(2020,1,1)
+            var transaction = Transaction(transactionAmount = 50.0, transactionType = "INCOME", transactionAccountId = 1, transactionTime = cal)
             transactionDao.insert(transaction)
-//            transaction = Transaction(transactionAmount = 20, transactionType = "EXPENSE", transactionAccount = "Cash", transactionBudget = "Food")
-//            transactionDao.insert(transaction)
-//            transaction = Transaction(transactionAmount = 25, transactionType = "INCOME", transactionAccount = "Bank", transactionBudget = "Transport")
-//            transactionDao.insert(transaction)
-//            transaction = Transaction(transactionAmount = 30, transactionType = "INCOME", transactionAccount = "Bank", transactionBudget = "Food")
-//            transactionDao.insert(transaction)
-//            transaction = Transaction(transactionAmount = 35, transactionType = "EXPENSE", transactionAccount = "Cash", transactionBudget = "Transport")
-//            transactionDao.insert(transaction)
+
+            cal.set(2020,1,2)
+            transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.set(2020,1,2)
+            transaction = Transaction(transactionAmount = 50.0, transactionType = "INCOME", transactionAccountId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.set(2020,1,3)
+            transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.set(2020,1,5)
+            transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
 
         }
 
         suspend fun populateDatabase(budgetDao: BudgetDao){
             budgetDao.deleteAll()
 
-            var budget = Budget(budgetName = "Food", budgetId = 1)
+            var budget = Budget(budgetName = "Food", budgetId = 1, budgetType = 1)
             budgetDao.insert(budget)
-            budget = Budget(budgetName = "Transport", budgetId = 2)
+            budget = Budget(budgetName = "Transport", budgetId = 2, budgetType = 1)
+            budgetDao.insert(budget)
+            budget = Budget(budgetName = "Tax", budgetId = 3, budgetType = 2)
+            budgetDao.insert(budget)
+            budget = Budget(budgetName = "Debt", budgetId = 4, budgetType = 3)
+            budgetDao.insert(budget)
+            budget = Budget(budgetName = "Goal", budgetId = 5, budgetType = 3)
             budgetDao.insert(budget)
         }
 
@@ -126,6 +144,17 @@ abstract class MFMDatabase : RoomDatabase(){
             budgetTransactionDao.insert(budgetTransaction)
             budgetTransaction = BudgetTransaction(budgetTransactionMonth = 7, budgetTransactionYear = 2020, budgetTransactionAmount = 21.0, budgetTransactionBudgetId = 1)
             budgetTransactionDao.insert(budgetTransaction)
+        }
+
+        suspend fun populateDatabase(budgetDeadlineDao: BudgetDeadlineDao){
+            budgetDeadlineDao.deleteAll()
+
+            val cal = Calendar.getInstance()
+            cal.set(2020,11,1)
+            var budgetDeadline = BudgetDeadline(budgetId = 4, budgetDeadline = cal)
+            budgetDeadlineDao.insert(budgetDeadline)
+            budgetDeadline = BudgetDeadline(budgetId = 5, budgetDeadline = cal)
+            budgetDeadlineDao.insert(budgetDeadline)
         }
     }
 }
