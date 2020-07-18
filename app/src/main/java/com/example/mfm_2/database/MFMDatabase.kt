@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 19, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 21, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -85,26 +85,93 @@ abstract class MFMDatabase : RoomDatabase(){
         suspend fun populateDatabase(transactionDao: TransactionDao){
             transactionDao.deleteAll()
             val cal = Calendar.getInstance()
-            cal.set(2020,1,1)
-            var transaction = Transaction(transactionAmount = 50.0, transactionType = "INCOME", transactionAccountId = 1, transactionTime = cal)
+            cal.add(Calendar.MONTH,-1)
+            var transaction = Transaction(transactionAmount = 200.0, transactionType = "INCOME", transactionAccountId = 1, transactionTime = cal)
             transactionDao.insert(transaction)
 
-            cal.set(2020,1,2)
-            transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
             transactionDao.insert(transaction)
 
-            cal.set(2020,1,2)
-            transaction = Transaction(transactionAmount = 50.0, transactionType = "INCOME", transactionAccountId = 2, transactionTime = cal)
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 200.0, transactionType = "INCOME", transactionAccountId = 2, transactionTime = cal)
             transactionDao.insert(transaction)
 
-            cal.set(2020,1,3)
-            transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 1, transactionTime = cal)
+            cal.add(Calendar.DATE, 3)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 1, transactionTime = cal)
             transactionDao.insert(transaction)
 
-            cal.set(2020,1,5)
-            transaction = Transaction(transactionAmount = 15.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
             transactionDao.insert(transaction)
 
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 2)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 2, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 1, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
         }
 
         suspend fun populateDatabase(budgetDao: BudgetDao){
@@ -129,7 +196,7 @@ abstract class MFMDatabase : RoomDatabase(){
             budgetTypeDao.insert(budgetType)
             budgetType = BudgetType(budgetTypeId = 2, budgetTypeName = "Yearly")
             budgetTypeDao.insert(budgetType)
-            budgetType = BudgetType(budgetTypeId = 3, budgetTypeName = "Debt")
+            budgetType = BudgetType(budgetTypeId = 3, budgetTypeName = "Goal/Debt")
             budgetTypeDao.insert(budgetType)
         }
 

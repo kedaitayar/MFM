@@ -7,7 +7,7 @@ import com.example.mfm_2.model.BudgetDeadline
 @Dao
 interface BudgetDeadlineDao {
     @Query("SELECT * FROM budgetdeadline")
-    suspend fun getAllBudgetDeadline(): List<BudgetDeadline>
+    fun getAllBudgetDeadline(): LiveData<List<BudgetDeadline>>
 
     @Query("SELECT * FROM budgetdeadline WHERE budgetId = :budgetId")
     suspend fun getBudgetDeadlineById(budgetId: Long): BudgetDeadline?

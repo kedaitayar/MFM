@@ -3,6 +3,7 @@ package com.example.mfm_2.fragment.budget.adapter
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +12,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.model.Budget
-import com.example.mfm_2.model.BudgetTransaction
+import com.example.mfm_2.model.BudgetDeadline
 import com.example.mfm_2.pojo.BudgetListAdapterDataObject
+import com.example.mfm_2.pojo.BudgetingListAdapterDataObject
+import com.example.mfm_2.pojo.SelectedDate2
 import com.google.android.material.textfield.TextInputEditText
+import java.util.*
+
 
 class BudgetingListAdapter internal constructor(context: Context) :
     ListAdapter<BudgetListAdapterDataObject, BudgetingListAdapter.ViewHolder>(BudgetListDiffCallback()) {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     var budgetAlloc = mutableMapOf<Int, String>()
-
+    private lateinit var budgetDeadline: List<BudgetDeadline>
+    private lateinit var selectedDate: SelectedDate2
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         init {
@@ -39,11 +44,11 @@ class BudgetingListAdapter internal constructor(context: Context) :
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 //                    budgetAlloc[adapterPosition] = s.toString()
-                     if (s.isNullOrBlank()){
-                         budgetAlloc[adapterPosition] = "0"
-                     } else {
-                         budgetAlloc[adapterPosition] = s.toString()
-                     }
+                    if (s.isNullOrBlank()) {
+                        budgetAlloc[adapterPosition] = "0"
+                    } else {
+                        budgetAlloc[adapterPosition] = s.toString()
+                    }
                 }
 
             })
@@ -62,8 +67,26 @@ class BudgetingListAdapter internal constructor(context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = getItem(position)
         holder.budgetName.text = current.budgetName
-        holder.budgetGoal.text = current.budgetGoal.toString()
         holder.budgetAllocation.setText(current.budgetAllocation.toString())
+        if (current.budgetTypeId != 3L) {
+            holder.budgetGoal.text = current.budgetGoal.toString()
+        } else {
+            val cal = Calendar.getInstance()
+            cal.set(selectedDate.year, selectedDate.month, 0,0,0)
+            val currDeadline = budgetDeadline.find { it.budgetId == current.budgetId }
+            val cal2 = currDeadline?.budgetDeadline?:Calendar.getInstance()
+            val diffYear = cal2.get(Calendar.YEAR) - cal.get(Calendar.YEAR)
+            val diffMonth = cal2.get(Calendar.MONTH) - cal.get(Calendar.MONTH)
+            holder.budgetGoal.text = ((current.budgetGoal-current.budgetTotalPrevAllocation)/(diffMonth+(diffYear*12))).toString()
+        }
+    }
+
+    fun submitDeadlineData(budgetDeadline: List<BudgetDeadline>) {
+        this.budgetDeadline = budgetDeadline
+    }
+
+    fun submitSelectedDate(selectedDate: SelectedDate2) {
+        this.selectedDate = selectedDate
     }
 
     private class BudgetListDiffCallback : DiffUtil.ItemCallback<BudgetListAdapterDataObject>() {

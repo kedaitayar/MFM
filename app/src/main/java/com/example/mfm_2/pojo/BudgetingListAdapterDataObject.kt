@@ -1,6 +1,6 @@
 package com.example.mfm_2.pojo
 
-data class BudgetListAdapterDataObject(
+data class BudgetingListAdapterDataObject(
     var budgetId: Long = 0,
     var budgetName: String = "",
     var budgetAllocation: Double = 0.0,
@@ -8,6 +8,5 @@ data class BudgetListAdapterDataObject(
     var budgetUsed: Double = 0.0,
     var budgetTypeId: Long = 0,
     var budgetTypeName: String = "",
-    var isExpanded: Boolean = false,
     var budgetTotalPrevAllocation: Double = 0.0
 )

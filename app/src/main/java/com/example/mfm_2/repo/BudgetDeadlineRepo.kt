@@ -1,13 +1,11 @@
 package com.example.mfm_2.repo
 
+import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetDeadlineDao
-import com.example.mfm_2.model.Budget
 import com.example.mfm_2.model.BudgetDeadline
 
 class BudgetDeadlineRepo(private val budgetDeadlineDao: BudgetDeadlineDao) {
-    suspend fun getAllBudgetDeadline(): List<BudgetDeadline> {
-        return budgetDeadlineDao.getAllBudgetDeadline()
-    }
+    val allBudgetDeadline: LiveData<List<BudgetDeadline>> = budgetDeadlineDao.getAllBudgetDeadline()
 
     suspend fun getBudgetDeadlineById(budgetId: Long): BudgetDeadline? {
         return budgetDeadlineDao.getBudgetDeadlineById(budgetId)

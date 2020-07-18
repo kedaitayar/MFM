@@ -26,19 +26,22 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     //    val allTransaction: LiveData<List<Transaction>>
     val allBudgetTransaction: LiveData<List<BudgetTransaction>>
     val allBudgetType: LiveData<List<BudgetType>>
+    val allBudgetDeadline: LiveData<List<BudgetDeadline>>
     val accountListData: LiveData<List<AccountListAdapterDataObject>>
     val transactionListData: LiveData<List<TransactionListAdapterDataObject>>
     val selectedDate: LiveData<SelectedDate2>
 
     //    val allBudgetTransactionByDate: LiveData<List<BudgetTransaction>>
     val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
+    val budgetingListData: LiveData<List<BudgetListAdapterDataObject>>
     val monthlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val yearlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val debtBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val totalBudgetedAmount: LiveData<Double>
     val totalIncome: LiveData<Double>
     val accountListDataPrevMonth: LiveData<List<AccountListAdapterDataObject>>
-//    val accountTransactionChartExpense: LiveData<List<AccountTransactionChartDataObject>>
+
+    //    val accountTransactionChartExpense: LiveData<List<AccountTransactionChartDataObject>>
 //    val accountTransactionChartIncome: LiveData<List<AccountTransactionChartDataObject>>
 //    val accountTransactionChartTransferIn: LiveData<List<AccountTransactionChartDataObject>>
 //    val accountTransactionChartTransferOut: LiveData<List<AccountTransactionChartDataObject>>
@@ -74,6 +77,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         //livedata init
         allAccount = accountRepo.allAccount
         allBudget = budgetRepo.allBudget
+        allBudgetDeadline = budgetDeadlineRepo.allBudgetDeadline
 //        allTransaction = transactionRepo.allTransaction
         allBudgetTransaction = budgetTransactionRepo.allBudgetTransaction
         allBudgetType = budgetTypeRepo.allBudgetType
@@ -86,6 +90,9 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         budgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year)
         }
+        budgetingListData = Transformations.switchMap(selectedDate) {
+            budgetRepo.getBudgetingListAdapterDO(it.month, it.year)
+        }
         monthlyBudgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year, 1)
         }
@@ -93,7 +100,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year, 2)
         }
         debtBudgetListData = Transformations.switchMap(selectedDate) {
-            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 3)
+            budgetRepo.getBudgetGoalDebtListAdapterDO(it.month, it.year)
         }
         totalBudgetedAmount = budgetTransactionRepo.totalBudgetedAmount
         totalIncome = transactionRepo.totalIncome
@@ -114,7 +121,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 //            transactionRepo.getAccountTransactionChartTransferOut(it.first?:0, it.second?.month?:0, it.second?.year?:0)
 //        }
         accountTransactionChartData = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
-            transactionRepo.getAccountTransactionChartData(it.first?:0, it.second?.month?:0, it.second?.year?:0)
+            transactionRepo.getAccountTransactionChartData(it.first ?: 0, it.second?.month ?: 0, it.second?.year ?: 0)
         }
     }
 
@@ -222,7 +229,15 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         return budgetRepo.getBudgetDetail()
     }
 
+    suspend fun getBudgetDetail(budgetType: List<Long>): List<BudgetPieChartDataObject> {
+        return budgetRepo.getBudgetDetail(budgetType)
+    }
+
     suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar): List<BudgetPieChartDataObject> {
         return budgetRepo.getBudgetDetail(timeFrom, timeTo)
+    }
+
+    suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar, budgetType: List<Long>): List<BudgetPieChartDataObject> {
+        return budgetRepo.getBudgetDetail(timeFrom, timeTo, budgetType)
     }
 }

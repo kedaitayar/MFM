@@ -1,6 +1,7 @@
 package com.example.mfm_2.fragment.account.adapter
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,9 @@ import com.example.mfm_2.R
 import com.example.mfm_2.model.Account
 import com.example.mfm_2.model.Transaction
 import com.example.mfm_2.pojo.AccountListAdapterDataObject
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 class AccountListAdapter internal constructor(context: Context) :
     ListAdapter<AccountListAdapterDataObject, AccountListAdapter.ViewHolder>(AccountListDiffCallback()) {
@@ -54,9 +58,14 @@ class AccountListAdapter internal constructor(context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = getItem(position)
+        val resources: Resources = holder.itemView.context.resources
+        val formatter = DecimalFormat(resources.getString(R.string.currency_format))
+        val format = DecimalFormatSymbols(Locale.getDefault())
+        format.groupingSeparator = ' '
+        formatter.decimalFormatSymbols = format
         holder.accountName.text = current.accountName
-        holder.accountBalance.text =
-            (current.accountIncome - current.accountExpense - current.accountTransferOut + current.accountTransferIn).toString()
+        val balance = (current.accountIncome - current.accountExpense - current.accountTransferOut + current.accountTransferIn)
+        holder.accountBalance.text = resources.getString(R.string.currency, formatter.format(balance))
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

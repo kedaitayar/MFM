@@ -75,9 +75,11 @@ class AddTransactionActivity : AppCompatActivity() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
+                //not use
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
+                //not use
             }
         }
         onTabSelectedListener.onTabSelected(tabLayout.getTabAt(0))

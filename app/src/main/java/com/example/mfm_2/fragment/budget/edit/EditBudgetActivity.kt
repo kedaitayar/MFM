@@ -107,6 +107,7 @@ class EditBudgetActivity : AppCompatActivity() {
                     if (budget.budgetTypeId == 3L) {
                         budgetDeadlineLayout.visibility = View.VISIBLE
                         if (budgetDeadlineData.budgetId != -1L) {
+                            budgetDeadlineCalendar = budgetDeadlineData.budgetDeadline
                             val sdf = SimpleDateFormat("MMM d, yyyy")
                             budgetDeadlineData.budgetDeadline?.time.let {
                                 budgetDeadline.setText(sdf.format(it!!))

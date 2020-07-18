@@ -38,8 +38,20 @@ class BudgetingActivity : AppCompatActivity() {
         budgetingAdapter = BudgetingListAdapter(this)
         recyclerView.adapter = budgetingAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        mfmViewModel.budgetListData.observe(this, Observer {
-            it?.let { budgetingAdapter.submitList(it) }
+        mfmViewModel.budgetingListData.observe(this, Observer {
+            it?.let {
+                budgetingAdapter.submitList(it)
+            }
+        })
+        mfmViewModel.allBudgetDeadline.observe(this, Observer {
+            it?.let {
+                budgetingAdapter.submitDeadlineData(it)
+            }
+        })
+        mfmViewModel.selectedDate.observe(this, Observer {
+            it?.let {
+                budgetingAdapter.submitSelectedDate(it)
+            }
         })
     }
 

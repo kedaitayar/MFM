@@ -78,7 +78,16 @@ class BudgetListFragment : Fragment() {
         data.observe(viewLifecycleOwner, Observer {
             it?.let {
                 budgetAdapter.submitData(it)
-                Log.i("haha", it.toString())
+            }
+        })
+        mfmViewModel.allBudgetDeadline.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                budgetAdapter.submitDeadlineData(it)
+            }
+        })
+        mfmViewModel.selectedDate.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                budgetAdapter.submitSelectedDate(it)
             }
         })
 

@@ -6,6 +6,7 @@ import com.example.mfm_2.model.Budget
 import com.example.mfm_2.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.pojo.BudgetPieChartDataObject
 import com.example.mfm_2.pojo.BudgetWithBudgetType
+import com.example.mfm_2.pojo.BudgetingListAdapterDataObject
 import java.util.*
 
 class BudgetRepo(private val budgetDao: BudgetDao) {
@@ -43,6 +44,26 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         return budgetDao.getBudgetWithBudgetTypeById(budgetId)
     }
 
+    fun getBudgetingListAdapterDO(month: Int, year: Int): LiveData<List<BudgetListAdapterDataObject>> {
+        val timeFrom = Calendar.getInstance()
+        timeFrom.set(year, month - 1, 1, 0, 0, 0)
+        val timeTo = Calendar.getInstance()
+        timeTo.timeInMillis = timeFrom.timeInMillis
+        timeTo.add(Calendar.MONTH, 1)
+        timeTo.add(Calendar.SECOND, -1)
+        return budgetDao.getBudgetingListAdapterDO(month, year, timeFrom, timeTo)
+    }
+
+    fun getBudgetGoalDebtListAdapterDO(month: Int, year: Int): LiveData<List<BudgetListAdapterDataObject>> {
+        val timeFrom = Calendar.getInstance()
+        timeFrom.set(year, month - 1, 1, 0, 0, 0)
+        val timeTo = Calendar.getInstance()
+        timeTo.timeInMillis = timeFrom.timeInMillis
+        timeTo.add(Calendar.MONTH, 1)
+        timeTo.add(Calendar.SECOND, -1)
+        return budgetDao.getBudgetGoalDebtListAdapterDO(month, year, timeFrom, timeTo)
+    }
+
     fun getBudgetListAdapterDO(month: Int, year: Int): LiveData<List<BudgetListAdapterDataObject>> {
         val timeFrom = Calendar.getInstance()
         timeFrom.set(year, month - 1, 1, 0, 0, 0)
@@ -67,7 +88,15 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         return budgetDao.getBudgetDetail()
     }
 
+    suspend fun getBudgetDetail(budgetType: List<Long>): List<BudgetPieChartDataObject> {
+        return budgetDao.getBudgetDetail(budgetType)
+    }
+
     suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar): List<BudgetPieChartDataObject> {
         return budgetDao.getBudgetDetail(timeFrom, timeTo)
+    }
+
+    suspend fun getBudgetDetail(timeFrom: Calendar, timeTo: Calendar, budgetType: List<Long>): List<BudgetPieChartDataObject> {
+        return budgetDao.getBudgetDetail(timeFrom, timeTo, budgetType)
     }
 }

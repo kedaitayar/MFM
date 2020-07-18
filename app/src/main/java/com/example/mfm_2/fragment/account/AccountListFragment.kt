@@ -55,10 +55,10 @@ class AccountListFragment : Fragment() {
                 popupMenu.inflate(R.menu.menu_all_account)
                 popupMenu.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.popup_menu_add_fund_account -> {
-                            TODO("link to add transaction income")
-                            true
-                        }
+//                        R.id.popup_menu_add_fund_account -> {
+//                            TODO("link to add transaction income")
+//                            true
+//                        }
                         R.id.popup_menu_edit_account -> {
                             val intent = Intent(this@AccountListFragment.context, EditAccountActivity::class.java)
                             intent.putExtra(EditAccountActivity.EXTRA_ACCOUNT_ID, accountListAdapterDataObject.accountId)
