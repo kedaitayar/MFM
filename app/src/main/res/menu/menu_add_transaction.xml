@@ -3,15 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/budgeting_info"
+        android:id="@+id/transaction_info"
         android:icon="@drawable/ic_help_outline_24px"
         android:title="Info"
         app:showAsAction="always" />
-    
-    <item
-        android:id="@+id/save_budgeting"
-        android:icon="@drawable/ic_check_white_24dp"
-        android:title="Save"
-        app:showAsAction="always" />
+
 
 </menu>

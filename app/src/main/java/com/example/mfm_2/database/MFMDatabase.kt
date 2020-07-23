@@ -97,8 +97,12 @@ abstract class MFMDatabase : RoomDatabase(){
             transaction = Transaction(transactionAmount = 200.0, transactionType = "INCOME", transactionAccountId = 2, transactionTime = cal)
             transactionDao.insert(transaction)
 
-            cal.add(Calendar.DATE, 3)
+            cal.add(Calendar.DATE, 1)
             transaction = Transaction(transactionAmount = 10.0, transactionType = "EXPENSE", transactionAccountId = 2, transactionBudgetId = 1, transactionTime = cal)
+            transactionDao.insert(transaction)
+
+            cal.add(Calendar.DATE, 1)
+            transaction = Transaction(transactionAmount = 10.0, transactionType = "TRANSFER", transactionAccountId = 2, transactionAccountTransferTo = 1, transactionTime = cal)
             transactionDao.insert(transaction)
 
             cal.add(Calendar.DATE, 2)

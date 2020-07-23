@@ -98,21 +98,28 @@ class TransactionRepo(private val transactionDao: TransactionDao) {
 //        return transactionDao.getAccountTransactionChartTransferOut(accountId, timeFrom, timeTo)
 //    }
 
-        fun getAccountTransactionChartData(accountId: Long, month: Int, year: Int): LiveData<List<AccountTransactionChartDataObject>> {
+    fun getAccountTransactionChartData(accountId: Long, month: Int, year: Int): LiveData<List<AccountTransactionChartDataObject>> {
         val timeFrom = Calendar.getInstance()
-        timeFrom.set(year,month-1,1,0,0,0)
+        timeFrom.set(year, month - 1, 1, 0, 0, 0)
         val timeTo = Calendar.getInstance()
         timeTo.timeInMillis = timeFrom.timeInMillis
         timeTo.add(Calendar.MONTH, 1)
         timeTo.add(Calendar.SECOND, -1)
-        return transactionDao.getAccountTransactionChartData(accountId, timeFrom, timeTo)
+        val timeToPrevMonth = Calendar.getInstance()
+        timeToPrevMonth.set(year, month - 1, 1, 0, 0, 0)
+        timeToPrevMonth.add(Calendar.SECOND, -1)
+        return transactionDao.getAccountTransactionChartData(accountId, timeFrom, timeTo, timeToPrevMonth)
     }
 
     fun getAccountListDataPrevMonth(month: Int, year: Int): LiveData<List<AccountListAdapterDataObject>> {
         val timeTo = Calendar.getInstance()
-        timeTo.set(year,month-1,1,0,0,0)
-        timeTo.add(Calendar.MONTH, 1)
+        timeTo.set(year, month - 1, 1, 0, 0, 0)
+//        timeTo.add(Calendar.MONTH, 1)
         timeTo.add(Calendar.SECOND, -1)
         return transactionDao.getAccountListDataPrevMonth(timeTo)
+    }
+
+    fun getAccountTransactionList(accountId: Long): LiveData<List<TransactionListAdapterDataObject>>? {
+        return transactionDao.getAccountTransactionListData(accountId)
     }
 }

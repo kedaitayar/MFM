@@ -56,6 +56,26 @@
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/info_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:minWidth="0dip"
+                    android:minHeight="0dip"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_baseline_help_24"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@+id/textlayout_date"
+                    app:layout_constraintStart_toEndOf="@+id/textlayout_date"
+                    app:layout_constraintTop_toTopOf="@+id/textlayout_date" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>

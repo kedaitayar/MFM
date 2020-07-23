@@ -3,9 +3,10 @@ package com.example.mfm_2
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -14,20 +15,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mfm_2.custom_class.MonthYearPickerDialog
-import com.example.mfm_2.fragment.NotBudgetedFragment
-import com.example.mfm_2.fragment.account.AccountFragment
-import com.example.mfm_2.fragment.budget.BudgetFragment
-import com.example.mfm_2.fragment.transaction.TransactionFragment
+import com.example.mfm_2.ui.NotBudgetedFragment
+import com.example.mfm_2.ui.account.AccountFragment
+import com.example.mfm_2.ui.budget.BudgetFragment
+import com.example.mfm_2.ui.transaction.TransactionFragment
 import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mfmViewModel: MFMViewModel
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         //fab
         val fab: FloatingActionButton = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, com.example.mfm_2.fragment.transaction.AddTransactionActivity::class.java)
+            val intent = Intent(this@MainActivity, com.example.mfm_2.ui.transaction.AddTransactionActivity::class.java)
             startActivity(intent)
         }
 
@@ -83,6 +80,16 @@ class MainActivity : AppCompatActivity() {
                 dateInput.setText("${monthShortString[it.month - 1]} ${it.year}")
             }
         })
+
+        val info: Button = findViewById(R.id.info_button)
+        info.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Date")
+                .setMessage("This toolbar display the selected date. The selected date will be mostly used in the budget section and account section.")
+                .setPositiveButton("OK"){ dialog, which -> }
+            val dialog = builder.create()
+            dialog.show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

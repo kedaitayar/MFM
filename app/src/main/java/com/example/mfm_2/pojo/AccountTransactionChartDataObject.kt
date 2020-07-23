@@ -5,5 +5,9 @@ data class AccountTransactionChartDataObject(
     var accountTransactionExpense: Double,
     var accountTransactionIncome: Double,
     var accountTransactionTransferIn: Double,
-    var accountTransactionTransferOut: Double
+    var accountTransactionTransferOut: Double,
+    var accountTransactionIncomePrevMonth: Double?,
+    var accountTransactionExpensePrevMonth: Double?,
+    var accountTransactionTransferInPrevMonth: Double?,
+    var accountTransactionTransferOutPrevMonth: Double?
 )

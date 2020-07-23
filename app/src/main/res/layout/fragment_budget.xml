@@ -5,7 +5,7 @@
     android:id="@+id/budget_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.budget.BudgetFragment">
+    tools:context=".ui.budget.BudgetFragment">
 
     <HorizontalScrollView
         android:id="@+id/budget_button_panel"
@@ -17,6 +17,26 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/info_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:minWidth="0dip"
+                android:minHeight="0dip"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_baseline_help_24"
+                app:iconPadding="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/textView8"
+                app:layout_constraintTop_toTopOf="@+id/textView8" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_budgeting"
@@ -102,6 +122,27 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_budget_type1"
+                        app:layout_constraintStart_toEndOf="@+id/textView_budget_type1"
+                        app:layout_constraintTop_toTopOf="@+id/textView_budget_type1" />
+
                     <TextView
                         android:id="@+id/textView_budgeted1"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -112,15 +153,57 @@
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_budget_type1"
                         app:layout_constraintRight_toRightOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_budgeted1"
+                        app:layout_constraintStart_toEndOf="@+id/textView_budgeted1"
+                        app:layout_constraintTop_toTopOf="@+id/textView_budgeted1" />
+
                     <TextView
                         android:id="@+id/textView_used1"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="28dp"
+                        android:layout_marginRight="24dp"
                         android:text="Used"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_budget_type1"
                         app:layout_constraintRight_toRightOf="parent" />
+
+                    <Button
+                        android:id="@+id/info_button5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_used1"
+                        app:layout_constraintStart_toEndOf="@+id/textView_used1"
+                        app:layout_constraintTop_toTopOf="@+id/textView_used1" />
 
                     <View
                         android:id="@+id/divider1"
@@ -162,6 +245,27 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_budget_type2"
+                        app:layout_constraintStart_toEndOf="@+id/textView_budget_type2"
+                        app:layout_constraintTop_toTopOf="@+id/textView_budget_type2" />
+
                     <TextView
                         android:id="@+id/textView_budgeted2"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -172,15 +276,57 @@
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_budget_type2"
                         app:layout_constraintRight_toRightOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_budgeted2"
+                        app:layout_constraintStart_toEndOf="@+id/textView_budgeted2"
+                        app:layout_constraintTop_toTopOf="@+id/textView_budgeted2" />
+
                     <TextView
                         android:id="@+id/textView_used2"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="28dp"
+                        android:layout_marginRight="24dp"
                         android:text="Used"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_budget_type2"
                         app:layout_constraintRight_toRightOf="parent" />
+
+                    <Button
+                        android:id="@+id/info_button7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_used2"
+                        app:layout_constraintStart_toEndOf="@+id/textView_used2"
+                        app:layout_constraintTop_toTopOf="@+id/textView_used2" />
 
                     <View
                         android:id="@+id/divider2"
@@ -223,6 +369,27 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_budget_type3"
+                        app:layout_constraintStart_toEndOf="@+id/textView_budget_type3"
+                        app:layout_constraintTop_toTopOf="@+id/textView_budget_type3" />
+
                     <TextView
                         android:id="@+id/textView_budgeted3"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -233,15 +400,57 @@
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_budget_type3"
                         app:layout_constraintRight_toRightOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_budgeted3"
+                        app:layout_constraintStart_toEndOf="@+id/textView_budgeted3"
+                        app:layout_constraintTop_toTopOf="@+id/textView_budgeted3" />
+
                     <TextView
                         android:id="@+id/textView_used3"
                         style="@style/TextAppearance.MaterialComponents.Headline6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="28dp"
-                        android:text="Total Left"
+                        android:layout_marginRight="24dp"
+                        android:text="Balance"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textView_budget_type3"
                         app:layout_constraintRight_toRightOf="parent" />
+
+                    <Button
+                        android:id="@+id/info_button9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#7C7C7C"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        android:textSize="10sp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_baseline_help_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_used3"
+                        app:layout_constraintStart_toEndOf="@+id/textView_used3"
+                        app:layout_constraintTop_toTopOf="@+id/textView_used3" />
 
                     <View
                         android:id="@+id/divider3"

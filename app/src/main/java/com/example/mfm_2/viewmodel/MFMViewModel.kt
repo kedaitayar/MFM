@@ -46,6 +46,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 //    val accountTransactionChartTransferIn: LiveData<List<AccountTransactionChartDataObject>>
 //    val accountTransactionChartTransferOut: LiveData<List<AccountTransactionChartDataObject>>
     val accountTransactionChartData: LiveData<List<AccountTransactionChartDataObject>>
+    val accountTransactionList: LiveData<List<TransactionListAdapterDataObject>>
 
     //non room livedata
     val selectedAccount: LiveData<Long>
@@ -122,6 +123,9 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 //        }
         accountTransactionChartData = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
             transactionRepo.getAccountTransactionChartData(it.first ?: 0, it.second?.month ?: 0, it.second?.year ?: 0)
+        }
+        accountTransactionList = Transformations.switchMap(selectedAccount) {
+            transactionRepo.getAccountTransactionList(it)
         }
     }
 

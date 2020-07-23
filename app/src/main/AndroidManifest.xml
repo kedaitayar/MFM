@@ -9,21 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".fragment.budget.BudgetDetailActivity"></activity>
+        <activity android:name=".ui.budget.BudgetDetailActivity"></activity>
         <activity
-            android:name=".fragment.transaction.EditTransactionActivity"
+            android:name=".ui.transaction.EditTransactionActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".fragment.transaction.AddTransactionActivity"
+            android:name=".ui.transaction.AddTransactionActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".fragment.account.EditAccountActivity"
+            android:name=".ui.account.EditAccountActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".fragment.budget.BudgetingActivity"
+            android:name=".ui.budget.BudgetingActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".fragment.budget.edit.EditBudgetActivity"
+            android:name=".ui.budget.edit.EditBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".TestActivity" />
         <activity android:name=".MainActivity">
