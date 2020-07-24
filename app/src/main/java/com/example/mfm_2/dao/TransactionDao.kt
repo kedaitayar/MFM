@@ -3,10 +3,7 @@ package com.example.mfm_2.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.mfm_2.model.Transaction
-import com.example.mfm_2.pojo.AccountListAdapterDataObject
-import com.example.mfm_2.pojo.AccountTransactionChartDataObject
-import com.example.mfm_2.pojo.TransactionListAdapterDataObject
-import com.example.mfm_2.pojo.TransactionWithAccountBudget
+import com.example.mfm_2.pojo.*
 import java.util.*
 
 @Dao
@@ -59,8 +56,12 @@ interface TransactionDao {
     @Query("SELECT account.accountId, accountName, SUM(accountIncome) AS accountIncome, SUM(accountExpense) AS accountExpense, SUM(accountTransferIn) AS accountTransferIn, SUM(accountTransferOut) AS accountTransferOut FROM account LEFT JOIN (SELECT transactionAccountId AS accountId, SUM(CASE WHEN transactionType = 'INCOME' THEN transactionAmount ELSE 0 END) AS accountIncome, SUM(CASE WHEN transactionType = 'EXPENSE' THEN transactionAmount ELSE 0 END) AS accountExpense, 0 AS accountTransferIn, SUM(CASE WHEN transactionType = 'TRANSFER' THEN transactionAmount ELSE 0 END) AS accountTransferOut FROM `transaction` GROUP BY transactionAccountId UNION SELECT transactionAccountTransferTo AS accountId, 0 AS accountIncome, 0 AS accountExpense, SUM(CASE WHEN transactionType = 'TRANSFER' THEN transactionAmount ELSE 0 END) AS accountTransferIn, 0 AS accountTransferOut FROM `transaction` WHERE transactionType = 'TRANSFER' GROUP BY transactionAccountTransferTo) AS tbl ON account.accountId = tbl.accountId GROUP BY account.accountId")
     fun getAccountListData(): LiveData<List<AccountListAdapterDataObject>>
 
-    @Query("SELECT *, accountName AS transactionAccountName, budget.budgetName AS transactionBudgetName, budget2.budgetName AS transactionAccountTransferToName  FROM `transaction` LEFT JOIN account ON transactionAccountId = accountId LEFT JOIN budget ON transactionBudgetId = budget.budgetId LEFT JOIN budget AS budget2 ON transactionAccountTransferTo = budget2.budgetId ORDER BY transactionId DESC")
+    @Query("SELECT *, account.accountName AS transactionAccountName, budget.budgetName AS transactionBudgetName, account2.accountName AS transactionAccountTransferToName FROM `transaction` LEFT JOIN account ON transactionAccountId = account.accountId LEFT JOIN budget ON transactionBudgetId = budget.budgetId LEFT JOIN account AS account2 ON transactionAccountTransferTo = account2.accountId ORDER BY transactionId DESC")
     fun getTransactionListData(): LiveData<List<TransactionListAdapterDataObject>>
+
+    @Query("SELECT STRFTIME('%W', transactionTime) AS transactionWeek, Sum(transactionAmount) AS transactionAmount, transactionType FROM `transaction` WHERE transactionType != 'TRANSFER' GROUP BY STRFTIME('%W', transactionTime), transactionType ORDER BY STRFTIME('%W', transactionTime)")
+    fun getTransactionGraphData(): LiveData<List<TransactionGraphDataObject>>
+
 
     @Query("SELECT SUM(transactionAmount) FROM `transaction` GROUP BY date(transactionTime), transactionType")
     suspend fun getTime(): List<String>
@@ -86,6 +87,6 @@ interface TransactionDao {
     @Query("SELECT account.accountId, accountName, SUM(accountIncome) AS accountIncome, SUM(accountExpense) AS accountExpense, SUM(accountTransferIn) AS accountTransferIn, SUM(accountTransferOut) AS accountTransferOut FROM account LEFT JOIN (SELECT transactionAccountId AS accountId, SUM(CASE WHEN transactionType = 'INCOME' THEN transactionAmount ELSE 0 END) AS accountIncome, SUM(CASE WHEN transactionType = 'EXPENSE' THEN transactionAmount ELSE 0 END) AS accountExpense, 0 AS accountTransferIn, SUM(CASE WHEN transactionType = 'TRANSFER' THEN transactionAmount ELSE 0 END) AS accountTransferOut FROM `transaction` WHERE transactionTime < :timeTo GROUP BY transactionAccountId UNION SELECT transactionAccountTransferTo AS accountId, 0 AS accountIncome, 0 AS accountExpense, SUM(CASE WHEN transactionType = 'TRANSFER' THEN transactionAmount ELSE 0 END) AS accountTransferIn, 0 AS accountTransferOut FROM `transaction` WHERE transactionType = 'TRANSFER' AND transactionTime < :timeTo GROUP BY transactionAccountTransferTo) AS tbl ON account.accountId = tbl.accountId GROUP BY account.accountId")
     fun getAccountListDataPrevMonth(timeTo: Calendar): LiveData<List<AccountListAdapterDataObject>>
 
-    @Query("SELECT *, accountName AS transactionAccountName, budget.budgetName AS transactionBudgetName, budget2.budgetName AS transactionAccountTransferToName  FROM `transaction` LEFT JOIN account ON transactionAccountId = accountId LEFT JOIN budget ON transactionBudgetId = budget.budgetId LEFT JOIN budget AS budget2 ON transactionAccountTransferTo = budget2.budgetId WHERE accountId = :accountId ORDER BY transactionId DESC LIMIT 10")
+    @Query("SELECT *, account.accountName AS transactionAccountName, budget.budgetName AS transactionBudgetName, account2.accountName  AS transactionAccountTransferToName  FROM `transaction` LEFT JOIN account ON transactionAccountId = account.accountId LEFT JOIN budget ON transactionBudgetId = budget.budgetId LEFT JOIN account AS account2 ON transactionAccountTransferTo = account2.accountId WHERE account.accountId = :accountId ORDER BY transactionId DESC LIMIT 10")
     fun getAccountTransactionListData(accountId: Long): LiveData<List<TransactionListAdapterDataObject>>
 }

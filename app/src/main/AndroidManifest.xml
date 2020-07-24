@@ -23,7 +23,7 @@
             android:name=".ui.budget.BudgetingActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.budget.edit.EditBudgetActivity"
+            android:name=".ui.budget.EditBudgetActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".TestActivity" />
         <activity android:name=".MainActivity">

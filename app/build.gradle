@@ -63,4 +63,7 @@ dependencies {
 
 //    //Android Debug Database
 //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    // ThreeTen Android Backport (time)
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
 }

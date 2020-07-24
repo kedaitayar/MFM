@@ -29,9 +29,9 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     val allBudgetDeadline: LiveData<List<BudgetDeadline>>
     val accountListData: LiveData<List<AccountListAdapterDataObject>>
     val transactionListData: LiveData<List<TransactionListAdapterDataObject>>
+    val transactionGraphData: LiveData<List<TransactionGraphDataObject>>
     val selectedDate: LiveData<SelectedDate2>
 
-    //    val allBudgetTransactionByDate: LiveData<List<BudgetTransaction>>
     val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val budgetingListData: LiveData<List<BudgetListAdapterDataObject>>
     val monthlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
@@ -39,12 +39,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     val debtBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val totalBudgetedAmount: LiveData<Double>
     val totalIncome: LiveData<Double>
-    val accountListDataPrevMonth: LiveData<List<AccountListAdapterDataObject>>
 
-    //    val accountTransactionChartExpense: LiveData<List<AccountTransactionChartDataObject>>
-//    val accountTransactionChartIncome: LiveData<List<AccountTransactionChartDataObject>>
-//    val accountTransactionChartTransferIn: LiveData<List<AccountTransactionChartDataObject>>
-//    val accountTransactionChartTransferOut: LiveData<List<AccountTransactionChartDataObject>>
     val accountTransactionChartData: LiveData<List<AccountTransactionChartDataObject>>
     val accountTransactionList: LiveData<List<TransactionListAdapterDataObject>>
 
@@ -85,9 +80,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         selectedDate = selectedDateRepo.selectedDate
         accountListData = transactionRepo.accountListData
         transactionListData = transactionRepo.transactionListData
-//        allBudgetTransactionByDate = Transformations.switchMap(selectedDate) {
-//            budgetTransactionRepo.getBudgetTransactionByDateLV(it.month, it.year)
-//        }
+        transactionGraphData = transactionRepo.transactionGraphData
         budgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetListAdapterDO(it.month, it.year)
         }
@@ -105,22 +98,7 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
         }
         totalBudgetedAmount = budgetTransactionRepo.totalBudgetedAmount
         totalIncome = transactionRepo.totalIncome
-        accountListDataPrevMonth = Transformations.switchMap(selectedDate) {
-            transactionRepo.getAccountListDataPrevMonth(it.month, it.year)
-        }
         _selectedAccount.postValue(0)
-//        accountTransactionChartExpense = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
-//            transactionRepo.getAccountTransactionChartExpense(it.first?:0, it.second?.month?:0, it.second?.year?:0)
-//        }
-//        accountTransactionChartIncome = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
-//            transactionRepo.getAccountTransactionChartIncome(it.first?:0, it.second?.month?:0, it.second?.year?:0)
-//        }
-//        accountTransactionChartTransferIn = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
-//            transactionRepo.getAccountTransactionChartTransferIn(it.first?:0, it.second?.month?:0, it.second?.year?:0)
-//        }
-//        accountTransactionChartTransferOut = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
-//            transactionRepo.getAccountTransactionChartTransferOut(it.first?:0, it.second?.month?:0, it.second?.year?:0)
-//        }
         accountTransactionChartData = Transformations.switchMap(SelectedAccountAndSelectedDateTrigger(selectedAccount, selectedDate)) {
             transactionRepo.getAccountTransactionChartData(it.first ?: 0, it.second?.month ?: 0, it.second?.year ?: 0)
         }

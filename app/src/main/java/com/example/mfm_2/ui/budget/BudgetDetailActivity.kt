@@ -49,16 +49,6 @@ class BudgetDetailActivity : AppCompatActivity(), OnChartValueSelectedListener {
         chart.setOnChartValueSelectedListener(this)
         chart.legend.isEnabled = false
 
-//        val l = chart.legend
-//        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-//        l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-//        l.orientation = Legend.LegendOrientation.VERTICAL
-//        l.setDrawInside(false)
-//        l.xEntrySpace = 7f
-//        l.yEntrySpace = 0f
-//        l.yOffset = 0f
-//        l.textSize = 18f
-
         updateChart()
 
         chipGroup.setOnCheckedChangeListener { group, checkedId ->

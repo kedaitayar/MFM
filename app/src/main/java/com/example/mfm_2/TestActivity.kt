@@ -1,24 +1,18 @@
 package com.example.mfm_2
 
-import android.app.DatePickerDialog
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
-import com.example.mfm_2.custom_class.MonthYearPickerDialog
 import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.utils.ColorTemplate
 import java.util.*
-import kotlin.random.Random
 
 /**
  * The purpose of this activity is for testing component or code before implementing it to the app

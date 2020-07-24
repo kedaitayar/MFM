@@ -1,4 +1,4 @@
-package com.example.mfm_2.ui.budget.edit
+package com.example.mfm_2.ui.budget
 
 import android.app.Activity
 import android.content.Intent

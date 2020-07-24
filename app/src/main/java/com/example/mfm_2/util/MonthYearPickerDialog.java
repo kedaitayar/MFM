@@ -1,4 +1,4 @@
-package com.example.mfm_2.custom_class;
+package com.example.mfm_2.util;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -12,8 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mfm_2.R;
-
-import java.util.Calendar;
 
 public class MonthYearPickerDialog extends DialogFragment {
     private int month;

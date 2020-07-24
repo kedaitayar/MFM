@@ -22,7 +22,10 @@ class TransactionFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_transaction, container, false)
         val fragmentManager: FragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction().replace(R.id.fragment_transaction_container1, TransactionListFragment())
+        val fragmentTransaction = fragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_transaction_container1, TransactionListFragment())
+            replace(R.id.fragment_transaction_container2, TransactionGraphFragment())
+        }
         fragmentTransaction.commit()
 
         val info: Button = view.findViewById(R.id.info_button)

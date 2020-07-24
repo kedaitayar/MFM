@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.mfm_2.custom_class.MonthYearPickerDialog
+import com.example.mfm_2.util.MonthYearPickerDialog
 import com.example.mfm_2.ui.NotBudgetedFragment
 import com.example.mfm_2.ui.account.AccountFragment
 import com.example.mfm_2.ui.budget.BudgetFragment

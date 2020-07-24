@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 21, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 22, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
