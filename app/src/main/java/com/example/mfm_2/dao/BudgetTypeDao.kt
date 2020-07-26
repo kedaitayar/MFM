@@ -2,7 +2,7 @@ package com.example.mfm_2.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.mfm_2.model.BudgetType
+import com.example.mfm_2.entity.BudgetType
 
 @Dao
 interface BudgetTypeDao {
