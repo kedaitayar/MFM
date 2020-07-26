@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.model.BudgetDeadline
-import com.example.mfm_2.pojo.BudgetListAdapterDataObject
-import com.example.mfm_2.pojo.SelectedDate2
+import com.example.mfm_2.entity.BudgetDeadline
+import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
+import com.example.mfm_2.util.pojo.SelectedDate2
 import java.util.*
 
 class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {

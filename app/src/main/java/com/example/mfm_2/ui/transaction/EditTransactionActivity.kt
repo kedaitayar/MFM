@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
-import com.example.mfm_2.pojo.TransactionListAdapterDataObject
+import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.ui.transaction.adapter.TransactionListAdapter
-import com.example.mfm_2.pojo.TransactionListAdapterDataObject
+import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope

@@ -19,7 +19,6 @@ import com.example.mfm_2.ui.NotBudgetedFragment
 import com.example.mfm_2.ui.account.AccountFragment
 import com.example.mfm_2.ui.budget.BudgetFragment
 import com.example.mfm_2.ui.transaction.TransactionFragment
-import com.example.mfm_2.singleton.SelectedDateSingleton
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -64,7 +63,10 @@ class MainActivity : AppCompatActivity() {
         //toolbar date
         val dateInput: TextInputEditText = findViewById(R.id.textinput_date)
         val monthShortString = MonthYearPickerDialog().months
-        dateInput.setText(monthShortString[(SelectedDateSingleton.singletonSelectedDate.month - 1)] + " " + SelectedDateSingleton.singletonSelectedDate.year)
+//        dateInput.setText(monthShortString[(SelectedDateSingleton.singletonSelectedDate.month - 1)] + " " + SelectedDateSingleton.singletonSelectedDate.year)
+        mfmViewModel.selectedDate.value?.let {
+            dateInput.setText(monthShortString[(it.month - 1)] + " " + it.year)
+        }
         dateInput.setOnClickListener {
             val selectedDate = mfmViewModel.selectedDate.value
             selectedDate?.let {

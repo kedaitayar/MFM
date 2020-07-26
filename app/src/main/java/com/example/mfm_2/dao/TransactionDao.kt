@@ -2,17 +2,14 @@ package com.example.mfm_2.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.mfm_2.model.Transaction
-import com.example.mfm_2.pojo.*
+import com.example.mfm_2.entity.Transaction
+import com.example.mfm_2.util.pojo.*
 import java.util.*
 
 @Dao
 interface TransactionDao {
     @Query("SELECT * FROM `Transaction` ORDER BY transactionId DESC")
     fun getAllTransaction(): LiveData<List<Transaction>>
-
-//    @Query("SELECT transactionId, transactionAmount, transactionTime, transactionType, accountName, budgetName FROM `Transaction` INNER JOIN Account ON `Transaction`.transactionAccountId = Account.accountId INNER JOIN Budget ON `Transaction`.transactionBudgetId = Budget.budgetId")
-//    fun getAllTransaction2(): LiveData<List<TransactionWithAccountBudget>>
 
     @Insert
     suspend fun insert(transaction: Transaction): Long
@@ -61,22 +58,6 @@ interface TransactionDao {
 
     @Query("SELECT STRFTIME('%W', transactionTime) AS transactionWeek, Sum(transactionAmount) AS transactionAmount, transactionType FROM `transaction` WHERE transactionType != 'TRANSFER' GROUP BY STRFTIME('%W', transactionTime), transactionType ORDER BY STRFTIME('%W', transactionTime)")
     fun getTransactionGraphData(): LiveData<List<TransactionGraphDataObject>>
-
-
-    @Query("SELECT SUM(transactionAmount) FROM `transaction` GROUP BY date(transactionTime), transactionType")
-    suspend fun getTime(): List<String>
-
-//    @Query("SELECT date(transactionTime) AS accountTransactionDate, SUM(transactionAmount) AS accountTransactionAmount FROM `transaction` WHERE transactionType = 'EXPENSE' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId = :accountId GROUP BY date(transactionTime)")
-//    fun getAccountTransactionChartExpense(accountId: Long, timeFrom: Calendar, timeTo: Calendar): LiveData<List<AccountTransactionChartDataObject>>
-//
-//    @Query("SELECT date(transactionTime) AS accountTransactionDate, SUM(transactionAmount) AS accountTransactionAmount FROM `transaction` WHERE transactionType = 'INCOME' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId = :accountId GROUP BY date(transactionTime)")
-//    fun getAccountTransactionChartIncome(accountId: Long, timeFrom: Calendar, timeTo: Calendar): LiveData<List<AccountTransactionChartDataObject>>
-//
-//    @Query("SELECT date(transactionTime) AS accountTransactionDate, SUM(transactionAmount) AS accountTransactionAmount FROM `transaction` WHERE transactionType = 'TRANSFER' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountTransferTo = :accountId GROUP BY date(transactionTime)")
-//    fun getAccountTransactionChartTransferIn(accountId: Long, timeFrom: Calendar, timeTo: Calendar): LiveData<List<AccountTransactionChartDataObject>>
-//
-//    @Query("SELECT date(transactionTime) AS accountTransactionDate, SUM(transactionAmount) AS accountTransactionAmount FROM `transaction` WHERE transactionType = 'TRANSFER' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId = :accountId GROUP BY date(transactionTime)")
-//    fun getAccountTransactionChartTransferOut(accountId: Long, timeFrom: Calendar, timeTo: Calendar): LiveData<List<AccountTransactionChartDataObject>>
 
     @Query("SELECT accountTransactionDate, SUM(accountTransactionExpense) AS accountTransactionExpense, SUM(accountTransactionIncome) AS accountTransactionIncome, SUM(accountTransactionTransferIn) AS accountTransactionTransferIn, SUM(accountTransactionTransferOut) AS accountTransactionTransferOut, ( SELECT SUM( CASE WHEN transactionType = 'INCOME' THEN transactionAmount ELSE 0 END ) AS accountTransactionIncomePrevMonth FROM `transaction` WHERE transactionTime < :timeToPrevMonth AND transactionAccountId = :accountId GROUP BY transactionAccountId ) AS accountTransactionIncomePrevMonth, ( SELECT SUM( CASE WHEN transactionType = 'EXPENSE' THEN transactionAmount ELSE 0 END ) AS accountTransactionExpensePrevMonth FROM `transaction` WHERE transactionTime < :timeToPrevMonth AND transactionAccountId =  :accountId GROUP BY transactionAccountId ) AS accountTransactionExpensePrevMonth, ( SELECT SUM( CASE WHEN transactionType = 'TRANSFER' THEN transactionAmount ELSE 0 END ) AS accountTransactionTransferInPrevMonth FROM `transaction` WHERE transactionTime < :timeToPrevMonth AND transactionAccountTransferTo =  :accountId GROUP BY transactionAccountTransferTo ) AS accountTransactionTransferInPrevMonth, ( SELECT SUM( CASE WHEN transactionType = 'TRANSFER' THEN transactionAmount ELSE 0 END ) AS accountTransactionTransferOutPrevMonth FROM `transaction` WHERE transactionTime < :timeToPrevMonth AND transactionAccountId =  :accountId GROUP BY transactionAccountId ) AS accountTransactionTransferOutPrevMonth FROM ( SELECT date(transactionTime) AS accountTransactionDate, SUM(transactionAmount) AS accountTransactionExpense, 0 AS accountTransactionIncome, 0 AS accountTransactionTransferIn, 0 AS accountTransactionTransferOut FROM `transaction` WHERE transactionType = 'EXPENSE' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId =  :accountId GROUP BY date(transactionTime) UNION SELECT date(transactionTime) AS accountTransactionDate, 0 AS accountTransactionExpense, SUM(transactionAmount) AS accountTransactionIncome, 0 AS accountTransactionTransferIn, 0 AS accountTransactionTransferOut FROM `transaction` WHERE transactionType = 'INCOME' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId =  :accountId GROUP BY date(transactionTime) UNION SELECT date(transactionTime) AS accountTransactionDate, 0 AS accountTransactionExpense, 0 AS accountTransactionIncome, SUM(transactionAmount) AS accountTransactionTransferIn, 0 AS accountTransactionTransferOut FROM `transaction` WHERE transactionType = 'TRANSFER' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId =  :accountId GROUP BY date(transactionTime) UNION SELECT date(transactionTime) AS accountTransactionDate, 0 AS accountTransactionExpense, 0 AS accountTransactionIncome, 0 AS accountTransactionTransferIn, SUM(transactionAmount) AS accountTransactionTransferOut FROM `transaction` WHERE transactionType = 'TRANSFER' AND transactionTime BETWEEN :timeFrom AND :timeTo AND transactionAccountId =  :accountId GROUP BY date(transactionTime) ) GROUP BY accountTransactionDate")
     fun getAccountTransactionChartData(accountId: Long, timeFrom: Calendar, timeTo: Calendar, timeToPrevMonth: Calendar): LiveData<List<AccountTransactionChartDataObject>>

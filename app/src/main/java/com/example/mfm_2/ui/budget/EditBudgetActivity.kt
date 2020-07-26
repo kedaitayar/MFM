@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
-import com.example.mfm_2.model.Budget
-import com.example.mfm_2.model.BudgetDeadline
-import com.example.mfm_2.model.BudgetType
+import com.example.mfm_2.entity.Budget
+import com.example.mfm_2.entity.BudgetDeadline
+import com.example.mfm_2.entity.BudgetType
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText

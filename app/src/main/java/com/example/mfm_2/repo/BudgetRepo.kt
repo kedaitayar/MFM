@@ -2,11 +2,9 @@ package com.example.mfm_2.repo
 
 import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetDao
-import com.example.mfm_2.model.Budget
-import com.example.mfm_2.pojo.BudgetListAdapterDataObject
-import com.example.mfm_2.pojo.BudgetPieChartDataObject
-import com.example.mfm_2.pojo.BudgetWithBudgetType
-import com.example.mfm_2.pojo.BudgetingListAdapterDataObject
+import com.example.mfm_2.entity.Budget
+import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
+import com.example.mfm_2.util.pojo.BudgetPieChartDataObject
 import java.util.*
 
 class BudgetRepo(private val budgetDao: BudgetDao) {

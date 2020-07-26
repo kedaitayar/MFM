@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.mfm_2.R
 import com.example.mfm_2.ui.account.adapter.AccountListAdapter
-import com.example.mfm_2.pojo.AccountListAdapterDataObject
+import com.example.mfm_2.util.pojo.AccountListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*

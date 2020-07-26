@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.ui.budget.adapter.BudgetingListAdapter
-import com.example.mfm_2.model.BudgetTransaction
+import com.example.mfm_2.entity.BudgetTransaction
 import com.example.mfm_2.viewmodel.MFMViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

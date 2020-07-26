@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
-import com.example.mfm_2.pojo.BudgetPieChartDataObject
+import com.example.mfm_2.util.pojo.BudgetPieChartDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart

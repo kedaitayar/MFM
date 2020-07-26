@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
 import com.example.mfm_2.ui.budget.adapter.BudgetListAdapter
-import com.example.mfm_2.pojo.BudgetListAdapterDataObject
+import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.pojo.AccountListAdapterDataObject
+import com.example.mfm_2.util.pojo.AccountListAdapterDataObject
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*

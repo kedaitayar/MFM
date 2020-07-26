@@ -1,4 +1,4 @@
-package com.example.mfm_2.pojo
+package com.example.mfm_2.util.pojo
 
 data class AccountListAdapterDataObject(
     var accountId: Long = 0,

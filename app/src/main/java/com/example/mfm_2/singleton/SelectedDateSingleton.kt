@@ -1,7 +1,6 @@
 package com.example.mfm_2.singleton
 
-import com.example.mfm_2.pojo.SelectedDate
-import com.example.mfm_2.pojo.SelectedDate2
+import com.example.mfm_2.util.pojo.SelectedDate2
 import java.util.*
 
 object SelectedDateSingleton {

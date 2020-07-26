@@ -11,7 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
-import com.example.mfm_2.model.Budget
+import com.example.mfm_2.entity.Budget
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope

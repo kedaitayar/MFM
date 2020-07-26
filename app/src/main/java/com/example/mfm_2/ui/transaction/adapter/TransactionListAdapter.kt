@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.pojo.TransactionListAdapterDataObject
+import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*

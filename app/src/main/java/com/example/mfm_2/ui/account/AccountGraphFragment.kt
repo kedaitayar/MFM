@@ -2,7 +2,6 @@ package com.example.mfm_2.ui.account
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
-import com.example.mfm_2.pojo.AccountListAdapterDataObject
-import com.example.mfm_2.pojo.AccountTransactionChartDataObject
+import com.example.mfm_2.util.pojo.AccountTransactionChartDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder
@@ -53,10 +51,7 @@ class AccountGraphFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_account_graph, container, false)
-//        val chart: BarChart = view.findViewById(R.id.chart)
         val chart: CombinedChart = view.findViewById(R.id.chart)
-//        val dataMap: MutableMap<Int, AccountTransactionChartDataObject> = mutableMapOf()
-//        val cal = Calendar.getInstance()
         chart.description.isEnabled = false
         chart.setDrawGridBackground(false)
         chart.drawOrder = arrayOf(DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER)
@@ -67,14 +62,6 @@ class AccountGraphFragment : Fragment() {
         chart.legend.isEnabled = false
         chart.xAxis.setDrawGridLines(false)
         chart.xAxis.position = XAxis.XAxisPosition.BOTH_SIDED
-//        chart.axisLeft.setDrawGridLines(false)
-//        chart.axisRight.setDrawGridLines(false)
-
-//        mfmViewModel.accountListDataPrevMonth.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            it?.let {
-//                accountListPrevMonth = it
-//            }
-//        })
 
         mfmViewModel.accountTransactionChartData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {

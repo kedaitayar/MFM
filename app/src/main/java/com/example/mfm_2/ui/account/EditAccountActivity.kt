@@ -9,7 +9,7 @@ import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
-import com.example.mfm_2.model.Account
+import com.example.mfm_2.entity.Account
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope

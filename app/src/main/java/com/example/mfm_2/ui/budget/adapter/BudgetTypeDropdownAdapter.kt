@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
-import com.example.mfm_2.model.BudgetType
+import com.example.mfm_2.entity.BudgetType
 
 class BudgetTypeDropdownAdapter(context: Context, private val layoutResource: Int, private val textViewResourceId: Int = 0, private val data: List<BudgetType>) : ArrayAdapter<BudgetType>(context, layoutResource, data) {
 

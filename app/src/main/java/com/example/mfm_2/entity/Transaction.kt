@@ -1,4 +1,4 @@
-package com.example.mfm_2.model
+package com.example.mfm_2.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

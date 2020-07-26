@@ -1,11 +1,10 @@
 package com.example.mfm_2.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.mfm_2.database.MFMDatabase
-import com.example.mfm_2.model.*
-import com.example.mfm_2.pojo.*
+import com.example.mfm_2.entity.*
+import com.example.mfm_2.util.pojo.*
 import com.example.mfm_2.repo.*
 import java.util.*
 
@@ -22,16 +21,16 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     //simple livedata
     val allAccount: LiveData<List<Account>>
     val allBudget: LiveData<List<Budget>>
-
     //    val allTransaction: LiveData<List<Transaction>>
     val allBudgetTransaction: LiveData<List<BudgetTransaction>>
     val allBudgetType: LiveData<List<BudgetType>>
     val allBudgetDeadline: LiveData<List<BudgetDeadline>>
+    val selectedDate: LiveData<SelectedDate2>
+
+    //livedata
     val accountListData: LiveData<List<AccountListAdapterDataObject>>
     val transactionListData: LiveData<List<TransactionListAdapterDataObject>>
     val transactionGraphData: LiveData<List<TransactionGraphDataObject>>
-    val selectedDate: LiveData<SelectedDate2>
-
     val budgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val budgetingListData: LiveData<List<BudgetListAdapterDataObject>>
     val monthlyBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
@@ -39,7 +38,6 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
     val debtBudgetListData: LiveData<List<BudgetListAdapterDataObject>>
     val totalBudgetedAmount: LiveData<Double>
     val totalIncome: LiveData<Double>
-
     val accountTransactionChartData: LiveData<List<AccountTransactionChartDataObject>>
     val accountTransactionList: LiveData<List<TransactionListAdapterDataObject>>
 
@@ -193,10 +191,6 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun getBudgetWithBudgetTypeById(budgetId: Long): BudgetListAdapterDataObject {
         return budgetRepo.getBudgetWithBudgetTypeById(budgetId)
-    }
-
-    suspend fun getTime(): List<String> {
-        return transactionRepo.getTime()
     }
 
     suspend fun getAllBudgetType(): List<BudgetType> {

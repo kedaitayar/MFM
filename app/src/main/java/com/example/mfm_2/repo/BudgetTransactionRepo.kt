@@ -2,7 +2,7 @@ package com.example.mfm_2.repo
 
 import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.BudgetTransactionDao
-import com.example.mfm_2.model.BudgetTransaction
+import com.example.mfm_2.entity.BudgetTransaction
 
 class BudgetTransactionRepo(private val budgetTransactionDao: BudgetTransactionDao) {
     val allBudgetTransaction = budgetTransactionDao.getAllBudgetTransaction()

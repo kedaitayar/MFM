@@ -2,7 +2,7 @@ package com.example.mfm_2.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.mfm_2.model.Account
+import com.example.mfm_2.entity.Account
 
 @Dao
 interface AccountDao {

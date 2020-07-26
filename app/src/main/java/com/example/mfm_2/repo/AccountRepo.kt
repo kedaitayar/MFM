@@ -2,7 +2,7 @@ package com.example.mfm_2.repo
 
 import androidx.lifecycle.LiveData
 import com.example.mfm_2.dao.AccountDao
-import com.example.mfm_2.model.Account
+import com.example.mfm_2.entity.Account
 
 class AccountRepo(private val accountDao: AccountDao) {
     val allAccount: LiveData<List<Account>> = accountDao.getAllAccount()

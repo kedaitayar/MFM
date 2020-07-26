@@ -2,7 +2,7 @@ package com.example.mfm_2.repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mfm_2.pojo.SelectedDate2
+import com.example.mfm_2.util.pojo.SelectedDate2
 
 object SelectedDateRepo {
     val selectedDate: LiveData<SelectedDate2>

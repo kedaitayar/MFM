@@ -1,4 +1,4 @@
-package com.example.mfm_2.pojo
+package com.example.mfm_2.util.pojo
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
