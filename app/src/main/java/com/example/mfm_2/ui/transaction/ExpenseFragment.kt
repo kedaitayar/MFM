@@ -1,19 +1,21 @@
 package com.example.mfm_2.ui.transaction
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-
 import com.example.mfm_2.R
 import com.example.mfm_2.entity.Transaction
 import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
 
@@ -41,7 +43,7 @@ class ExpenseFragment : Fragment() {
 
         arguments?.let {
             transaction = it.getParcelable(ARG_TRANSACTION)
-            transaction?.let {transaction ->
+            transaction?.let { transaction ->
                 val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
                 val budgetDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_budget)
                 val amountEditText: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
@@ -79,46 +81,49 @@ class ExpenseFragment : Fragment() {
         val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
         val budgetDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_budget)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
-        val budget = mfmViewModel.allBudget.value?.let { budget -> budget.find { it.budgetName == budgetDropdown.text.toString() } }!!
-        val newTransaction = Transaction(
-            transactionAccountId = account.accountId,
-            transactionBudgetId = budget.budgetId,
-            transactionType = "EXPENSE",
-            transactionAmount = amount.text.toString().toDouble()
-        )
-        CoroutineScope(Dispatchers.IO).launch {
-            mfmViewModel.insert(newTransaction)
+        if (accountDropdown.text.isNullOrBlank() || budgetDropdown.text.isNullOrBlank() || amount.text.isNullOrBlank()) {
+            val parentView: ConstraintLayout? = activity?.findViewById(R.id.main_layout)
+            parentView?.let {
+                Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
+            val budget = mfmViewModel.allBudget.value?.let { budget -> budget.find { it.budgetName == budgetDropdown.text.toString() } }!!
+            val newTransaction = Transaction(
+                transactionAccountId = account.accountId,
+                transactionBudgetId = budget.budgetId,
+                transactionType = "EXPENSE",
+                transactionAmount = amount.text.toString().toDouble()
+            )
+            CoroutineScope(Dispatchers.IO).launch {
+                mfmViewModel.insert(newTransaction)
+            }
+            activity?.finish()
         }
-    }
 
-//    fun setInitialData(transaction: Transaction) {
-//        val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
-//        val budgetDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_budget)
-//        val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val account = async { accountViewModel.getAccountById(transaction.transactionAccountId) }
-//            val budget = async { budgetViewModel.getBudgetById(transaction.transactionBudgetId!!) }
-//            withContext(Dispatchers.Main) {
-//                accountDropdown.setText(account.await().accountName)
-//                budgetDropdown.setText(budget.await().budgetName)
-//                amount.setText(transaction.transactionAmount.toString())
-//            }
-//        }
-//    }
+    }
 
     fun saveExpense(transaction: Transaction) {
         val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
         val budgetDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_budget)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
-        val budget = mfmViewModel.allBudget.value?.let { budget -> budget.find { it.budgetName == budgetDropdown.text.toString() } }!!
-        transaction.transactionAmount = amount.text.toString().toDouble()
-        transaction.transactionAccountId = account.accountId
-        transaction.transactionBudgetId = budget.budgetId
-        CoroutineScope(Dispatchers.IO).launch {
-            mfmViewModel.update(transaction)
+        if (accountDropdown.text.isNullOrBlank() || budgetDropdown.text.isNullOrBlank() || amount.text.isNullOrBlank()) {
+            val parentView: ConstraintLayout? = activity?.findViewById(R.id.main_layout)
+            parentView?.let {
+                Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
+            val budget = mfmViewModel.allBudget.value?.let { budget -> budget.find { it.budgetName == budgetDropdown.text.toString() } }!!
+            transaction.transactionAmount = amount.text.toString().toDouble()
+            transaction.transactionAccountId = account.accountId
+            transaction.transactionBudgetId = budget.budgetId
+            CoroutineScope(Dispatchers.IO).launch {
+                mfmViewModel.update(transaction)
+            }
+            activity?.finish()
         }
+
     }
 
     companion object {

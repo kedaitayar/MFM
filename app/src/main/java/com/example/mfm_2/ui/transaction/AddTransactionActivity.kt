@@ -62,17 +62,14 @@ class AddTransactionActivity : AppCompatActivity() {
                         0 -> {
                             val fragment = viewPagerAdapter.fragmentList[tab.position] as ExpenseFragment
                             fragment.addExpense()
-                            finish()
                         }
                         1 -> {
                             val fragment = viewPagerAdapter.fragmentList[tab.position] as IncomeFragment
                             fragment.addIncome()
-                            finish()
                         }
                         2 -> {
                             val fragment = viewPagerAdapter.fragmentList[tab.position] as TransferFragment
                             fragment.addTransfer()
-                            finish()
                         }
                     }
                 }

@@ -54,15 +54,12 @@ class EditTransactionActivity : AppCompatActivity() {
                     when (transaction.transactionType) {
                         "EXPENSE" -> {
                             expenseFragment.saveExpense(transaction)
-                            finish()
                         }
                         "INCOME" -> {
                             incomeFragment.saveIncome(transaction)
-                            finish()
                         }
                         "TRANSFER" -> {
                             transferFragment.saveTransfer(transaction)
-                            finish()
                         }
                     }
                 }

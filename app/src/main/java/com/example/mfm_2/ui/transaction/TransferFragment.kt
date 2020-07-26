@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.entity.Transaction
 import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
 
@@ -71,33 +73,51 @@ class TransferFragment : Fragment() {
         val accountFromDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_from_account)
         val accountToDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_to_account)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val accountFrom = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountFromDropdown.text.toString() } }!!
-        val accountTo = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountToDropdown.text.toString() } }!!
-        val newTransaction = Transaction(
-            transactionAccountId = accountFrom.accountId,
-            transactionAccountTransferTo = accountTo.accountId,
-            transactionType = "TRANSFER",
-            transactionAmount = amount.text.toString().toDouble()
-        )
-        CoroutineScope(Dispatchers.IO).launch {
-            mfmViewModel.insert(newTransaction)
-        }
+        if (accountFromDropdown.text.isNullOrBlank() || accountToDropdown.text.isNullOrBlank() || amount.text.isNullOrBlank()) {
+            val parentView: ConstraintLayout? = activity?.findViewById(R.id.main_layout)
+            parentView?.let {
+                Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            val accountFrom = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountFromDropdown.text.toString() } }!!
+            val accountTo = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountToDropdown.text.toString() } }!!
+            val newTransaction = Transaction(
+                transactionAccountId = accountFrom.accountId,
+                transactionAccountTransferTo = accountTo.accountId,
+                transactionType = "TRANSFER",
+                transactionAmount = amount.text.toString().toDouble()
+            )
+            CoroutineScope(Dispatchers.IO).launch {
+                mfmViewModel.insert(newTransaction)
+            }
+            activity?.finish()
+    }
+
     }
 
     fun saveTransfer(transaction: Transaction) {
         val accountFromDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_from_account)
         val accountToDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_to_account)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val accountFrom =
-            mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountFromDropdown.text.toString() } }!!
-        val accountTo = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountToDropdown.text.toString() } }!!
-        transaction.transactionAmount = amount.text.toString().toDouble()
-        transaction.transactionAccountId = accountFrom.accountId
-        transaction.transactionAccountTransferTo = accountTo.accountId
-        Log.i("haha", transaction.toString())
-        CoroutineScope(Dispatchers.IO).launch {
-            mfmViewModel.update(transaction)
+        if (accountFromDropdown.text.isNullOrBlank() || accountToDropdown.text.isNullOrBlank() || amount.text.isNullOrBlank()) {
+            val parentView: ConstraintLayout? = activity?.findViewById(R.id.main_layout)
+            parentView?.let {
+                Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            val accountFrom =
+                mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountFromDropdown.text.toString() } }!!
+            val accountTo = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountToDropdown.text.toString() } }!!
+            transaction.transactionAmount = amount.text.toString().toDouble()
+            transaction.transactionAccountId = accountFrom.accountId
+            transaction.transactionAccountTransferTo = accountTo.accountId
+            Log.i("haha", transaction.toString())
+            CoroutineScope(Dispatchers.IO).launch {
+                mfmViewModel.update(transaction)
+            }
+            activity?.finish()
         }
+
     }
 
     companion object {

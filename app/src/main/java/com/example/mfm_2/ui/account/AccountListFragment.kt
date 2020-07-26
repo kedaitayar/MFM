@@ -106,7 +106,7 @@ class AccountListFragment : Fragment() {
             val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
             if (mainView != null) {
                 if (result == 1) {
-                    Snackbar.make(mainView, "Budget Save", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(mainView, "Account Save", Snackbar.LENGTH_SHORT).show()
                 } else {
                     Snackbar.make(mainView, "Error", Snackbar.LENGTH_SHORT).show()
                 }

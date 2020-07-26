@@ -3,6 +3,7 @@ package com.example.mfm_2.ui.budget
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.entity.Budget
@@ -17,6 +20,7 @@ import com.example.mfm_2.entity.BudgetDeadline
 import com.example.mfm_2.entity.BudgetType
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
@@ -126,21 +130,28 @@ class EditBudgetActivity : AppCompatActivity() {
         }
 
         buttonSave.setOnClickListener {
-            val budget = Budget(
-                budgetId = budgetId,
-                budgetName = budgetName.text.toString(),
-                budgetGoal = budgetGoal.text.toString().toDouble(),
-                budgetType = budgetTypeArrayAdapter.getItem(dropdownPos)!!.budgetTypeId
-            )
-            val replyIntent = Intent()
-            CoroutineScope(Dispatchers.IO).launch {
-                val resultCode = mfmViewModel.update(budget)
-                if (budget.budgetType == 3) {
-                    mfmViewModel.insert(BudgetDeadline(budgetId = budget.budgetId, budgetDeadline = budgetDeadlineCalendar))
+            if (budgetName.text.isNullOrBlank() || budgetGoal.text.isNullOrBlank()) {
+                val mainView: ConstraintLayout? = findViewById(R.id.main_layout)
+                mainView?.let {
+                    Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
                 }
-                replyIntent.putExtra(EXTRA_UPDATE_RESULT, resultCode)
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
+            } else {
+                val budget = Budget(
+                    budgetId = budgetId,
+                    budgetName = budgetName.text.toString(),
+                    budgetGoal = budgetGoal.text.toString().toDouble(),
+                    budgetType = budgetTypeArrayAdapter.getItem(dropdownPos)!!.budgetTypeId
+                )
+                val replyIntent = Intent()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val resultCode = mfmViewModel.update(budget)
+                    if (budget.budgetType == 3) {
+                        mfmViewModel.insert(BudgetDeadline(budgetId = budget.budgetId, budgetDeadline = budgetDeadlineCalendar))
+                    }
+                    replyIntent.putExtra(EXTRA_UPDATE_RESULT, resultCode)
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
+                }
             }
         }
 

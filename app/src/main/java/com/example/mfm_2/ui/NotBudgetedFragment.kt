@@ -33,13 +33,11 @@ class NotBudgetedFragment : Fragment() {
         mfmViewModel.totalIncome.observe(viewLifecycleOwner, Observer {
             it?.let {
                 setAccountIncome(toBeBudgeted, it)
-                Log.i("haha", it.toString())
             }
         })
         mfmViewModel.totalBudgetedAmount.observe(viewLifecycleOwner, Observer {
             it?.let {
                 setTotalBudgeted(toBeBudgeted, it)
-                Log.i("haha", it.toString())
             }
         })
 
@@ -47,7 +45,7 @@ class NotBudgetedFragment : Fragment() {
         info.setOnClickListener {
             val builder = AlertDialog.Builder(this.context!!)
             builder.setTitle("Not Budgeted")
-                .setMessage("This toolbar display the total amount of fund that is still not budgeted. It is recommended that this amount is keep to the minimum.")
+                .setMessage("This toolbar display the total amount of fund that is still not budgeted. It is recommended that this amount is keep to the minimum.\n\nTo budget some fund, go to the budget page by swiping right to the budget page or tapping the budget page tab and then tap the budgeting button.")
                 .setPositiveButton("OK") { dialog, which -> }
             val dialog = builder.create()
             dialog.show()

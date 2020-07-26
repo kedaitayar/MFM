@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
@@ -14,6 +15,7 @@ import com.example.mfm_2.R
 import com.example.mfm_2.entity.Transaction
 import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
 
@@ -64,35 +66,41 @@ class IncomeFragment : Fragment() {
     fun addIncome() {
         val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
-        val newTransaction =
-            Transaction(transactionAccountId = account.accountId, transactionType = "INCOME", transactionAmount = amount.text.toString().toDouble())
-        CoroutineScope(Dispatchers.IO).launch {
-            mfmViewModel.insert(newTransaction)
+        if (accountDropdown.text.isNullOrBlank() || amount.text.isNullOrBlank()) {
+            val parentView: ConstraintLayout? = activity?.findViewById(R.id.main_layout)
+            parentView?.let {
+                Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
+            val newTransaction =
+                Transaction(transactionAccountId = account.accountId, transactionType = "INCOME", transactionAmount = amount.text.toString().toDouble())
+            CoroutineScope(Dispatchers.IO).launch {
+                mfmViewModel.insert(newTransaction)
+            }
+            activity?.finish()
         }
-    }
 
-//    fun setInitialData(transaction: Transaction) {
-//        val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
-//        val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val account = async { accountViewModel.getAccountById(transaction.transactionAccountId) }
-//            withContext(Dispatchers.Main) {
-//                accountDropdown.setText(account.await().accountName)
-//                amount.setText(transaction.transactionAmount.toString())
-//            }
-//        }
-//    }
+    }
 
     fun saveIncome(transaction: Transaction) {
         val accountDropdown: AutoCompleteTextView = view!!.findViewById(R.id.dropdown_account)
         val amount: TextInputEditText = view!!.findViewById(R.id.textedit_transaction_amount)
-        val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
-        transaction.transactionAmount = amount.text.toString().toDouble()
-        transaction.transactionAccountId = account.accountId
-        CoroutineScope(Dispatchers.IO).launch {
-            mfmViewModel.update(transaction)
+        if (accountDropdown.text.isNullOrBlank() || amount.text.isNullOrBlank()) {
+            val parentView: ConstraintLayout? = activity?.findViewById(R.id.main_layout)
+            parentView?.let {
+                Snackbar.make(it, "All field need to be fill", Snackbar.LENGTH_SHORT).show()
+            }
+        } else {
+            val account = mfmViewModel.allAccount.value?.let { account -> account.find { it.accountName == accountDropdown.text.toString() } }!!
+            transaction.transactionAmount = amount.text.toString().toDouble()
+            transaction.transactionAccountId = account.accountId
+            CoroutineScope(Dispatchers.IO).launch {
+                mfmViewModel.update(transaction)
+            }
+            activity?.finish()
         }
+
     }
 
     companion object {

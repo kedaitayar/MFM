@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.entity.Account
 import com.example.mfm_2.viewmodel.MFMViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,13 +51,19 @@ class EditAccountActivity : AppCompatActivity() {
 
         buttonSave.setOnClickListener {
             val newAccount = account
-            newAccount.accountName = accountName.text.toString()
-            CoroutineScope(Dispatchers.IO).launch {
-                val resultCode = mfmViewModel.update(newAccount)
-                val replyIntent = Intent()
-                replyIntent.putExtra(EXTRA_UPDATE_RESULT, resultCode)
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
+            if (accountName.text.toString() == "") {
+//                val mainView: CoordinatorLayout? = activity?.findViewById(R.id.main_coordinator_layout)
+                val mainView: ConstraintLayout = findViewById(R.id.main_coordinator_layout)
+                Snackbar.make(mainView, "Account name cannot be empty", Snackbar.LENGTH_SHORT).show()
+            } else {
+                newAccount.accountName = accountName.text.toString()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val resultCode = mfmViewModel.update(newAccount)
+                    val replyIntent = Intent()
+                    replyIntent.putExtra(EXTRA_UPDATE_RESULT, resultCode)
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
+                }
             }
         }
     }

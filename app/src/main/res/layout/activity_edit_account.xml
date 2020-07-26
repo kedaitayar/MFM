@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.account.EditAccountActivity">
@@ -14,7 +15,7 @@
         android:theme="@style/Widget.Design.AppBarLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/primary_text_dark"/>
+        app:titleTextColor="@android:color/primary_text_dark" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textlayout_account_name"
@@ -48,6 +49,6 @@
         android:paddingBottom="8dp"
         android:text="SAVE"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
