@@ -79,8 +79,6 @@ v
 Fapp/src/main/java/com/example/mfm_2/ui/transaction/TransferFragment.kt,4\6\468497f8f2035a449b6ef1bf56fb6ad7715bfbeb
 a
 1app/src/main/res/drawable/ic_baseline_help_24.xml,3\6\36eea82a8943f181f8bbef245e32b2bf758940b8
-b
-2app/src/main/res/drawable/ic_help_outline_24px.xml,4\8\48f70f686de2e187455554e88854648edbfda238
 ^
 .app/src/main/res/layout/activity_budgeting.xml,d\e\de167fe7ee227778a0bba90b83b51d55bdb826e9
 a
@@ -89,10 +87,6 @@ a
 ,app/src/main/res/layout/fragment_income2.xml,6\9\69e1ed4cea7fd9c8fbc9f76449b00264d3d2a3e8
 ^
 .app/src/main/res/layout/fragment_transfer2.xml,4\0\402bfdb044a1c27b1b56200d2531047690afb8d8
-^
-.app/src/main/res/menu/menu_add_transaction.xml,4\c\4cf5b1da443ea511830d02f1e1090f23bb63d98b
-X
-(app/src/main/res/menu/menu_budgeting.xml,4\e\4e9f85a6de7c9caa952c3a41459cbd4590d9135f
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 |

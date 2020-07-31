@@ -91,10 +91,16 @@
             app:tabMode="fixed" />
 
         <FrameLayout
-            android:id="@+id/fragment_not_budgeted_container"
+            android:id="@+id/fragment_over_budget_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
+
+        <FrameLayout
+            android:id="@+id/fragment_not_budgeted_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_over_budget_container" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"

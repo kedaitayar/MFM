@@ -71,7 +71,6 @@ class BudgetDetailActivity : AppCompatActivity(), OnChartValueSelectedListener {
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
-//        Log.i("haha", "Value: " + e!!.y.toString() + ", index: " + h!!.x.toString() + ", DataSet index: " + h.dataSetIndex)
         val data = budgetChartData.find {
             it.budgetName == chart.data.dataSet.getEntryForIndex(h!!.x.toInt()).label
         }

@@ -4,9 +4,11 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.mfm_2.singleton.SelectedDateSingleton
+import com.example.mfm_2.ui.NotBudgetedFragment
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.Chart.PAINT_GRID_BACKGROUND
 import com.github.mikephil.charting.charts.LineChart
@@ -29,16 +31,218 @@ class TestActivity : AppCompatActivity() {
 //        Log.i("test", "hoho")
         var entries: MutableList<Entry> = mutableListOf()
         var entries2: MutableList<BarEntry> = mutableListOf()
-        var data = listOf<Data>(Data(1f,1f), Data(2f,2f), Data(3f,3f), Data(4f,2f), Data(5f,1f))
-        var data2 = arrayOf<Array<Int>>(arrayOf(1,2,3,4,5), arrayOf(1,2,3,4,5))
-        var data3 = arrayOf(1 ,9 ,3 ,9 ,10 ,4 ,3 ,5 ,9 ,6 ,1 ,6 ,7 ,9 ,2 ,10 ,5 ,2 ,5 ,5 ,2 ,2 ,5 ,8 ,5 ,1 ,7 ,2 ,10 ,4 ,1 ,9 ,3 ,3 ,10 ,5 ,9 ,8 ,8 ,3 ,4 ,9 ,7 ,3 ,10 ,9 ,5 ,7 ,9 ,4 ,6 ,10 ,9 ,6 ,5 ,4 ,8 ,3 ,4 ,3 ,6 ,2 ,7 ,4 ,7 ,1 ,7 ,10 ,8 ,2 ,10 ,4 ,6 ,7 ,8 ,9 ,1 ,2 ,1 ,7 ,1 ,6 ,10 ,1 ,1 ,9 ,8 ,3 ,6 ,3 ,10 ,9 ,5 ,4 ,10 ,9 ,10 ,9 ,5 ,8 )
-        var data4 = arrayOf(2 ,1 ,2 ,2 ,1 ,1 ,2 ,1 ,2 ,1 ,1 ,1 ,2 ,2 ,2 ,2 ,2 ,1 ,2 ,1 ,2 ,1 ,2 ,2 ,2 ,1 ,2 ,1 ,1 ,1 ,2 ,1 ,1 ,2 ,1 ,2 ,1 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,2 ,1 ,1 ,1 ,2 ,2 ,1 ,1 ,2 ,1 ,1 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,1 ,1 ,1 ,2 ,2 ,2 ,2 ,2 ,1 ,1 ,1 ,2 ,1 ,1 ,2 ,2 ,1 ,1 ,1 ,2 ,1 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,2 ,1 ,2 ,1 ,1 ,2 ,2 ,2 )
+        var data = listOf<Data>(Data(1f, 1f), Data(2f, 2f), Data(3f, 3f), Data(4f, 2f), Data(5f, 1f))
+        var data2 = arrayOf<Array<Int>>(arrayOf(1, 2, 3, 4, 5), arrayOf(1, 2, 3, 4, 5))
+        var data3 = arrayOf(
+            1,
+            9,
+            3,
+            9,
+            10,
+            4,
+            3,
+            5,
+            9,
+            6,
+            1,
+            6,
+            7,
+            9,
+            2,
+            10,
+            5,
+            2,
+            5,
+            5,
+            2,
+            2,
+            5,
+            8,
+            5,
+            1,
+            7,
+            2,
+            10,
+            4,
+            1,
+            9,
+            3,
+            3,
+            10,
+            5,
+            9,
+            8,
+            8,
+            3,
+            4,
+            9,
+            7,
+            3,
+            10,
+            9,
+            5,
+            7,
+            9,
+            4,
+            6,
+            10,
+            9,
+            6,
+            5,
+            4,
+            8,
+            3,
+            4,
+            3,
+            6,
+            2,
+            7,
+            4,
+            7,
+            1,
+            7,
+            10,
+            8,
+            2,
+            10,
+            4,
+            6,
+            7,
+            8,
+            9,
+            1,
+            2,
+            1,
+            7,
+            1,
+            6,
+            10,
+            1,
+            1,
+            9,
+            8,
+            3,
+            6,
+            3,
+            10,
+            9,
+            5,
+            4,
+            10,
+            9,
+            10,
+            9,
+            5,
+            8
+        )
+        var data4 = arrayOf(
+            2,
+            1,
+            2,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1,
+            2,
+            2,
+            1,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            2,
+            2,
+            1,
+            1,
+            1,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            2,
+            2
+        )
         var data5 = mutableListOf<Int>()
         var data6 = mutableListOf<Int>()
         var total = 50
         var i = 0
-        while (i<30){
-            if(data4[i] == 2){
+        while (i < 30) {
+            if (data4[i] == 2) {
                 total -= data3[i]
             } else {
                 total += data3[i]
@@ -131,7 +335,7 @@ class TestActivity : AppCompatActivity() {
 
         val date = SelectedDateSingleton.singletonSelectedDate
         val c2 = Calendar.getInstance()
-        c2.set(date.year, date.month-1, 1, 0,0,0)
+        c2.set(date.year, date.month - 1, 1, 0, 0, 0)
         Log.i("haha", c2.timeInMillis.toString())
         Log.i("haha", c2.time.toString())
 
@@ -139,9 +343,33 @@ class TestActivity : AppCompatActivity() {
         c2.add(Calendar.SECOND, -1)
         Log.i("haha", c2.timeInMillis.toString())
         Log.i("haha", c2.time.toString())
+        val test = TestFragment()
+        var a = false
+        val button: Button = findViewById(R.id.buttontest)
+//        val ft = supportFragmentManager.beginTransaction().apply {
+//            replace(R.id.fragment_container, test)
+//        }
+//        ft.commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, test)
+            .commit()
+        button.setOnClickListener {
+            if (a) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, test)
+                    .commit()
+                a = false
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .remove(test)
+                    .commit()
+                a = true
+            }
+
+        }
 
     }
 
-    inner class Data(var x: Float, var y: Float){
+    inner class Data(var x: Float, var y: Float) {
     }
 }

@@ -3,6 +3,7 @@ package com.example.mfm_2
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -16,9 +17,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mfm_2.util.MonthYearPickerDialog
 import com.example.mfm_2.ui.NotBudgetedFragment
+import com.example.mfm_2.ui.OverBudgetFragment
 import com.example.mfm_2.ui.account.AccountFragment
 import com.example.mfm_2.ui.budget.BudgetFragment
 import com.example.mfm_2.ui.transaction.TransactionFragment
+import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -52,6 +55,29 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.fragment_not_budgeted_container, NotBudgetedFragment())
         }
         fragmentNotBudget.commit()
+
+        val overBudgetFragment = OverBudgetFragment()
+        var monthlyBudget: List<BudgetListAdapterDataObject> = emptyList()
+        var yearlyBudget: List<BudgetListAdapterDataObject> = emptyList()
+        var goalBudget: List<BudgetListAdapterDataObject> = emptyList()
+        mfmViewModel.monthlyBudgetListData.observe(this, Observer {
+            it?.let {
+                monthlyBudget = it.filter { d -> d.budgetUsed > d.budgetAllocation }
+                checkOverBudget(overBudgetFragment, monthlyBudget, yearlyBudget, goalBudget)
+            }
+        })
+        mfmViewModel.yearlyBudgetListData.observe(this, Observer {
+            it?.let {
+                yearlyBudget = it.filter { d -> d.budgetUsed > d.budgetAllocation }
+                checkOverBudget(overBudgetFragment, monthlyBudget, yearlyBudget, goalBudget)
+            }
+        })
+//        mfmViewModel.debtBudgetListData.observe(this, Observer {
+//            it?.let {
+//                goalBudget = it.filter { d -> d.budgetUsed > d.budgetAllocation }
+//                checkOverBudget(testFragment, monthlyBudget, yearlyBudget, goalBudget)
+//            }
+//        })
 
         //fab
         val fab: FloatingActionButton = findViewById(R.id.floatingActionButton)
@@ -88,7 +114,7 @@ class MainActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Date")
                 .setMessage("This toolbar display the selected date. The selected date will be mostly used in the budget section and account section.")
-                .setPositiveButton("OK"){ dialog, which -> }
+                .setPositiveButton("OK") { dialog, which -> }
             val dialog = builder.create()
             dialog.show()
         }
@@ -109,6 +135,23 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 super.onOptionsItemSelected(item)
             }
+        }
+    }
+
+    private fun checkOverBudget(
+        overBudgetFragment: OverBudgetFragment,
+        monthlyBudget: List<BudgetListAdapterDataObject>,
+        yearlyBudget: List<BudgetListAdapterDataObject>,
+        goalBudget: List<BudgetListAdapterDataObject>
+    ) {
+        if (monthlyBudget.isNotEmpty() || yearlyBudget.isNotEmpty() || goalBudget.isNotEmpty()) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_over_budget_container, overBudgetFragment)
+                .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .remove(overBudgetFragment)
+                .commit()
         }
     }
 
