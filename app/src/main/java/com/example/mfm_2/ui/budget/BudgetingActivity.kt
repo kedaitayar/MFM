@@ -63,24 +63,31 @@ class BudgetingActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.save_budgeting -> {
-//                val date = SelectedDateSingleton.singletonSelectedDate
-//                val budget = budgetingAdapter.getData()
-                val budget = budgetingAdapter.currentList
+                val budgetList = budgetingAdapter.currentList
                 val date = mfmViewModel.selectedDate.value!!
-//                val budget = mfmViewModel.allBudget.value!!
-                for ((index, budget) in budget.withIndex()) {
-                    val budgetTransaction = BudgetTransaction(
-                        budgetTransactionAmount = ((budgetingAdapter.budgetAlloc[index]?.toDouble()) ?: 0.0),
-                        budgetTransactionBudgetId = budget.budgetId,
-                        budgetTransactionMonth = date.month,
-                        budgetTransactionYear = date.year
-                    )
-                    CoroutineScope(Dispatchers.IO).launch {
-                        mfmViewModel.insert(budgetTransaction)
-//                        budgetViewModel.insertTransaction(budgetTransaction)
-//                        val date = SelectedDateSingleton.singletonSelectedDate
-//                        budgetViewModel.getBudgetTransactionByDateLV(date.month, date.year)
+                for ((index, budget) in budgetList.withIndex()) {
+                    if (budget.budgetTypeId != 2L) {
+                        val budgetTransaction = BudgetTransaction(
+                            budgetTransactionAmount = ((budgetingAdapter.budgetAlloc[index]?.toDouble()) ?: 0.0),
+                            budgetTransactionBudgetId = budget.budgetId,
+                            budgetTransactionMonth = date.month,
+                            budgetTransactionYear = date.year
+                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            mfmViewModel.insert(budgetTransaction)
+                        }
+                    } else {
+                        val budgetTransaction = BudgetTransaction(
+                            budgetTransactionAmount = ((budgetingAdapter.budgetAlloc[index]?.toDouble()) ?: 0.0),
+                            budgetTransactionBudgetId = budget.budgetId,
+                            budgetTransactionMonth = 0,
+                            budgetTransactionYear = date.year
+                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            mfmViewModel.insert(budgetTransaction)
+                        }
                     }
+
                 }
                 setResult(Activity.RESULT_OK)
                 finish()

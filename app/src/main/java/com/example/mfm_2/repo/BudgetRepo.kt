@@ -82,6 +82,26 @@ class BudgetRepo(private val budgetDao: BudgetDao) {
         return budgetDao.getBudgetListAdapterDO(month, year, timeFrom, timeTo, budgetType)
     }
 
+    fun getBudgetMonthlyListAdapterDO(month: Int, year: Int): LiveData<List<BudgetListAdapterDataObject>> {
+        val timeFrom = Calendar.getInstance()
+        timeFrom.set(year, month - 1, 1, 0, 0, 0)
+        val timeTo = Calendar.getInstance()
+        timeTo.timeInMillis = timeFrom.timeInMillis
+        timeTo.add(Calendar.MONTH, 1)
+        timeTo.add(Calendar.SECOND, -1)
+        return budgetDao.getBudgetMonthlyListAdapterDO(month, year, timeFrom, timeTo)
+    }
+
+    fun getBudgetYearlyListAdapterDO(year: Int): LiveData<List<BudgetListAdapterDataObject>> {
+        val timeFrom = Calendar.getInstance()
+        timeFrom.set(year, 0, 1, 0, 0, 0)
+        val timeTo = Calendar.getInstance()
+        timeTo.timeInMillis = timeFrom.timeInMillis
+        timeTo.add(Calendar.MONTH, 12)
+        timeTo.add(Calendar.SECOND, -1)
+        return budgetDao.getBudgetYearlyListAdapterDO(year, timeFrom, timeTo)
+    }
+
     suspend fun getBudgetDetail(): List<BudgetPieChartDataObject> {
         return budgetDao.getBudgetDetail()
     }

@@ -86,10 +86,12 @@ class MFMViewModel(application: Application) : AndroidViewModel(application) {
             budgetRepo.getBudgetingListAdapterDO(it.month, it.year)
         }
         monthlyBudgetListData = Transformations.switchMap(selectedDate) {
-            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 1)
+//            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 1)
+            budgetRepo.getBudgetMonthlyListAdapterDO(it.month, it.year)
         }
         yearlyBudgetListData = Transformations.switchMap(selectedDate) {
-            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 2)
+//            budgetRepo.getBudgetListAdapterDO(it.month, it.year, 2)
+            budgetRepo.getBudgetYearlyListAdapterDO(it.year)
         }
         debtBudgetListData = Transformations.switchMap(selectedDate) {
             budgetRepo.getBudgetGoalDebtListAdapterDO(it.month, it.year)

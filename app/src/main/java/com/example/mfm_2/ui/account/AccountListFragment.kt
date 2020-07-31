@@ -108,7 +108,7 @@ class AccountListFragment : Fragment() {
                 if (result == 1) {
                     Snackbar.make(mainView, "Account Save", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Snackbar.make(mainView, "Error", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(mainView, "Error. Account name cannot be same to existing account", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

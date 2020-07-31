@@ -137,3 +137,11 @@ c
 3app/src/main/java/com/example/mfm_2/TestActivity.kt,0\7\07de5988f4e963b5734cc2830eac19e8a31884c7
 Q
 !.idea/dictionaries/kedaitayar.xml,5\a\5ac8f59804fead380ae58029248903ac6e6afdd2
+j
+:app/src/main/res/layout/activity_add_edit_transaction2.xml,6\c\6c40bd56d15c6c06396547f05db5cde57141c12a
+a
+1app/src/main/res/layout/activity_edit_account.xml,4\c\4cbc25d4f9e9c39358bf6e69e125f1964154bdc4
+`
+0app/src/main/res/layout/activity_edit_budget.xml,b\1\b17975274b9978ff3bcaf370703aedb41237eb86
+e
+5app/src/main/res/layout/activity_edit_transaction.xml,7\9\792b1de013cd169332a2570fa0b32912aeb3746d

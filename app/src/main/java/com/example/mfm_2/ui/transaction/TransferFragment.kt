@@ -111,7 +111,6 @@ class TransferFragment : Fragment() {
             transaction.transactionAmount = amount.text.toString().toDouble()
             transaction.transactionAccountId = accountFrom.accountId
             transaction.transactionAccountTransferTo = accountTo.accountId
-            Log.i("haha", transaction.toString())
             CoroutineScope(Dispatchers.IO).launch {
                 mfmViewModel.update(transaction)
             }
