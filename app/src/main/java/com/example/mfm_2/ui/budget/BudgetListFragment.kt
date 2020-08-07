@@ -110,7 +110,7 @@ class BudgetListFragment : Fragment() {
                         }
                         R.id.popup_menu_delete_budget -> {
                             //confirm delete alert dialog
-                            MaterialAlertDialogBuilder(this@BudgetListFragment.context)
+                            MaterialAlertDialogBuilder(this@BudgetListFragment.context!!)
                                 .setTitle("Confirm Delete")
                                 .setMessage("Are you sure you want to delete this budget? This action cannot be undone.")
                                 .setPositiveButton("Delete") { dialog, which ->

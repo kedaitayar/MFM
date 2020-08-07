@@ -59,8 +59,8 @@ class AccountFragment : Fragment() {
         info.setOnClickListener {
             val builder = AlertDialog.Builder(this.context!!)
             builder.setTitle("Account")
-                .setMessage("TODO")
-                .setPositiveButton("OK"){ dialog, which -> }
+                .setMessage("This section is use to manage and track your financial account. Tap the add account button to add a new financial account. Tap the overflow menu(3 dot) to view more option.\n\nSome example of financial account is cash, wallet, and bank.")
+                .setPositiveButton("OK") { dialog, which -> }
             val dialog = builder.create()
             dialog.show()
         }

@@ -90,7 +90,7 @@ class AccountListFragment : Fragment() {
         info.setOnClickListener {
             val builder = AlertDialog.Builder(this.context!!)
             builder.setTitle("Account")
-                .setMessage("This card display all account. It also show the current balance of each account.\nTo edit or delete account, click the hamburger menu and click edit or delete.")
+                .setMessage("This card display all account. It also show the current balance of each account.\nTo edit or delete account, click the overflow menu(3 dot) and click edit or delete.")
                 .setPositiveButton("OK"){ dialog, which -> }
             val dialog = builder.create()
             dialog.show()

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -70,8 +71,11 @@ class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
             holder.budgetGoalPercentage.text = goalPercentage.toString()
             if (goalPercentage >= 100) {
                 holder.budgetAllocation.background.setTint(Color.parseColor("#4CAF50"))
+                holder.budgetGoalPercentage.background = ContextCompat.getDrawable(holder.budgetGoalPercentage.context, R.drawable.ic_test_3)
             } else {
                 holder.budgetAllocation.background.setTint(Color.parseColor("#F7941D"))
+                holder.budgetGoalPercentage.background = ContextCompat.getDrawable(holder.budgetGoalPercentage.context, R.drawable.ic_test_2)
+
             }
             if (current.budgetUsed <= current.budgetAllocation) {
                 holder.budgetUsed.background.setTint(Color.parseColor("#4CAF50"))

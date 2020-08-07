@@ -79,7 +79,7 @@ class BudgetFragment : Fragment() {
         info.setOnClickListener {
             val builder = AlertDialog.Builder(this.context!!)
             builder.setTitle("Budget")
-                .setMessage("TODO")
+                .setMessage("This section is use to manage and track your budget. Budget is use to make sure you are not over spending and have enough money until your next paycheck.\n\nTo add new budget tap the add budget button. To edit the budget tap the overflow menu and select the edit option.\n\n")
                 .setPositiveButton("OK"){ dialog, which -> }
             val dialog = builder.create()
             dialog.show()

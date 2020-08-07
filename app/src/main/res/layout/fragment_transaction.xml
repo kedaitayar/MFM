@@ -55,6 +55,26 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <Button
+                        android:id="@+id/info_button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#FFFFFF"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_help_outline_24px"
+                        app:iconPadding="0dp"
+                        app:iconTint="#7C7C7C"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView1"
+                        app:layout_constraintStart_toEndOf="@+id/textView1"
+                        app:layout_constraintTop_toTopOf="@+id/textView1" />
+
                     <View
                         android:id="@+id/divider1"
                         android:layout_width="match_parent"
@@ -94,6 +114,26 @@
                         android:text="Transaction"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/info_button3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:backgroundTint="#FFFFFF"
+                        android:minWidth="0dip"
+                        android:minHeight="0dip"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="0dp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_help_outline_24px"
+                        app:iconPadding="0dp"
+                        app:iconTint="#7C7C7C"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView18"
+                        app:layout_constraintStart_toEndOf="@+id/textView18"
+                        app:layout_constraintTop_toTopOf="@+id/textView18" />
 
                     <View
                         android:id="@+id/divider5"
