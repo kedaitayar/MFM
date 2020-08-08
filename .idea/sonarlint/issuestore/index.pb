@@ -147,3 +147,7 @@ Y
 )app/src/main/res/layout/fragment_test.xml,3\3\3391b127fdc41655df85d37bc9ff621bb21e790b
 l
 <app/src/main/java/com/example/mfm_2/ui/OverBudgetFragment.kt,5\b\5bef56149ee6799e619d0b71b96cfa1c7ad1ba01
+`
+0app/src/main/res/layout/fragment_transaction.xml,8\7\879d368bb0e12c059c6cbdf1511a76c0040b65ef
+F
+app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9

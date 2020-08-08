@@ -63,7 +63,7 @@ abstract class MFMDatabase : RoomDatabase(){
 //                        populateDatabase(it.accountDao())
 //                        populateDatabase(it.budgetDao())
 //                        populateDatabase(it.transactionDao())
-//                        populateDatabase(it.budgetTypeDao())
+                        populateDatabase(it.budgetTypeDao())
 //                        populateDatabase(it.budgetDeadlineDao())
 //                        populateDatabase(it.budgetTransactionDao())
                     }
