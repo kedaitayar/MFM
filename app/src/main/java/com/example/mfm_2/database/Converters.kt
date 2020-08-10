@@ -12,11 +12,6 @@ class Converters {
 //    fun datestampToCalendar(value: Long): Calendar =
 //        Calendar.getInstance().apply { timeInMillis = value }
 
-    @TypeConverter
-    fun test(value: Long): String {
-        return value.toString()
-    }
-
     private val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
     @TypeConverter
     fun calendarToISO8601(calendar: Calendar): String {

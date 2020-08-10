@@ -3,6 +3,7 @@ package com.example.mfm_2.ui.budget.adapter
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.example.mfm_2.entity.BudgetDeadline
 import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.util.pojo.SelectedDate2
 import com.google.android.material.textfield.TextInputEditText
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -75,7 +77,9 @@ class BudgetingListAdapter internal constructor(context: Context) :
             val cal2 = currDeadline?.budgetDeadline?:Calendar.getInstance()
             val diffYear = cal2.get(Calendar.YEAR) - cal.get(Calendar.YEAR)
             val diffMonth = cal2.get(Calendar.MONTH) - cal.get(Calendar.MONTH)
-            holder.budgetGoal.text = ((current.budgetGoal-current.budgetTotalPrevAllocation)/(diffMonth+(diffYear*12))).toString()
+            val goal = ((current.budgetGoal-current.budgetTotalPrevAllocation)/(diffMonth+(diffYear*12)))
+            val dft = DecimalFormat("#,###.##")
+            holder.budgetGoal.text = dft.format(goal)
         }
     }
 

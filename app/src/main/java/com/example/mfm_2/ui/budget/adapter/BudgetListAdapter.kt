@@ -53,7 +53,7 @@ class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.text = current.budgetAllocation.toString()
         if (current.budgetTypeId == 3L) {
-            holder.budgetUsed.text = (current.budgetGoal - current.budgetUsed).toString()
+            holder.budgetUsed.text = (current.budgetGoal - current.budgetTotalPrevAllocation).toString()
             holder.budgetAllocation.text = current.budgetAllocation.toString()
             val cal = Calendar.getInstance()
             cal.set(selectedDate.year, selectedDate.month, 0,0,0)

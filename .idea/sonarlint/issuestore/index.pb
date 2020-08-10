@@ -79,8 +79,6 @@ v
 Fapp/src/main/java/com/example/mfm_2/ui/transaction/TransferFragment.kt,4\6\468497f8f2035a449b6ef1bf56fb6ad7715bfbeb
 a
 1app/src/main/res/drawable/ic_baseline_help_24.xml,3\6\36eea82a8943f181f8bbef245e32b2bf758940b8
-^
-.app/src/main/res/layout/activity_budgeting.xml,d\e\de167fe7ee227778a0bba90b83b51d55bdb826e9
 \
 ,app/src/main/res/layout/fragment_income2.xml,6\9\69e1ed4cea7fd9c8fbc9f76449b00264d3d2a3e8
 ^
@@ -129,10 +127,6 @@ Q
 !.idea/dictionaries/kedaitayar.xml,5\a\5ac8f59804fead380ae58029248903ac6e6afdd2
 j
 :app/src/main/res/layout/activity_add_edit_transaction2.xml,6\c\6c40bd56d15c6c06396547f05db5cde57141c12a
-a
-1app/src/main/res/layout/activity_edit_account.xml,4\c\4cbc25d4f9e9c39358bf6e69e125f1964154bdc4
-`
-0app/src/main/res/layout/activity_edit_budget.xml,b\1\b17975274b9978ff3bcaf370703aedb41237eb86
 e
 5app/src/main/res/layout/activity_edit_transaction.xml,7\9\792b1de013cd169332a2570fa0b32912aeb3746d
 |
@@ -147,7 +141,11 @@ Y
 )app/src/main/res/layout/fragment_test.xml,3\3\3391b127fdc41655df85d37bc9ff621bb21e790b
 l
 <app/src/main/java/com/example/mfm_2/ui/OverBudgetFragment.kt,5\b\5bef56149ee6799e619d0b71b96cfa1c7ad1ba01
-`
-0app/src/main/res/layout/fragment_transaction.xml,8\7\879d368bb0e12c059c6cbdf1511a76c0040b65ef
 F
 app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
+a
+1app/src/main/res/layout/fragment_not_budgeted.xml,b\0\b09b6d1b87f4b29b721be748c92f5be78bffdaef
+P
+ app/release/output-metadata.json,0\7\079ee2b81fdfd2faf349bcf552fe1a1bc16be431
+j
+:app/src/main/java/com/example/mfm_2/database/Converters.kt,c\3\c3e32acd4d209d73555b470c4578dafafc220683

@@ -84,7 +84,79 @@ class BudgetFragment : Fragment() {
             val dialog = builder.create()
             dialog.show()
         }
-//        TODO("info_butto x 9")
+
+
+        view.findViewById<Button>(R.id.info_button1).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Monthly Budget")
+                .setMessage("Budget with monthly cycle.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button2).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Yearly Budget")
+                .setMessage("Budget with yearly cycle.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button3).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Goal/Debt")
+                .setMessage("Budget with monthly cycle with a deadline. Useful if you have a goal to have a specific amount of money at specific date. The monthly goal will be calculated by the app.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button4).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Budgeted")
+                .setMessage("The amount of fund that is allocated to the budget with the percentage to meet the budget goal.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button6).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Budgeted")
+                .setMessage("The amount of fund that is allocated to the budget with the percentage to meet the budget goal.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button8).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Budgeted")
+                .setMessage("The amount of fund that is allocated to the budget with the percentage to meet the budget goal.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button5).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Used")
+                .setMessage("The amount of fund that you have used.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button7).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Used")
+                .setMessage("The amount of fund that you have used.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
+
+        view.findViewById<Button>(R.id.info_button5).setOnClickListener {
+            AlertDialog.Builder(this.context!!).setTitle("Used")
+                .setMessage("The amount of fund that you have used.")
+                .setPositiveButton("OK"){ dialog, which -> }
+                .create()
+                .show()
+        }
 
         return view
     }

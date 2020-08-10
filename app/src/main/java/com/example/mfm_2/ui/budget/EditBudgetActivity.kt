@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.entity.Budget
 import com.example.mfm_2.entity.BudgetDeadline
+import com.example.mfm_2.entity.BudgetTransaction
 import com.example.mfm_2.entity.BudgetType
 import com.example.mfm_2.viewmodel.MFMViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -166,10 +165,25 @@ class EditBudgetActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_edit_budget, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
+                true
+            }
+            R.id.budgeting_info -> {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Edit Budget")
+                    .setMessage("This page allow you to edit the budget.\n\nName is the name of the budget.\n\nGoal is your goal for the budget. Goal will act as a remainder.\n\nType is the type of the budget. Monthly is budget with monthly cycle. Yearly is budget with yearly cycle. Goal/Debt is budget with monthly cycle that has a deadline. It is useful if you want a specific amount of money at specific date. The application will recommend the monthly amount that should be ")
+                    .setPositiveButton("OK") { dialog, which -> }
+                val dialog = builder.create()
+                dialog.show()
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

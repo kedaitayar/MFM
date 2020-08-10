@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import com.example.mfm_2.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,7 +37,19 @@ class OverBudgetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_over_budget, container, false)
+        val view = inflater.inflate(R.layout.fragment_over_budget, container, false)
+
+        val info: Button = view.findViewById(R.id.info_button)
+        info.setOnClickListener {
+            val builder = AlertDialog.Builder(this.context!!)
+            builder.setTitle("Over Budget")
+                .setMessage("You have over spend in your budget. Go to the budgeting page and allocate more budget to the overspend budget.\n\nIf you have no more unallocated fund, remove some budget from lower priority budget.")
+                .setPositiveButton("OK"){ dialog, which -> }
+            val dialog = builder.create()
+            dialog.show()
+        }
+
+        return view
     }
 
     companion object {
