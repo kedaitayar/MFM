@@ -41,8 +41,6 @@ j
 :app/src/main/res/layout/recyclerview_item_account_list.xml,d\9\d97faa10a70e8d2e89f8025514f376ab9634f097
 Z
 *app/src/main/res/menu/menu_all_account.xml,c\0\c03f01a86b7952ed1cf35c7d6480e0db64b93adf
-S
-#app/src/main/res/values/strings.xml,d\2\d2281fbb3027de2722081a53408dd77628bf080e
 L
 .idea/codeStyles/Project.xml,6\e\6ecd6000a7b6f4a2884412ff19f74193ed089648
 <
@@ -136,8 +134,6 @@ o
 c
 3app/src/main/java/com/example/mfm_2/TestFragment.kt,4\d\4de43fcc7f8de01675b2ccad0962cc6052fc1074
 Y
-)app/src/main/res/layout/activity_test.xml,5\7\5721fead8b985aed64627fd9f4a32b266cb35905
-Y
 )app/src/main/res/layout/fragment_test.xml,3\3\3391b127fdc41655df85d37bc9ff621bb21e790b
 l
 <app/src/main/java/com/example/mfm_2/ui/OverBudgetFragment.kt,5\b\5bef56149ee6799e619d0b71b96cfa1c7ad1ba01
@@ -149,3 +145,9 @@ P
  app/release/output-metadata.json,0\7\079ee2b81fdfd2faf349bcf552fe1a1bc16be431
 j
 :app/src/main/java/com/example/mfm_2/database/Converters.kt,c\3\c3e32acd4d209d73555b470c4578dafafc220683
+`
+0app/src/main/res/layout/fragment_transaction.xml,8\7\879d368bb0e12c059c6cbdf1511a76c0040b65ef
+Z
+*app/src/main/res/menu/menu_edit_budget.xml,b\f\bf89d3834da771bd932ff02bae51f8d31096349a
+c
+3app/src/main/java/com/example/mfm_2/try/DialView.kt,a\b\ab3dd591d52f52df44350e8880cc2a62fc3e55f8

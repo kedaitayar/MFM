@@ -125,8 +125,8 @@ class AddTransactionActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.transaction_info -> {
                 val builder = AlertDialog.Builder(this)
-                builder.setTitle("Budgeting")
-                    .setMessage("TODO")
+                builder.setTitle("Add Transaction")
+                    .setMessage("This is where you can add new transaction.\n\nThere are 3 type of transaction.\nThe expense transaction is where you spend money.\nThe income transaction is where you receive money.\nThe transfer transaction is where you transfer money between 2 financial account.")
                     .setPositiveButton("OK") { dialog, which -> }
                 val dialog = builder.create()
                 dialog.show()
