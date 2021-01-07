@@ -2,7 +2,9 @@ package com.example.mfm_2.ui.transaction
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.mfm_2.R
 import com.example.mfm_2.util.pojo.TransactionListAdapterDataObject
@@ -19,6 +21,8 @@ class EditTransactionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_transaction)
         setSupportActionBar(findViewById(R.id.toolbar_edit_transaction))
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = "Edit Transaction"
 
         mfmViewModel = ViewModelProvider(this).get(MFMViewModel::class.java)
@@ -64,6 +68,16 @@ class EditTransactionActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
