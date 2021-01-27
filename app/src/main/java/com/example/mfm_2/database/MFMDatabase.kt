@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 24, exportSchema = false)
+@Database(entities = [Account::class, Transaction::class, Budget::class, BudgetTransaction::class, BudgetType::class, BudgetDeadline::class], version = 26, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class MFMDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
@@ -40,6 +40,7 @@ abstract class MFMDatabase : RoomDatabase(){
                         "mfm_database"
                     )
                     .addCallback(DatabaseCallback(scope)).fallbackToDestructiveMigration()
+                    .createFromAsset("databases/db 01.db")
                     .build()
                 INSTANCE = instance
                 // return instance

@@ -151,3 +151,15 @@ j
 0app/src/main/res/layout/fragment_transaction.xml,8\7\879d368bb0e12c059c6cbdf1511a76c0040b65ef
 Z
 *app/src/main/res/menu/menu_edit_budget.xml,b\f\bf89d3834da771bd932ff02bae51f8d31096349a
+e
+5app/src/main/java/com/example/mfm_2/dao/AccountDao.kt,2\e\2e6db962842dffe51484bce04368a56ca7f176b0
+A
+gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
+?
+settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
+@
+local.properties,0\7\0712df971a99ac4d2fccb8e0fb19f377f3374cca
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+j
+:app/schemas/com.example.mfm_2.database.MFMDatabase/25.json,6\0\60f23b2d2960a6a872517756ebbca788d72e66e2
