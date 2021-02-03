@@ -66,10 +66,19 @@ class BudgetingListAdapter internal constructor(context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = getItem(position)
+        val dft = DecimalFormat("#,###.##")
         holder.budgetName.text = current.budgetName
         holder.budgetAllocation.setText(current.budgetAllocation.toString())
-        if (current.budgetTypeId != 3L) {
-            holder.budgetGoal.text = current.budgetGoal.toString()
+        if (current.budgetTypeId == 1L) {
+            holder.budgetGoal.text = dft.format(current.budgetGoal)
+        } else if (current.budgetTypeId == 2L) {
+            val cal = Calendar.getInstance()
+            cal.set(selectedDate.year, selectedDate.month, 0,0,0)
+            val cal2 = Calendar.getInstance()
+            cal2.set(selectedDate.year + 1, 0, 0,0,0)
+            val diffMonth = cal2.get(Calendar.MONTH) - cal.get(Calendar.MONTH)
+            val goal = ((current.budgetGoal-current.budgetTotalPrevAllocation)/(diffMonth))
+            holder.budgetGoal.text = dft.format(goal)
         } else {
             val cal = Calendar.getInstance()
             cal.set(selectedDate.year, selectedDate.month, 0,0,0)
@@ -78,7 +87,6 @@ class BudgetingListAdapter internal constructor(context: Context) :
             val diffYear = cal2.get(Calendar.YEAR) - cal.get(Calendar.YEAR)
             val diffMonth = cal2.get(Calendar.MONTH) - cal.get(Calendar.MONTH)
             val goal = ((current.budgetGoal-current.budgetTotalPrevAllocation)/(diffMonth+(diffYear*12)))
-            val dft = DecimalFormat("#,###.##")
             holder.budgetGoal.text = dft.format(goal)
         }
     }
