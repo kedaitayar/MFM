@@ -1,6 +1,5 @@
 package com.example.mfm_2.ui.budget.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,10 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
-import com.example.mfm_2.`try`.Test02View
-import com.example.mfm_2.`try`.Test03View
+import com.example.mfm_2.ui.customview.PillPieCustomView
 import com.example.mfm_2.entity.BudgetDeadline
 import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.util.pojo.SelectedDate2
-import kotlinx.android.synthetic.main.activity_test.view.*
 import java.util.*
 
 class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
@@ -41,7 +38,7 @@ class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
         }
 
         val budgetName: TextView = v.findViewById(R.id.textView10)
-        val budgetAllocation: Test03View = v.findViewById(R.id.textView12)
+        val budgetAllocation: PillPieCustomView = v.findViewById(R.id.textView12)
         val budgetUsed: TextView = v.findViewById(R.id.textView11)
     }
 

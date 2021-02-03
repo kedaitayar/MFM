@@ -1,16 +1,14 @@
-package com.example.mfm_2.`try`
+package com.example.mfm_2.ui.customview
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.mfm_2.R
 
-class Test03View @JvmOverloads constructor(
+class PillPieCustomView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : androidx.appcompat.widget.AppCompatTextView(context, attrs, defStyleAttr) {
-    private val TAG: String? = "hoho"
     private val path = Path()
     private var radius = 0f
     var piePercent: Int = 0
@@ -27,18 +25,17 @@ class Test03View @JvmOverloads constructor(
     init {
         this.setPadding(paddingLeft, paddingTop, paddingRight + (textSize*1.75).toInt(), paddingBottom)
         bgColor = ContextCompat.getColor(context, R.color.gGreen)
-        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.Test03View)
+        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.PillPieCustomView)
         if (isInEditMode) {
-            this.text = "Test"
+            this.text = "Placeholder"
             piePercent = 80
         } else {
-            piePercent = typeArray.getInt(R.styleable.Test03View_piePercentage, 0)
+            piePercent = typeArray.getInt(R.styleable.PillPieCustomView_piePercentage, 0)
         }
         typeArray.recycle()
     }
 
     override fun onDraw(canvas: Canvas?) {
-        Log.i(TAG, "onDraw called")
         drawPieAndBG(canvas)
         canvas?.save()
         canvas?.translate(height.toFloat(), height * -0.02f)
@@ -50,7 +47,7 @@ class Test03View @JvmOverloads constructor(
         canvas?.save()
         paint.apply {
             strokeWidth = 4f
-            color = this@Test03View.bgColor
+            color = this@PillPieCustomView.bgColor
             style = Paint.Style.FILL
         }
         radius = height / 2f

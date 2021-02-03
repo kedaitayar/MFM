@@ -11,7 +11,7 @@
         <attr name="android:fontFamily" />
         <attr name="piePercent" format="integer" />
     </declare-styleable>
-    <declare-styleable name="Test03View">
+    <declare-styleable name="PillPieCustomView">
         <attr name="piePercentage" format="integer" />
         <attr name="bgColor" format="integer" />
     </declare-styleable>
