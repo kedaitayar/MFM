@@ -39,7 +39,8 @@ abstract class MFMDatabase : RoomDatabase(){
                         MFMDatabase::class.java,
                         "mfm_database"
                     )
-                    .addCallback(DatabaseCallback(scope)).fallbackToDestructiveMigration()
+//                    .addCallback(DatabaseCallback(scope))
+//                    .fallbackToDestructiveMigration()
                     .createFromAsset("databases/db 01.db")
                     .build()
                 INSTANCE = instance

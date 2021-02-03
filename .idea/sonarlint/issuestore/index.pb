@@ -163,3 +163,11 @@ X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 j
 :app/schemas/com.example.mfm_2.database.MFMDatabase/25.json,6\0\60f23b2d2960a6a872517756ebbca788d72e66e2
+j
+:app/schemas/com.example.mfm_2.database.MFMDatabase/26.json,8\2\8219caf8d4cea31bb0aed26c3fec352fdfc5bf99
+c
+3app/src/main/java/com/example/mfm_2/try/DialView.kt,a\b\ab3dd591d52f52df44350e8880cc2a62fc3e55f8
+e
+5app/src/main/java/com/example/mfm_2/try/Test01view.kt,9\c\9ccb9c7642201ec1f751ae288b81036e80832b99
+e
+5app/src/main/java/com/example/mfm_2/try/Test02View.kt,e\a\ea9b0891133a91eab6468e5fe1c894d25c00c837

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.withStyledAttributes
 import com.example.mfm_2.R
 import kotlin.math.cos
 import kotlin.math.min
@@ -46,6 +47,11 @@ class DialView @JvmOverloads constructor(
 
     init {
         isClickable = true
+        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.DialView)
+        fanSpeedLowColor = typeArray.getColor(R.styleable.DialView_fanColor1, 0)
+        fanSpeedMediumColor = typeArray.getColor(R.styleable.DialView_fanColor2, 0)
+        fanSpeedMaxColor = typeArray.getColor(R.styleable.DialView_fanColor3, 0)
+        typeArray.recycle()
     }
 
     override fun performClick(): Boolean {
@@ -73,7 +79,12 @@ class DialView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         // Set dial background color to green if selection not off.
-        paint.color = if (fanSpeed == FanSpeed.OFF) Color.GRAY else Color.GREEN
+        paint.color = when (fanSpeed) {
+            FanSpeed.OFF -> Color.GRAY
+            FanSpeed.LOW -> fanSpeedLowColor
+            FanSpeed.MEDIUM -> fanSpeedMediumColor
+            FanSpeed.HIGH -> fanSpeedMaxColor
+        }
 
         // Draw the dial.
         canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), radius, paint)

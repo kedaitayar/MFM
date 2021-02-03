@@ -5,4 +5,14 @@
         <attr name="fanColor2" format="color" />
         <attr name="fanColor3" format="color" />
     </declare-styleable>
+    <declare-styleable name="Test02View">
+        <attr name="android:text" />
+        <attr name="android:textSize" />
+        <attr name="android:fontFamily" />
+        <attr name="piePercent" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="Test03View">
+        <attr name="piePercentage" format="integer" />
+        <attr name="bgColor" format="integer" />
+    </declare-styleable>
 </resources>

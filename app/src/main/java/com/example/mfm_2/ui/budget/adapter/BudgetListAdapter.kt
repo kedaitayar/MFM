@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mfm_2.R
+import com.example.mfm_2.`try`.Test02View
+import com.example.mfm_2.`try`.Test03View
 import com.example.mfm_2.entity.BudgetDeadline
 import com.example.mfm_2.util.pojo.BudgetListAdapterDataObject
 import com.example.mfm_2.util.pojo.SelectedDate2
+import kotlinx.android.synthetic.main.activity_test.view.*
 import java.util.*
 
 class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
@@ -38,9 +41,8 @@ class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
         }
 
         val budgetName: TextView = v.findViewById(R.id.textView10)
-        val budgetAllocation: TextView = v.findViewById(R.id.textView12)
+        val budgetAllocation: Test03View = v.findViewById(R.id.textView12)
         val budgetUsed: TextView = v.findViewById(R.id.textView11)
-        val budgetGoalPercentage: TextView = v.findViewById(R.id.textView6)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,10 +53,10 @@ class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val current = mDiffer.currentList[position]
         holder.budgetName.text = current.budgetName
+
         holder.budgetAllocation.text = current.budgetAllocation.toString()
         if (current.budgetTypeId == 3L) {
             holder.budgetUsed.text = (current.budgetGoal - current.budgetTotalPrevAllocation).toString()
-            holder.budgetAllocation.text = current.budgetAllocation.toString()
             val cal = Calendar.getInstance()
             cal.set(selectedDate.year, selectedDate.month, 0,0,0)
             val currDeadline = budgetDeadline.find { it.budgetId == current.budgetId }
@@ -63,24 +65,20 @@ class BudgetListAdapter : RecyclerView.Adapter<BudgetListAdapter.ViewHolder>() {
             val diffMonth = cal2.get(Calendar.MONTH) - cal.get(Calendar.MONTH)
             val budgetGoal = ((current.budgetGoal-current.budgetTotalPrevAllocation)/(diffMonth+(diffYear*12)))
             val goalPercentage = ((current.budgetAllocation / budgetGoal) * 100).toInt()
-            holder.budgetGoalPercentage.text = goalPercentage.toString()
+            holder.budgetAllocation.piePercent = goalPercentage
         } else {
             holder.budgetUsed.text = current.budgetUsed.toString()
-            holder.budgetAllocation.text = current.budgetAllocation.toString()
             val goalPercentage = ((current.budgetAllocation / current.budgetGoal) * 100).toInt()
-            holder.budgetGoalPercentage.text = goalPercentage.toString()
+            holder.budgetAllocation.piePercent = goalPercentage
             if (goalPercentage >= 100) {
-                holder.budgetAllocation.background.setTint(Color.parseColor("#4CAF50"))
-                holder.budgetGoalPercentage.background = ContextCompat.getDrawable(holder.budgetGoalPercentage.context, R.drawable.ic_test_3)
+                holder.budgetAllocation.bgColor = ContextCompat.getColor(holder.budgetAllocation.context, R.color.gGreen)
             } else {
-                holder.budgetAllocation.background.setTint(Color.parseColor("#F7941D"))
-                holder.budgetGoalPercentage.background = ContextCompat.getDrawable(holder.budgetGoalPercentage.context, R.drawable.ic_test_2)
-
+                holder.budgetAllocation.bgColor = ContextCompat.getColor(holder.budgetAllocation.context, R.color.gYellow)
             }
             if (current.budgetUsed <= current.budgetAllocation) {
-                holder.budgetUsed.background.setTint(Color.parseColor("#4CAF50"))
+                holder.budgetUsed.background.setTint(ContextCompat.getColor(holder.budgetUsed.context, R.color.gGreen))
             } else {
-                holder.budgetUsed.background.setTint(Color.parseColor("#e53935"))
+                holder.budgetUsed.background.setTint(ContextCompat.getColor(holder.budgetUsed.context, R.color.gRed))
             }
         }
     }

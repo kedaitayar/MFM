@@ -37,7 +37,6 @@ class BudgetListFragment : Fragment() {
     private var budgetType: Int? = null
     private lateinit var mfmViewModel: MFMViewModel
     private val editBudgetCode = 1
-//    private val editBudgetingCode = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +53,6 @@ class BudgetListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_budget_list, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerview_budget)
-//        val budgetAdapter = BudgetListAdapter()
         val budgetAdapter = BudgetListAdapter()
         recyclerView.adapter = budgetAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
